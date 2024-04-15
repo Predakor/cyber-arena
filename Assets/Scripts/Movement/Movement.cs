@@ -1,31 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class Movement : MonoBehaviour
-{
-    PlayerInput playerInput;
-    InputAction moveActionX;
-    InputAction moveActionY;
+public class Movement : MonoBehaviour {
+    [Header("Mevement Speeds")]
+    [SerializeField] float walkSpeed = 3f;
+    [SerializeField] float sprintSpeed = 5f;
 
     [SerializeField]
-    int speed = 5;
+    PlayerInputHandler inputHandler;
+    Vector3 currentMovement;
 
-    void Start()
-    {
-        playerInput = GetComponent<PlayerInput>();
-        moveActionX = playerInput.FindAction("MoveX");
-        moveActionY = playerInput.FindAction("MoveY");
+    Rigidbody rb;
+
+    void Awake() {
+        rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
+    void Start() {
+        inputHandler = PlayerInputHandler.Instance;
     }
 
-    void Move () {
-        
+    void FixedUpdate() {
+        HandleMovement();
+        Debug.Log(inputHandler.MoveInput);
     }
+
+    void HandleMovement() {
+        float speed = walkSpeed;
+
+        float moveX = inputHandler.MoveInput.x * -1;
+        float moveY = inputHandler.MoveInput.y * -1;
+
+        float isometricX = (moveX - moveY) / Mathf.Sqrt(2);
+        float isometricZ = (moveX + moveY) / Mathf.Sqrt(2);
+
+        Vector3 isometricDirection = new(isometricX, 0f, isometricZ)
+;
+
+        rb.velocity = isometricDirection.normalized * speed;
+    }
+
 }
