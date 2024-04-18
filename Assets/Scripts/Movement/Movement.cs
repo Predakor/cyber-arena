@@ -1,7 +1,8 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Movement : MonoBehaviour {
-    [Header("Mevement Speeds")]
+    [Header("Movement Speeds")]
     [SerializeField] float walkSpeed = 3f;
     [SerializeField] float sprintSpeed = 5f;
 
@@ -9,10 +10,16 @@ public class Movement : MonoBehaviour {
     PlayerInputHandler inputHandler;
     Vector3 currentMovement;
 
+
+    [Header("Player rotation")]
+    [SerializeField] LayerMask groundMask;
+    [SerializeField] Camera camera;
+
     Rigidbody rb;
 
     void Awake() {
         rb = GetComponent<Rigidbody>();
+        camera = Camera.main;
     }
 
     void Start() {
@@ -21,7 +28,7 @@ public class Movement : MonoBehaviour {
 
     void FixedUpdate() {
         HandleMovement();
-        Debug.Log(inputHandler.MoveInput);
+        HandleRotation();
     }
 
     void HandleMovement() {
@@ -39,4 +46,22 @@ public class Movement : MonoBehaviour {
         rb.velocity = isometricDirection.normalized * speed;
     }
 
+    void HandleRotation() {
+
+        var (succes, position) = GetMousePosition();
+        if (!succes) { return; }
+
+        Vector3 direction = position - transform.position;
+        direction.y = 0f;
+        transform.forward = direction;
+    }
+
+    (bool succes, Vector3 position) GetMousePosition() {
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask)) {
+            return (succes: true, position: hitInfo.point);
+        }
+        return (succes: false, position: Vector3.zero);
+    }
 }

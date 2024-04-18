@@ -11,12 +11,15 @@ public class PlayerInputHandler : MonoBehaviour {
     [Header("Action Name References")]
     [SerializeField] string move = "Move";
     [SerializeField] string look = "Look";
+    [SerializeField] string shoot = "Shoot";
 
     InputAction moveAction;
     InputAction lookAction;
+    InputAction shootAction;
 
     public Vector2 MoveInput { get; private set; }
     public Vector2 LookInput { get; private set; }
+    public float ShootInput { get; private set; }
 
     public static PlayerInputHandler Instance { get; private set; }
 
@@ -31,6 +34,8 @@ public class PlayerInputHandler : MonoBehaviour {
 
         moveAction = playerControls.FindActionMap(actionMapName).FindAction(move);
         lookAction = playerControls.FindActionMap(actionMapName).FindAction(look);
+        shootAction = playerControls.FindActionMap(actionMapName).FindAction(shoot);
+
         RegisterInputActions();
         gameObject.SetActive(true);
     }
@@ -41,15 +46,20 @@ public class PlayerInputHandler : MonoBehaviour {
 
         lookAction.performed += context => LookInput = context.ReadValue<Vector2>();
         lookAction.canceled += context => LookInput = Vector2.zero;
+
+        shootAction.performed += context => ShootInput = context.ReadValue<float>();
+        shootAction.canceled += context => ShootInput = 0;
     }
 
     void OnEnable() {
         moveAction.Enable();
         lookAction.Enable();
+        shootAction.Enable();
     }
 
     void OnDisable() {
         moveAction.Disable();
         lookAction.Disable();
+        shootAction.Disable();
     }
 }

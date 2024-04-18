@@ -38,7 +38,11 @@ public class Health : MonoBehaviour {
         else {
             currentHealth -= damage - armor;
         }
-        if (InvincibilityFrames && invincibilityFramesReady) {
+
+        if (currentHealth <= 0) {
+            Destroy(gameObject);
+        }
+        else if (InvincibilityFrames && invincibilityFramesReady) {
             StartCoroutine(StartInvincibilityFrames());
         }
     }
