@@ -32,10 +32,11 @@ public class Movement : MonoBehaviour {
     }
 
     void HandleMovement() {
+
         float speed = walkSpeed;
 
-        float moveX = inputHandler.MoveInput.x * -1;
-        float moveY = inputHandler.MoveInput.y * -1;
+        float moveX = inputHandler.MoveInput.y;
+        float moveY = inputHandler.MoveInput.x * -1;
 
         float isometricX = (moveX - moveY) / Mathf.Sqrt(2);
         float isometricZ = (moveX + moveY) / Mathf.Sqrt(2);
