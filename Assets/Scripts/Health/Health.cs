@@ -7,6 +7,7 @@ public class Health : MonoBehaviour {
     [SerializeField] int currentHealth = 100;
     [SerializeField] int maxHealth = 100;
     [SerializeField] int shield = 0;
+    [SerializeField] int maxShield = 0;
     [SerializeField] int armor = 0;
 
     [Header("Invincibility frames")]
@@ -19,6 +20,7 @@ public class Health : MonoBehaviour {
     public int CurrentHealth { get => currentHealth; }
     public int MaxHealth { get => maxHealth; }
     public int Shield { get => shield; }
+    public int MaxShield { get => shield; }
     public int Armor { get => armor; }
 
     bool canBeDamaged = true;

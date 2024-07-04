@@ -20,6 +20,7 @@ public class Weapon : MonoBehaviour {
 
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform projectileSpawnPoint;
+    AmmoDisplay ammoCountDisplay;
 
     float _fireRateCooldown = 0f;
     bool _isRealoading = false;
@@ -27,6 +28,17 @@ public class Weapon : MonoBehaviour {
     void Start() {
         currentAmmo = magazineSize;
         _fireRateCooldown = Time.time;
+        ammoCountDisplay = AmmoDisplay.instance;
+        ammoCountDisplay.SetAmmoText(currentAmmo);
+    }
+
+    private void OnEnable() {
+        if (ammoCountDisplay) {
+            ammoCountDisplay.SetAmmoText(currentAmmo);
+        }
+        if (currentAmmo <= 0) {
+            StartCoroutine(Reload());
+        }
     }
 
     [ContextMenu("Fire")]
@@ -41,6 +53,7 @@ public class Weapon : MonoBehaviour {
         }
 
         ShootProjectile();
+        ammoCountDisplay.SetAmmoText(currentAmmo);
 
     }
 
@@ -58,6 +71,7 @@ public class Weapon : MonoBehaviour {
         yield return new WaitForSeconds(reloadSpeed);
         currentAmmo = magazineSize;
         _isRealoading = false;
+        ammoCountDisplay.SetAmmoText(currentAmmo);
 
     }
 }
