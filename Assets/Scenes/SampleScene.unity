@@ -319,13 +319,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
       insertIndex: -1
       addedObject: {fileID: 212196382}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 914099222}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 914099223}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
 --- !u!1 &153782512 stripped
 GameObject:
@@ -337,17 +331,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4343150637521346545, guid: aef6250433e68bc42b3483240191056b, type: 3}
   m_PrefabInstance: {fileID: 1917721207}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &212196383 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6808196951887027831, guid: aef6250433e68bc42b3483240191056b, type: 3}
-  m_PrefabInstance: {fileID: 1917721207}
+--- !u!135 &212196386
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 153782512}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7579da6974b329c48b5a758c3693d752, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 3
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &215218650
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,11 +734,59 @@ MonoBehaviour:
   projectileSpeed: 200
   projectilePrefab: {fileID: 4081963984601000776, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
   projectileSpawnPoint: {fileID: 1658479226}
---- !u!1 &349929239 stripped
+--- !u!1 &330919741
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
-  m_PrefabInstance: {fileID: 60729490}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 330919742}
+  - component: {fileID: 330919743}
+  m_Layer: 0
+  m_Name: PickupSphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &330919742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330919741}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 999693050}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &330919743
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330919741}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &364276807
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,6 +1024,7 @@ GameObject:
   - component: {fileID: 436169649}
   - component: {fileID: 436169651}
   - component: {fileID: 436169650}
+  - component: {fileID: 436169652}
   m_Layer: 5
   m_Name: Ammo Panel
   m_TagString: Untagged
@@ -1037,6 +1090,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 436169648}
   m_CullTransparentMesh: 1
+--- !u!114 &436169652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436169648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a3e314d82513ff4c8225cd0a15bee62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoCountDisplay: {fileID: 215218652}
 --- !u!1 &473957799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1346,13 +1412,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2065370062}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2115142341}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2115142342}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
 --- !u!1 &711597052
 GameObject:
@@ -1504,7 +1564,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3967153208224695627, guid: aef6250433e68bc42b3483240191056b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2065370066}
   m_SourcePrefab: {fileID: 100100000, guid: aef6250433e68bc42b3483240191056b, type: 3}
 --- !u!1 &836913700
 GameObject:
@@ -1550,94 +1613,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
   m_PrefabInstance: {fileID: 60729490}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &914099222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 349929239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 276e23affe0e1bd40a1ba57da5035c28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionColider: {fileID: 914099223}
-  onEnterEvenet:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 999693053}
-        m_TargetAssemblyTypeName: WeaponManager, Assembly-CSharp
-        m_MethodName: PickupNewWeapon
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 212196383}
-          m_ObjectArgumentAssemblyTypeName: Weapon, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 292281476}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 914099223}
-        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 153782512}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onExitEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!135 &914099223
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 349929239}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &962869826
 GameObject:
   m_ObjectHideFlags: 0
@@ -1860,6 +1835,7 @@ GameObject:
   m_Component:
   - component: {fileID: 999693050}
   - component: {fileID: 999693052}
+  - component: {fileID: 999693056}
   - component: {fileID: 999693053}
   - component: {fileID: 999693048}
   - component: {fileID: 999693055}
@@ -1906,6 +1882,7 @@ Transform:
   m_Children:
   - {fileID: 473957800}
   - {fileID: 702543872}
+  - {fileID: 330919742}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &999693051
@@ -1969,11 +1946,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapons:
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   currentWeapon: {fileID: 0}
   PlayerInputHandler: {fileID: 1648641686}
   weaponTransform: {fileID: 702543872}
+  autoEquipWeapon: 0
+  onWeaponPickup:
+    m_PersistentCalls:
+      m_Calls: []
+  onWeaponChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onWeaponEquiped:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!136 &999693054
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2012,6 +1997,20 @@ MonoBehaviour:
   healthManager: {fileID: 999693052}
   healthSlider: {fileID: 1520030964}
   shieldSlider: {fileID: 1655864053}
+--- !u!114 &999693056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999693047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e7c9cc1f224b44aa39a3809143e23c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PickuUpCollider: {fileID: 330919743}
+  weapons: []
 --- !u!1 &1179989989
 GameObject:
   m_ObjectHideFlags: 0
@@ -2311,11 +2310,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 292281478}
   m_SourcePrefab: {fileID: 100100000, guid: 9e1959fe663ba214894476a555915621, type: 3}
---- !u!1 &1224323731 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
-  m_PrefabInstance: {fileID: 710256506}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1248586314
 GameObject:
   m_ObjectHideFlags: 0
@@ -3202,7 +3196,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3967153208224695627, guid: aef6250433e68bc42b3483240191056b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 212196386}
   m_SourcePrefab: {fileID: 100100000, guid: aef6250433e68bc42b3483240191056b, type: 3}
 --- !u!1 &1947063723
 GameObject:
@@ -3394,85 +3391,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4343150637521346545, guid: aef6250433e68bc42b3483240191056b, type: 3}
   m_PrefabInstance: {fileID: 830482241}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2115142340 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
-  m_PrefabInstance: {fileID: 710256506}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2115142341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1224323731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 276e23affe0e1bd40a1ba57da5035c28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionColider: {fileID: 914099223}
-  onEnterEvenet:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 999693053}
-        m_TargetAssemblyTypeName: WeaponManager, Assembly-CSharp
-        m_MethodName: PickupNewWeapon
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 2065370061}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 292281476}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2115142342}
-        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2065370061}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onExitEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!135 &2115142342
+--- !u!135 &2065370066
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1224323731}
+  m_GameObject: {fileID: 2065370061}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -3487,6 +3412,11 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &2115142340 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8a2df3e49d65b6846be8ea91a0f8bdff, type: 3}
+  m_PrefabInstance: {fileID: 710256506}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2118513074
 GameObject:
   m_ObjectHideFlags: 0

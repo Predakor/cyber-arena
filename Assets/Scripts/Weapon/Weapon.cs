@@ -43,7 +43,7 @@ public class Weapon : MonoBehaviour, IPickable, IInstpectable {
 
     public void PickUp() {
         WeaponManager.instance.PickupNewWeapon(gameObject);
-        gameObject.GetComponent<Collider>().enabled = false;
+        Destroy(gameObject);
     }
 
     public void Inspect() {

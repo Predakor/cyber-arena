@@ -54,33 +54,38 @@ public class WeaponManager : MonoBehaviour {
         }
     }
 
+
+    #region helpers
     GameObject InstantiateWeapon(GameObject weapon) {
         GameObject instantiedWeapon = Instantiate(weapon, weaponTransform.position, weaponTransform.rotation, weaponTransform);
         instantiedWeapon.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+        instantiedWeapon.SetActive(autoEquipWeapon);
         return instantiedWeapon;
     }
+    void SwitchOtherWeapons(GameObject newWeapon) {
+        weapons.ForEach(weapon => weapon.SetActive(weapon == newWeapon));
+    }
+    public void SwapWeapon(int number) {
+        EquipWeapon(weapons[number]);
+        onWeaponChange.Invoke();
+    }
+    #endregion
 
     public void EquipWeapon(GameObject selectedWeapon) {
         if (weapons.Contains(selectedWeapon)) {
-            currentWeapon.gameObject.SetActive(false);
-            selectedWeapon.SetActive(true);
+            SwitchOtherWeapons(selectedWeapon);
             currentWeapon = selectedWeapon.GetComponent<Weapon>();
             return;
         }
 
         GameObject newGun = InstantiateWeapon(selectedWeapon);
         currentWeapon = newGun.GetComponent<Weapon>();
-
         onWeaponEquiped.Invoke();
     }
 
-    public void SwapWeapon(int number) {
-        EquipWeapon(weapons[number]);
-        onWeaponChange.Invoke();
-    }
+
 
     public void PickupNewWeapon(GameObject newWeapon) {
-
         void _CreateWeapon() {
             GameObject newGun = InstantiateWeapon(newWeapon);
             weapons.Add(newGun);
@@ -89,7 +94,7 @@ public class WeaponManager : MonoBehaviour {
         //no weapon
         if (!weapons.Contains(gameObject)) {
             _CreateWeapon();
-            newWeapon.SetActive(weapons.Count == 0);
+            newWeapon.SetActive(true);
             return;
         }
 
@@ -99,18 +104,18 @@ public class WeaponManager : MonoBehaviour {
             return;
         }
 
+
+        GameObject _weapon;
         for (int i = 0; i < weapons.Count; i++) {
-            GameObject _weapon = weapons[i];
-
-            if (autoEquipWeapon) {
-                _weapon.SetActive(false);
-            }
-
+            _weapon = weapons[i];
             if (_weapon == null) {
                 _CreateWeapon();
-                _weapon.SetActive(autoEquipWeapon);
+                if (autoEquipWeapon) {
+                    SwitchOtherWeapons(_weapon);
+                }
                 break;
             }
         }
+
     }
 }
