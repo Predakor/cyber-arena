@@ -3,27 +3,34 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour {
 
+    [SerializeField] Collider PickuUpCollider;
 
-    public List<Item> items;
+    public List<Weapon> weapons;
 
 
 
-
-    public void AddItem(Item item) {
-        if (items.Contains(item)) {
-            return;
+    private void OnTriggerEnter(Collider other) {
+        if (other.TryGetComponent(out IPickable item)) {
+            item.PickUp();
         }
-        items.Add(item);
-    }
-    public void RemoveItem(Item item) {
-        if (!items.Contains(item)) {
-            return;
-        }
-        items.Remove(item);
     }
 
-    public bool ContainsItem(Item item) {
-        return items.Contains(item);
+
+    public void AddWeapon(Weapon weapon) {
+        if (weapons.Contains(weapon)) {
+            return;
+        }
+        weapons.Add(weapon);
+    }
+    public void RemoveWeapon(Weapon weapon) {
+        if (!weapons.Contains(weapon)) {
+            return;
+        }
+        weapons.Remove(weapon);
+    }
+
+    public bool ContainsWeapon(Weapon weapon) {
+        return weapons.Contains(weapon);
     }
 
 

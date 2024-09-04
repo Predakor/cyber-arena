@@ -6,7 +6,7 @@ public class AmmoDisplay : MonoBehaviour {
     public TextMeshProUGUI ammoCountDisplay;
     public static AmmoDisplay instance;
 
-    void Start() {
+    void Awake() {
         if (instance == null) {
             instance = this;
         }

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour {
+public class Weapon : MonoBehaviour, IPickable, IInstpectable {
 
 
     [Header("Weapon stats")]
@@ -39,6 +39,15 @@ public class Weapon : MonoBehaviour {
         if (currentAmmo <= 0) {
             StartCoroutine(Reload());
         }
+    }
+
+    public void PickUp() {
+        WeaponManager.instance.PickupNewWeapon(gameObject);
+        gameObject.GetComponent<Collider>().enabled = false;
+    }
+
+    public void Inspect() {
+        throw new System.NotImplementedException();
     }
 
     [ContextMenu("Fire")]

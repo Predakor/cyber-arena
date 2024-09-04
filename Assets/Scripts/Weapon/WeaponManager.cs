@@ -11,11 +11,21 @@ public class WeaponManager : MonoBehaviour {
     [SerializeField] Transform weaponTransform;
 
 
+    [Header("Options")]
+    [SerializeField] bool autoEquipWeapon = false;
+
+    public static WeaponManager instance;
+
+
     [Header("Events")]
     public UnityEvent onWeaponPickup;
     public UnityEvent onWeaponChange;
     public UnityEvent onWeaponEquiped;
 
+
+    void Awake() {
+        if (instance == null) { instance = this; }
+    }
     void Start() {
         if (currentWeapon == null) {
             currentWeapon = gameObject.GetComponentInChildren<Weapon>();
@@ -70,14 +80,37 @@ public class WeaponManager : MonoBehaviour {
     }
 
     public void PickupNewWeapon(GameObject newWeapon) {
-        if (weapons.Count < 3) {
-            GameObject newGun = InstantiateWeapon(newWeapon);
-            newGun.SetActive(weapons.Count == 0);
-            weapons.Add(newGun);
-            onWeaponPickup.Invoke();
 
+        void _CreateWeapon() {
+            GameObject newGun = InstantiateWeapon(newWeapon);
+            weapons.Add(newGun);
         }
 
-        //else show menu which player can pick which weapon he wants to replace
+        //no weapon
+        if (!weapons.Contains(gameObject)) {
+            _CreateWeapon();
+            newWeapon.SetActive(weapons.Count == 0);
+            return;
+        }
+
+        if (weapons.Count == 3) {
+            //to many weapons
+            //else show menu which player can pick which weapon he wants to replace
+            return;
+        }
+
+        for (int i = 0; i < weapons.Count; i++) {
+            GameObject _weapon = weapons[i];
+
+            if (autoEquipWeapon) {
+                _weapon.SetActive(false);
+            }
+
+            if (_weapon == null) {
+                _CreateWeapon();
+                _weapon.SetActive(autoEquipWeapon);
+                break;
+            }
+        }
     }
 }
