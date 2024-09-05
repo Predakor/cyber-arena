@@ -68,7 +68,7 @@ public class Weapon : MonoBehaviour, IPickable, IInstpectable {
 
     void ShootProjectile() {
         GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
-        projectile.GetComponent<Rigidbody>().velocity = projectileSpawnPoint.forward * projectileSpeed;
+        projectile.GetComponent<Rigidbody>().velocity = projectileSpawnPoint.up * projectileSpeed;
         _fireRateCooldown += 60 / fireRate;
         currentAmmo -= 1;
     }
