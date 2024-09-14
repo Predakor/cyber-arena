@@ -58,7 +58,6 @@ public class WeaponManager : MonoBehaviour {
     #region helpers
     GameObject InstantiateWeapon(GameObject weapon) {
         GameObject instantiedWeapon = Instantiate(weapon, weaponTransform.position, weaponTransform.rotation, weaponTransform);
-        instantiedWeapon.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
         instantiedWeapon.SetActive(autoEquipWeapon);
         return instantiedWeapon;
     }
