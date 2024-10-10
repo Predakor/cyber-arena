@@ -22,14 +22,21 @@ public class Weapon : MonoBehaviour, IPickable, IInstpectable {
     [SerializeField] Transform projectileSpawnPoint;
     AmmoDisplay ammoCountDisplay;
 
+    [SerializeField] bool updateAmmoCounterUI = false;
+    [SerializeField] bool isPlayersWeapon = false;
     float _fireRateCooldown = 0f;
     bool _isRealoading = false;
 
     void Start() {
         currentAmmo = magazineSize;
         _fireRateCooldown = Time.time;
-        ammoCountDisplay = AmmoDisplay.instance;
-        ammoCountDisplay.SetAmmoText(currentAmmo);
+        ;
+
+        isPlayersWeapon = transform.GetComponentInParent<Transform>().CompareTag("Player");
+        if (isPlayersWeapon || updateAmmoCounterUI) {
+            ammoCountDisplay = AmmoDisplay.instance;
+            ammoCountDisplay.SetAmmoText(currentAmmo);
+        }
     }
 
     private void OnEnable() {
@@ -62,7 +69,9 @@ public class Weapon : MonoBehaviour, IPickable, IInstpectable {
         }
 
         ShootProjectile();
-        ammoCountDisplay.SetAmmoText(currentAmmo);
+        if (updateAmmoCounterUI || isPlayersWeapon) {
+            ammoCountDisplay.SetAmmoText(currentAmmo);
+        }
 
     }
 

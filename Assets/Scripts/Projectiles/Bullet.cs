@@ -17,14 +17,13 @@ public class Bullet : MonoBehaviour {
 
 
     void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.GetComponent<Health>()) {
-            collision.gameObject.GetComponent<Health>().Damage(10);
+        Health collisionHealth = collision.gameObject.GetComponent<Health>();
+
+        if (collisionHealth) {
+            collisionHealth.Damage(10);
             DestroySelf();
         }
-
     }
-
-
     void DestroySelf() {
         if (gameObject) {
             Destroy(gameObject);
