@@ -2,28 +2,37 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Movement : MonoBehaviour {
-    [Header("Movement Speeds")]
+    [Header("Movement")]
     [SerializeField] float walkSpeed = 3f;
     [SerializeField] float sprintSpeed = 5f;
+
+    [SerializeField] Transform moveTowards;
+
+
+    [Header("Rotation")]
+    [SerializeField] float rotationSpeed = 1.0f;
+
+    [SerializeField] Transform rotateTowards;
 
     [SerializeField]
     PlayerInputHandler inputHandler;
     Vector3 currentMovement;
 
-
-    [Header("Player rotation")]
-    [SerializeField] LayerMask groundMask;
-    [SerializeField] Camera camera;
-
     Rigidbody rb;
 
     void Awake() {
         rb = GetComponent<Rigidbody>();
-        camera = Camera.main;
     }
 
     void Start() {
-        inputHandler = PlayerInputHandler.Instance;
+        //inputHandledsr = PlayerInputHandler.Instance;
+    }
+
+    public void MoveTowards(Transform _target) {
+        moveTowards = _target;
+    }
+    public void RotateTowards(Transform _target) {
+        rotateTowards = _target;
     }
 
     void FixedUpdate() {
@@ -32,37 +41,41 @@ public class Movement : MonoBehaviour {
     }
 
     void HandleMovement() {
+        Vector3 direction;
 
-        float speed = walkSpeed;
+        if (inputHandler != null) {
+            float moveX = inputHandler.MoveInput.y;
+            float moveY = inputHandler.MoveInput.x * -1;
 
-        float moveX = inputHandler.MoveInput.y;
-        float moveY = inputHandler.MoveInput.x * -1;
+            // Convert input into isometric direction
+            float isometricX = (moveX - moveY) / Mathf.Sqrt(2);
+            float isometricZ = (moveX + moveY) / Mathf.Sqrt(2);
 
-        float isometricX = (moveX - moveY) / Mathf.Sqrt(2);
-        float isometricZ = (moveX + moveY) / Mathf.Sqrt(2);
+            direction = new Vector3(isometricX, 0f, isometricZ).normalized;
+        }
+        else if (moveTowards != null) {
+            direction = (moveTowards.position - transform.position).normalized;
+            direction.y = 0f;
+        }
+        else {
+            return;
+        }
 
-        Vector3 isometricDirection = new(isometricX, 0f, isometricZ)
-;
-
-        rb.velocity = isometricDirection.normalized * speed;
+        rb.velocity = direction * walkSpeed;
     }
 
     void HandleRotation() {
-
-        var (succes, position) = GetMousePosition();
-        if (!succes) { return; }
-
-        Vector3 direction = position - transform.position;
-        direction.y = 0f;
-        transform.forward = direction;
-    }
-
-    (bool succes, Vector3 position) GetMousePosition() {
-        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask)) {
-            return (succes: true, position: hitInfo.point);
+        if (rotateTowards == null) {
+            return;
         }
-        return (succes: false, position: Vector3.zero);
+
+        Vector3 direction = (rotateTowards.position - transform.position).normalized;
+        direction.y = 0f;
+
+        // Calculate target rotation
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        // Smoothly rotate towards the target direction
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 }

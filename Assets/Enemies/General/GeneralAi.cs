@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GeneralAi : MonoBehaviour {
-
-
     [SerializeField] Weapon[] weapons;
     [SerializeField] GameObject target; //target for the AI
     [SerializeField] Collider AgroCollider;
+    [SerializeField] Movement movement;
 
     bool triggered = false;
 
@@ -15,18 +15,35 @@ public class GeneralAi : MonoBehaviour {
     [SerializeField] float minRangeToAttack = 1f;
     [SerializeField] float maxRangeToAttack = 10f;
 
+
+    [Header("Events")]
+    [SerializeField] UnityEvent OnAggro;
+    [SerializeField] UnityEvent OnAggroLost;
+
+
+
+    private void ChangeTarget(GameObject _target) {
+        target = _target;
+        if (target != null) {
+            movement.MoveTowards(target.transform);
+            movement.RotateTowards(target.transform);
+        }
+    }
+
     private void OnTriggerEnter(Collider other) {
         bool canTarget = other.CompareTag("Player");
         if (canTarget && triggered == false) {
             triggered = true;
-            target = other.gameObject;
+            ChangeTarget(other.gameObject);
+            OnAggro.Invoke();
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (triggered && target == other.gameObject) {
             triggered = false;
-            target = null;
+            ChangeTarget(null);
+            OnAggroLost.Invoke();
         }
     }
 
@@ -42,34 +59,35 @@ public class GeneralAi : MonoBehaviour {
         StartCoroutine(AsyncFire());
     }
 
-
-    void Start() {
+    private float CalculateDistance() {
+        if (target == null) { return 0; }
+        return Vector3.Distance(transform.position, target.transform.position);
     }
 
-
-    // Update is called once per frame
     void Update() {
 
         if (!triggered || target == null) {
             return;
         }
 
-        //rotate towards player
-
         bool inAttackRange = attackRange >= minRangeToAttack && maxRangeToAttack <= attackRange;
+        float distance = CalculateDistance();
 
 
         if (inAttackRange) {
             Attack(target);
+            return;
+        }
+
+
+
+        if (distance > maxRangeToAttack) {
+            //move away from player
         }
         else {
-            if (attackRange > maxRangeToAttack) {
-                //move away from player
-            }
-            if (attackRange < minRangeToAttack) {
-                //move towards player
-            }
+            //move towards player
         }
+
 
     }
 }

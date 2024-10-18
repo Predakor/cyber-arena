@@ -21,8 +21,8 @@ public class Bullet : MonoBehaviour {
 
         if (collisionHealth) {
             collisionHealth.Damage(10);
-            DestroySelf();
         }
+        DestroySelf();
     }
     void DestroySelf() {
         if (gameObject) {

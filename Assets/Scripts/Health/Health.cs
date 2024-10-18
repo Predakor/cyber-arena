@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Health : MonoBehaviour {
+public class Health : MonoBehaviour, IDamageable {
 
     [Header("Health stats")]
     [SerializeField] int currentHealth = 100;
@@ -24,16 +24,16 @@ public class Health : MonoBehaviour {
     public int Armor { get => armor; }
 
     bool canBeDamaged = true;
-
     public void Damage(int damage, bool ignoreShields = false, bool ignoreArmor = false) {
         if (!canBeDamaged) {
             return;
         }
 
+        //Damage shields
         if (shield > 0 && !ignoreShields) {
-            int remainingDamage = shield - damage;
             shield -= damage;
-            if (remainingDamage > 0) {
+            if (damage > shield) {
+                int remainingDamage = damage - shield;
                 currentHealth -= remainingDamage - armor;
             }
         }
@@ -48,7 +48,6 @@ public class Health : MonoBehaviour {
             StartCoroutine(StartInvincibilityFrames());
         }
     }
-
 
     private IEnumerator StartInvincibilityFrames() {
         canBeDamaged = false;
