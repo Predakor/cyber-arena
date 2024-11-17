@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94a1fd8017f2ee40b7c0c2054e39c14, type: 3}
+  m_Name: pistolData
+  m_EditorClassIdentifier: 
+  itemName: pistol
+  icon: {fileID: 0}
+  description: "Basic pistol\t"
+  model: {fileID: 6966628669262843933, guid: 9e1959fe663ba214894476a555915621, type: 3}
+  rarity: 0

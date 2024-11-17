@@ -111,13 +111,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7579da6974b329c48b5a758c3693d752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 60
-  magazineSize: 30
-  currentAmmo: 30
-  reloadSpeed: 0.5
-  projectileSpeed: 200
+  fireRate: 0
+  magazineSize: 0
+  currentAmmo: 0
+  reloadSpeed: 0
+  projectileSpeed: 0
   projectilePrefab: {fileID: 4081963984601000776, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
   projectileSpawnPoint: {fileID: 8775169516530188463}
+  updateAmmoCounterUI: 0
+  isPlayersWeapon: 0
 --- !u!4 &7774830826793372327 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 711b6df72a8084d4e9e36cf6aa6d367e, type: 3}

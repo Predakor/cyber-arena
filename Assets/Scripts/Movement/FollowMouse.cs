@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FollowMouse : MonoBehaviour {
 
-    [SerializeField] Camera camera;
+    [SerializeField] Camera _camera;
     [SerializeField] LayerMask groundMask;
 
     Vector3 mousePosition = Vector3.zero;
@@ -10,8 +10,8 @@ public class FollowMouse : MonoBehaviour {
     public Vector3 MousePosition { get => mousePosition; }
 
     void Start() {
-        if (camera == null) {
-            camera = Camera.main;
+        if (_camera == null) {
+            _camera = Camera.main;
         }
         if (groundMask == 0) {
             groundMask = LayerMask.GetMask("Ground");
@@ -27,7 +27,7 @@ public class FollowMouse : MonoBehaviour {
     }
 
     (bool succes, Vector3 position) GetMousePosition() {
-        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask)) {
             return (succes: true, position: hitInfo.point);

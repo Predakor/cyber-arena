@@ -1,17 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour, IPickable, IInstpectable {
+public class Weapon : MonoBehaviour {
 
-
+    #region stats
     [Header("Weapon stats")]
-    [SerializeField] float fireRate = 1f;
-
-    [SerializeField] float magazineSize = 5f;
-    [SerializeField] float currentAmmo = 5f;
-    [SerializeField] float reloadSpeed = 0.5f;
-
-    [SerializeField] float projectileSpeed = 1f;
+    [SerializeField] float fireRate;
+    [SerializeField] float magazineSize;
+    [SerializeField] float currentAmmo;
+    [SerializeField] float reloadSpeed;
+    [SerializeField] float projectileSpeed;
 
     [Header("Weapon events")]
     Event onFire;
@@ -26,17 +24,26 @@ public class Weapon : MonoBehaviour, IPickable, IInstpectable {
     [SerializeField] bool isPlayersWeapon = false;
     float _fireRateCooldown = 0f;
     bool _isRealoading = false;
+    #endregion
 
     void Start() {
         currentAmmo = magazineSize;
         _fireRateCooldown = Time.time;
-        ;
 
         isPlayersWeapon = transform.GetComponentInParent<Transform>().CompareTag("Player");
         if (isPlayersWeapon || updateAmmoCounterUI) {
             ammoCountDisplay = AmmoDisplay.instance;
             ammoCountDisplay.SetAmmoText(currentAmmo);
         }
+
+    }
+
+    void LoadStats(GunData gunData) {
+        fireRate = gunData.FireRate;
+        magazineSize = gunData.MagazineSize;
+        currentAmmo = gunData.CurrentAmmo;
+        reloadSpeed = gunData.ReloadSpeed;
+        projectileSpeed = gunData.ProjectileSpeed;
     }
 
     private void OnEnable() {
@@ -48,13 +55,9 @@ public class Weapon : MonoBehaviour, IPickable, IInstpectable {
         }
     }
 
-    public void PickUp() {
+    public void PickUp(GunData gunData) {
         WeaponManager.instance.PickupNewWeapon(gameObject);
-        Destroy(gameObject);
-    }
-
-    public void Inspect() {
-        throw new System.NotImplementedException();
+        LoadStats(gunData);
     }
 
     [ContextMenu("Fire")]
