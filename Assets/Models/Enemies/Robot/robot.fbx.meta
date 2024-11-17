@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: 2360f8400abb01d45badf2414a93410e
+guid: bd14f08fe1c5be440aad2f2906369a1a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 728045a654287c5448140c9ddb0d1ba7, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Robot Base Color
+    second: {fileID: 2800000, guid: 24d604f8a807c4e49bf73c5395dd0eb0, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
