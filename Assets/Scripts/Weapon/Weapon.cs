@@ -80,9 +80,9 @@ public class Weapon : MonoBehaviour {
 
     void ShootProjectile() {
         GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
-        projectile.GetComponent<Rigidbody>().velocity = projectileSpawnPoint.up * projectileSpeed;
+        projectile.GetComponent<Rigidbody>().velocity = projectileSpeed * projectileSpawnPoint.forward;
         _fireRateCooldown = Time.time + (60 / fireRate);
-        currentAmmo -= 1;
+        currentAmmo--;
     }
 
     IEnumerator Reload() {

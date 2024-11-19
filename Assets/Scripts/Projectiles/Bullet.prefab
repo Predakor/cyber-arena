@@ -53,7 +53,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 657e1b13a00c16e43a80f2f0795c2af7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,6 +91,15 @@ TrailRenderer:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.4295426
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -127,7 +136,7 @@ TrailRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
@@ -148,6 +157,7 @@ GameObject:
   - component: {fileID: 8108311863610148672}
   - component: {fileID: 2133850060094004963}
   - component: {fileID: 2344025093709548507}
+  - component: {fileID: 5427618874649016212}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -163,14 +173,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4081963984601000776}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.067499995, y: 0.53, z: 0.251}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1927471450365588352}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &8108311863610148672
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -190,7 +200,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.08578741
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &2133850060094004963
 Rigidbody:
@@ -232,3 +242,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletLive: 5
+--- !u!33 &5427618874649016212
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4081963984601000776}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}

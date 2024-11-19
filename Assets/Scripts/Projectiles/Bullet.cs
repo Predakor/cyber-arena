@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour {
 
     [SerializeField] float bulletLive = 5f;
-
+    [SerializeField] Mask collisionMask;
 
     Rigidbody rb;
 
