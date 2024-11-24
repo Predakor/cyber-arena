@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c94a1fd8017f2ee40b7c0c2054e39c14, type: 3}
-  m_Name: pistolData
+  m_Name: LaserData
   m_EditorClassIdentifier: 
-  itemName: pistol
+  itemName: Laser Gun
   icon: {fileID: 0}
-  description: "Basic pistol\t"
-  model: {fileID: 6966628669262843933, guid: 9e1959fe663ba214894476a555915621, type: 3}
-  rarity: 0
-  fireRate: 60
-  magazineSize: 5
-  currentAmmo: 5
-  reloadSpeed: 0.5
-  projectileSpeed: 50
+  description: Almost like a Laser machinegun
+  model: {fileID: 8665943807089209489, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
+  rarity: 3
+  fireRate: 360
+  magazineSize: 90
+  currentAmmo: 90
+  reloadSpeed: 2
+  projectileSpeed: 100
