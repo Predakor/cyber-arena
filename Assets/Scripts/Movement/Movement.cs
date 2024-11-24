@@ -14,10 +14,8 @@ public class Movement : MonoBehaviour {
 
     [SerializeField] Transform rotateTowards;
 
-    [SerializeField]
-    PlayerInputHandler inputHandler;
-    Vector3 currentMovement;
-
+    [SerializeField] PlayerInputHandler inputHandler;
+    [SerializeField] Animator animator;
     Rigidbody rb;
 
     void Awake() {
@@ -41,7 +39,7 @@ public class Movement : MonoBehaviour {
     }
 
     void HandleMovement() {
-        Vector3 direction;
+        Vector3 _direction;
 
         if (inputHandler != null) {
             float moveX = inputHandler.MoveInput.y;
@@ -51,17 +49,21 @@ public class Movement : MonoBehaviour {
             float isometricX = (moveX - moveY) / Mathf.Sqrt(2);
             float isometricZ = (moveX + moveY) / Mathf.Sqrt(2);
 
-            direction = new Vector3(isometricX, 0f, isometricZ).normalized;
+            _direction = new Vector3(isometricX, 0f, isometricZ).normalized;
         }
         else if (moveTowards != null) {
-            direction = (moveTowards.position - transform.position).normalized;
-            direction.y = 0f;
+            _direction = (moveTowards.position - transform.position).normalized;
+            _direction.y = 0f;
         }
         else {
             return;
         }
 
-        rb.velocity = direction * walkSpeed;
+        bool moving = _direction != Vector3.zero;
+
+        rb.velocity = _direction * walkSpeed;
+        animator.SetBool("Running", moving);
+
     }
 
     void HandleRotation() {
@@ -69,13 +71,18 @@ public class Movement : MonoBehaviour {
             return;
         }
 
-        Vector3 direction = (rotateTowards.position - transform.position).normalized;
-        direction.y = 0f;
+        Vector3 _direction = (rotateTowards.position - transform.position).normalized;
+        _direction.y = 0f;
 
         // Calculate target rotation
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        Quaternion targetRotation = Quaternion.LookRotation(_direction);
 
         // Smoothly rotate towards the target direction
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+
+        bool _rotating = _direction != Vector3.zero;
+        //if moves set animator flag
+
     }
 }
