@@ -8,15 +8,15 @@ public class Movement : MonoBehaviour {
 
     [SerializeField] Transform moveTowards;
 
-
     [Header("Rotation")]
-    [SerializeField] float rotationSpeed = 1.0f;
-
+    [SerializeField][Range(0, 360)] float rotationSpeed = 1.0f;
+    [SerializeField][Range(0, 180)] float rotationTreshold = 1.0f;
     [SerializeField] Transform rotateTowards;
 
+    [Header("References")]
     [SerializeField] PlayerInputHandler inputHandler;
     [SerializeField] Animator animator;
-    Rigidbody rb;
+    [SerializeField] Rigidbody rb;
 
     void Awake() {
         rb = GetComponent<Rigidbody>();
@@ -60,29 +60,40 @@ public class Movement : MonoBehaviour {
         }
 
         bool moving = _direction != Vector3.zero;
-
         rb.velocity = _direction * walkSpeed;
-        animator.SetBool("Running", moving);
 
+        if (animator) {
+            animator.SetBool("Running", moving);
+        }
     }
 
     void HandleRotation() {
+
         if (rotateTowards == null) {
             return;
         }
 
-        Vector3 _direction = (rotateTowards.position - transform.position).normalized;
-        _direction.y = 0f;
+        //check if object is to close
+        if ((transform.position - rotateTowards.position).sqrMagnitude < Mathf.Epsilon) {
+            return;
+        }
 
-        // Calculate target rotation
-        Quaternion targetRotation = Quaternion.LookRotation(_direction);
+        Vector3 objectPosition = new(transform.position.x, 0, transform.position.z);
+        Vector3 targetPosition = new(rotateTowards.position.x, 0, rotateTowards.position.z);
 
-        // Smoothly rotate towards the target direction
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        Vector3 _direction = (targetPosition - objectPosition).normalized;
 
+        float _angle = Vector3.Angle(transform.forward, _direction);
 
-        bool _rotating = _direction != Vector3.zero;
-        //if moves set animator flag
+        Debug.Log(_angle);
+        Debug.DrawLine(objectPosition, targetPosition);
 
+        if (_angle > rotationTreshold) {
+            // Calculate target rotation
+            Quaternion targetRotation = Quaternion.LookRotation(_direction);
+
+            // Smoothly rotate towards the target direction
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
     }
 }

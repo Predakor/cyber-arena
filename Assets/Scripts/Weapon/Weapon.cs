@@ -18,6 +18,7 @@ public class Weapon : MonoBehaviour {
 
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform projectileSpawnPoint;
+    [SerializeField] Transform handTransform;
     AmmoDisplay ammoCountDisplay;
 
     [SerializeField] bool updateAmmoCounterUI = false;
@@ -63,6 +64,8 @@ public class Weapon : MonoBehaviour {
     [ContextMenu("Fire")]
     public void Fire() {
 
+        Debug.DrawLine(projectileSpawnPoint.position, projectileSpawnPoint.position + projectileSpawnPoint.forward * 20, Color.red, 2f);
+
         if (_fireRateCooldown > Time.time || _isRealoading) {
             return;
         }
@@ -79,8 +82,13 @@ public class Weapon : MonoBehaviour {
     }
 
     void ShootProjectile() {
+        //to do use object pooling
         GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
-        projectile.GetComponent<Rigidbody>().velocity = projectileSpeed * projectileSpawnPoint.forward;
+
+        Vector3 _dir = projectileSpawnPoint.forward * 20;
+        Rigidbody _rb = projectile.GetComponent<Rigidbody>();
+        _rb.AddForce(projectileSpeed * _dir);
+
         _fireRateCooldown = Time.time + (60 / fireRate);
         currentAmmo--;
     }
