@@ -17,6 +17,10 @@ public class Movement : MonoBehaviour {
     [SerializeField] PlayerInputHandler inputHandler;
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody rb;
+    [SerializeField] Dash dashScript;
+
+    bool IsDashing => dashScript != null && dashScript.isDashing;
+
 
     void Awake() {
         rb = GetComponent<Rigidbody>();
@@ -32,10 +36,18 @@ public class Movement : MonoBehaviour {
     public void RotateTowards(Transform _target) {
         rotateTowards = _target;
     }
+    public void DashTowardsMouse() {
+        if (dashScript != null) {
+            dashScript.StartDash(rotateTowards.position);
+        }
+    }
 
     void FixedUpdate() {
-        HandleMovement();
+        if (IsDashing) {
+            return;
+        }
         HandleRotation();
+        HandleMovement();
     }
 
     void HandleMovement() {
@@ -84,9 +96,6 @@ public class Movement : MonoBehaviour {
         Vector3 _direction = (targetPosition - objectPosition).normalized;
 
         float _angle = Vector3.Angle(transform.forward, _direction);
-
-        Debug.Log(_angle);
-        Debug.DrawLine(objectPosition, targetPosition);
 
         if (_angle > rotationTreshold) {
             // Calculate target rotation

@@ -12,14 +12,17 @@ public class PlayerInputHandler : MonoBehaviour {
     [SerializeField] string move = "Move";
     [SerializeField] string look = "Look";
     [SerializeField] string shoot = "Shoot";
+    [SerializeField] string dash = "Dash";
 
     InputAction moveAction;
     InputAction lookAction;
     InputAction shootAction;
+    InputAction dashAction;
 
     public Vector2 MoveInput { get; private set; }
     public Vector2 LookInput { get; private set; }
     public float ShootInput { get; private set; }
+    public float DashInput { get; private set; }
 
     public static PlayerInputHandler Instance { get; private set; }
 
@@ -35,6 +38,7 @@ public class PlayerInputHandler : MonoBehaviour {
         moveAction = playerControls.FindActionMap(actionMapName).FindAction(move);
         lookAction = playerControls.FindActionMap(actionMapName).FindAction(look);
         shootAction = playerControls.FindActionMap(actionMapName).FindAction(shoot);
+        dashAction = playerControls.FindActionMap(actionMapName).FindAction(dash);
 
         RegisterInputActions();
         gameObject.SetActive(true);
@@ -49,17 +53,22 @@ public class PlayerInputHandler : MonoBehaviour {
 
         shootAction.performed += context => ShootInput = context.ReadValue<float>();
         shootAction.canceled += context => ShootInput = 0;
+
+        dashAction.performed += context => DashInput = context.ReadValue<float>();
+        dashAction.canceled += context => DashInput = 0;
     }
 
     void OnEnable() {
         moveAction.Enable();
         lookAction.Enable();
         shootAction.Enable();
+        dashAction.Enable();
     }
 
     void OnDisable() {
         moveAction.Disable();
         lookAction.Disable();
         shootAction.Disable();
+        dashAction.Disable();
     }
 }
