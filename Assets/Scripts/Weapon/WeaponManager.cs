@@ -71,7 +71,7 @@ public class WeaponManager : MonoBehaviour {
     GameObject InstantiateWeapon(GameObject weapon) {
         GameObject instantiedWeapon = Instantiate(weapon, weaponTransform.position, weaponTransform.rotation);
         instantiedWeapon.transform.SetParent(weaponTransform, true);
-        instantiedWeapon.SetActive(autoEquipWeapon);
+        instantiedWeapon.SetActive(false);
 
         return instantiedWeapon;
     }
@@ -95,8 +95,6 @@ public class WeaponManager : MonoBehaviour {
         currentWeapon = newGun.GetComponent<Weapon>();
         onWeaponEquiped.Invoke();
     }
-
-
 
     public void PickupNewWeapon(GameObject newWeapon) {
         void _CreateWeapon() {

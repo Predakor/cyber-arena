@@ -15,7 +15,9 @@ public class InventoryManager : MonoBehaviour {
             ItemData pickedItem = itemContainer.TakeItem();
             if (pickedItem is GunData) {
                 Debug.Log(pickedItem);
-                pickedItem.model.GetComponent<Weapon>().PickUp(pickedItem as GunData);
+                Weapon weapon = pickedItem.model.GetComponent<Weapon>();
+                weapon.PickUp(pickedItem as GunData);
+                weapon.BindToUI();
             }
             inventory.AddItem(pickedItem);
             Debug.Log($"Picked up: {pickedItem.itemName}");

@@ -228,7 +228,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &2344025093709548507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +243,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletLive: 5
   collisionMask: {fileID: 0}
+  vfx: {fileID: 749631931216172601, guid: 4f5726d0cc59e444296a7130cfde3c59, type: 3}
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
+  onDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onDestroy:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 692498051062771610, guid: 4f5726d0cc59e444296a7130cfde3c59, type: 3}
+        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!33 &5427618874649016212
 MeshFilter:
   m_ObjectHideFlags: 0

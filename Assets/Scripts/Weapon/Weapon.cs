@@ -31,7 +31,6 @@ public class Weapon : MonoBehaviour {
         currentAmmo = magazineSize;
         _fireRateCooldown = Time.time;
 
-        isPlayersWeapon = transform.GetComponentInParent<Transform>().CompareTag("Player");
         if (isPlayersWeapon || updateAmmoCounterUI) {
             ammoCountDisplay = AmmoDisplay.instance;
             ammoCountDisplay.SetAmmoText(currentAmmo);
@@ -56,6 +55,12 @@ public class Weapon : MonoBehaviour {
         }
     }
 
+    [ContextMenu("Bind to UI")]
+    public void BindToUI() {
+        updateAmmoCounterUI = true;
+        isPlayersWeapon = true;
+    }
+
     public void PickUp(GunData gunData) {
         WeaponManager.instance.PickupNewWeapon(gameObject);
         LoadStats(gunData);
@@ -63,9 +68,6 @@ public class Weapon : MonoBehaviour {
 
     [ContextMenu("Fire")]
     public void Fire() {
-
-        Debug.DrawLine(projectileSpawnPoint.position, projectileSpawnPoint.position + projectileSpawnPoint.forward * 20, Color.red, 2f);
-
         if (_fireRateCooldown > Time.time || _isRealoading) {
             return;
         }
