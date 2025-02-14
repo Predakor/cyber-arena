@@ -25,7 +25,7 @@ public class GeneralAi : MonoBehaviour {
     private void ChangeTarget(GameObject _target) {
         target = _target;
         if (target != null) {
-            movement.MoveTowards(target.transform);
+            movement.SetMovementTarget(target.transform);
             movement.RotateTowards(target.transform);
         }
     }
