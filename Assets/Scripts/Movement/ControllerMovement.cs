@@ -14,7 +14,7 @@ public class ControllerMovement : BaseMovement {
         }
     }
     void Start() {
-        if (inputHandler != null) {
+        if (inputHandler == null) {
             Debug.LogError("no input handler", this);
         }
     }

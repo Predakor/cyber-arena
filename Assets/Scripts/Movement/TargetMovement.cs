@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Movement : BaseMovement {
+public class TargetMovement : BaseMovement {
 
     [SerializeField] Transform moveTowards;
 
@@ -20,8 +20,6 @@ public class Movement : BaseMovement {
     }
 
     protected override void HandleRotation() {
-
-
         base.HandleRotation();
     }
 }

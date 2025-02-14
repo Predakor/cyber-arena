@@ -25,8 +25,8 @@ public class BaseMovement : MonoBehaviour {
     public bool CanRotate { get => canRotate; }
 
     public void RotateTowards(Transform _target) => rotateTowards = _target;
-    public void FrezeRotaion(bool _freeze = true) => canRotate = _freeze;
-    public void FreezeMovement(bool _freeze = true) => canMove = _freeze;
+    public void FrezeRotaion(bool _freeze = true) => canRotate = !_freeze;
+    public void FreezeMovement(bool _freeze = true) => canMove = !_freeze;
 
     void Awake() {
         if (rb == null) {
@@ -56,8 +56,8 @@ public class BaseMovement : MonoBehaviour {
         rb.velocity = walkSpeed * moveDirection;
         bool _moving = moveDirection != Vector3.zero;
 
-        if (animator && animator.GetBool("moving") != _moving) {
-            animator.SetBool("moving", _moving);
+        if (animator && animator.GetBool("Moving") != _moving) {
+            animator.SetBool("Moving", _moving);
         }
     }
 
@@ -88,8 +88,8 @@ public class BaseMovement : MonoBehaviour {
 
         bool _rotating = rotationDirection != Vector3.zero;
 
-        if (animator && animator.GetBool("rotating") != _rotating) {
-            animator.SetBool("rotating", _rotating);
+        if (animator && animator.GetBool("Rotating") != _rotating) {
+            animator.SetBool("Rotating", _rotating);
         }
     }
 }

@@ -6,7 +6,7 @@ public class GeneralAi : MonoBehaviour {
     [SerializeField] Weapon[] weapons;
     [SerializeField] GameObject target; //target for the AI
     [SerializeField] Collider AgroCollider;
-    [SerializeField] Movement movement;
+    [SerializeField] TargetMovement movement;
 
     bool triggered = false;
 
