@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/overlay.uss?fileID=7433441132597879392&amp;guid=c459ff4b213b7ce4eb721ad15fe82c90&amp;type=3#overlay" />
+    <ui:VisualElement name="Panel" style="flex-grow: 1; flex-direction: column; flex-wrap: wrap; padding-top: 0.5%; padding-right: 0.5%; padding-bottom: 0.5%; padding-left: 0.5%;">
+        <ui:VisualElement name="TopPanel" style="flex-grow: 1; align-self: auto;">
+            <ui:VisualElement name="VitalsPanel" style="flex-grow: 1; align-self: auto; width: 209px;">
+                <ui:ProgressBar value="22" title="my-progress" class="vital-bar" />
+                <ui:ProgressBar value="22" title="my-progress" class="vital-bar" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="BottomPanel" style="flex-grow: initial; justify-content: space-between; flex-direction: row; align-self: stretch; flex-basis: auto; align-items: center; flex-wrap: nowrap;">
+            <ui:VisualElement name="GunsPanel" style="align-items: auto; justify-content: space-between; align-self: auto; flex-direction: row; flex-grow: 0; width: 50px; flex-basis: 15%;">
+                <ui:VisualElement focusable="false" class="gun-container" />
+                <ui:VisualElement class="gun-container" />
+                <ui:VisualElement class="gun-container" />
+            </ui:VisualElement>
+            <ui:VisualElement name="BossBar" style="flex-grow: 1; align-self: auto; align-items: center;">
+                <ui:ProgressBar value="10.7" title="boss-name" style="width: 400px; align-items: stretch; justify-content: space-between;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="AmmoPanel" style="flex-basis: 15%; justify-content: flex-end; align-items: flex-end;">
+                <ui:IntegerField value="42" readonly="true" name="ammo-field" focusable="false" style="border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); -unity-text-align: lower-left; flex-grow: 0; flex-shrink: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -13,14 +13,11 @@ public class InventoryManager : MonoBehaviour {
     void OnTriggerEnter(Collider other) {
         if (other.TryGetComponent(out ItemContainer itemContainer)) {
             ItemData pickedItem = itemContainer.TakeItem();
-            if (pickedItem is GunData) {
-                Debug.Log(pickedItem);
+            if (pickedItem is GunData pickedGunData) {
                 Weapon weapon = pickedItem.model.GetComponent<Weapon>();
-                weapon.PickUp(pickedItem as GunData);
-                weapon.BindToUI();
+                weapon.PickUp(pickedGunData);
             }
-            inventory.AddItem(pickedItem);
-            Debug.Log($"Picked up: {pickedItem.itemName}");
+            invList.Add(pickedItem);
         }
     }
 }

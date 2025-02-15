@@ -5,7 +5,11 @@ using UnityEngine;
 public class Inventory : ScriptableObject {
     [SerializeField] List<ItemData> items = new();
 
-    public List<ItemData> GetItems() => items;
+    public List<ItemData> GetItems() => new(items);
+
+    public void SaveItems(List<ItemData> newItems) {
+        items = newItems;
+    }
 
     public void AddItem(ItemData item) {
         items.Add(item);

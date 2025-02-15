@@ -23,6 +23,7 @@ public class WeaponManager : MonoBehaviour {
     public UnityEvent onWeaponChange;
     public UnityEvent onWeaponEquiped;
 
+    public Weapon CurrentWeapon { get => currentWeapon; }
 
     void Awake() {
         if (instance == null) { instance = this; }

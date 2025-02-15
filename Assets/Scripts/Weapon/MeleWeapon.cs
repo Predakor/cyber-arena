@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class MeleWeapon : MonoBehaviour {
+public class MeleWeapon : Weapon {
 
 
     [Header("Weapon stats")]
@@ -12,12 +12,6 @@ public class MeleWeapon : MonoBehaviour {
     [Header("Weapon events")]
 
 
-
-    [SerializeField] Transform projectileSpawnPoint;
-
-    AmmoDisplay ammoCountDisplay;
-    [SerializeField] bool updateAmmoCounterUI = false;
-    [SerializeField] bool isPlayersWeapon = false;
     float _attackCooldown = 0f;
     bool _isRealoading = false;
 
@@ -26,9 +20,7 @@ public class MeleWeapon : MonoBehaviour {
     }
 
     private void OnEnable() {
-        if (ammoCountDisplay) {
-            ammoCountDisplay.SetAmmoText(0);
-        }
+
     }
 
     public void PickUp() {
@@ -40,21 +32,17 @@ public class MeleWeapon : MonoBehaviour {
         throw new System.NotImplementedException();
     }
 
-    [ContextMenu("Fire")]
-    public void Fire() {
+    [ContextMenu("Attack")]
+    public void Attack() {
 
         if (_attackCooldown > Time.time || _isRealoading) {
             return;
         }
         Attack();
-    }
-
-    void Attack() {
         //set flag for the animation
 
 
         //wait for the end of the attack
-
 
     }
 

@@ -112,7 +112,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58e12cd97088a164e97145d13bba7ebb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1236102402955607761}
+      addedObject: {fileID: 6007063708906490903}
   m_SourcePrefab: {fileID: 100100000, guid: 58e12cd97088a164e97145d13bba7ebb, type: 3}
 --- !u!4 &8288960149758683691 stripped
 Transform:
@@ -124,7 +124,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 58e12cd97088a164e97145d13bba7ebb, type: 3}
   m_PrefabInstance: {fileID: 8395541123526905280}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1236102402955607761
+--- !u!114 &6007063708906490903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,15 +133,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8665943807089209489}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7579da6974b329c48b5a758c3693d752, type: 3}
+  m_Script: {fileID: 11500000, guid: a498e14525de4004da6ecfa7aba4d52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 360
-  magazineSize: 90
-  currentAmmo: 90
-  reloadSpeed: 2
-  projectileSpeed: 100
+  handTransform: {fileID: 0}
+  fireRate: 1
+  magazineSize: 5
+  currentAmmo: 5
+  reloadSpeed: 0.5
   projectilePrefab: {fileID: 4081963984601000776, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
   projectileSpawnPoint: {fileID: 1889776803149376905}
-  updateAmmoCounterUI: 0
-  isPlayersWeapon: 0
+  projectileSpeed: 1
