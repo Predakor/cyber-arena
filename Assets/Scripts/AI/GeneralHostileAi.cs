@@ -2,28 +2,43 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GeneralAi : MonoBehaviour {
-    [SerializeField] Weapon[] weapons;
+public class GeneralHostileAi : BaseAI {
     [SerializeField] GameObject target; //target for the AI
     [SerializeField] Collider AgroCollider;
-    [SerializeField] TargetMovement movement;
 
-    bool triggered = false;
+    [Header("AI Flags")]
+    [SerializeField] bool triggered = false;
+    [SerializeField] bool iddle = false;
 
-    [Header("Attack range settings")]
-    [SerializeField] float attackRange = 10f;
-    [SerializeField] float minRangeToAttack = 1f;
-    [SerializeField] float maxRangeToAttack = 10f;
-
+    [Header("Weapons")]
+    [SerializeField] Weapon[] weapons;
 
     [Header("Events")]
     [SerializeField] UnityEvent OnAggro;
     [SerializeField] UnityEvent OnAggroLost;
 
+    #region methods
+    public virtual void Attack() {
 
+    }
+    public virtual void SetTarget(GameObject _target) {
+        target = _target;
+    }
+    public virtual void OnTrigger() {
+
+    }
+    public virtual void OnTriggerLost() {
+
+    }
+    public virtual void OnTargetAcquired() {
+
+    }
+    public virtual void OnTargetLost() {
+
+    }
+    #endregion
 
     private void ChangeTarget(GameObject _target) {
-        target = _target;
         if (target != null) {
             movement.SetMovementTarget(target.transform);
             movement.RotateTowards(target.transform);
@@ -35,7 +50,7 @@ public class GeneralAi : MonoBehaviour {
         if (canTarget && triggered == false) {
             triggered = true;
             ChangeTarget(other.gameObject);
-            OnAggro.Invoke();
+            OnAggro?.Invoke();
         }
     }
 
@@ -43,11 +58,12 @@ public class GeneralAi : MonoBehaviour {
         if (triggered && target == other.gameObject) {
             triggered = false;
             ChangeTarget(null);
-            OnAggroLost.Invoke();
+            OnAggroLost?.Invoke();
         }
     }
 
-    private void Attack(GameObject _target) {
+    [ContextMenu("weapons/fireAll")]
+    void FireAllWeapons() {
 
         IEnumerator AsyncFire() {
 
@@ -59,36 +75,13 @@ public class GeneralAi : MonoBehaviour {
         StartCoroutine(AsyncFire());
     }
 
-    private float CalculateDistance() {
-        if (target == null) { return 0; }
-        return Vector3.Distance(transform.position, target.transform.position);
-    }
-
-    void Update() {
+    override protected void Update() {
 
         if (!triggered || target == null) {
             return;
         }
 
-        bool inAttackRange = attackRange >= minRangeToAttack && maxRangeToAttack <= attackRange;
-        float distance = CalculateDistance();
-
-
-        if (inAttackRange) {
-            Attack(target);
-            return;
-        }
-
-
-
-        if (distance > maxRangeToAttack) {
-            //move away from player
-        }
-        else {
-            //move towards player
-        }
-
-
+        FireAllWeapons();
     }
 }
 

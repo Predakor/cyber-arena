@@ -66,15 +66,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ef422bb8d2b82489a8112e1b64254a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 3689099877079965099}
+  movement: {fileID: 1379801998400532244}
+  health: {fileID: 5125974557314232433}
+  target: {fileID: 0}
+  AgroCollider: {fileID: 3149706312274508377}
+  triggered: 0
+  iddle: 0
   weapons:
   - {fileID: 7693613022405746162}
   - {fileID: 2946407129212411939}
-  target: {fileID: 0}
-  AgroCollider: {fileID: 3149706312274508377}
-  movement: {fileID: 1379801998400532244}
-  attackRange: 10
-  minRangeToAttack: 5
-  maxRangeToAttack: 10
   OnAggro:
     m_PersistentCalls:
       m_Calls:

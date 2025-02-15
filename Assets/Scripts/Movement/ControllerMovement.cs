@@ -10,7 +10,7 @@ public class ControllerMovement : BaseMovement {
 
     void Awake() {
         if (!inputHandler) {
-            FindObjectOfType<PlayerInputHandler>();
+            inputHandler = FindObjectOfType<PlayerInputHandler>();
         }
     }
     void Start() {
