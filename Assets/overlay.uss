@@ -1,8 +1,24 @@
 .vital-bar {
-    font-size: 0;
 }
 
-.unity-progress-bar {
+.vital-bar #unity-progress-bar {
+    font-size: 20px;
+    color: rgba(27, 27, 27, 0);
+    padding-bottom: 4%;
+}
+
+.vital-bar #unity-progress-bar VisualElement {
+    background-color: rgba(255, 61, 0, 0.43);
+}
+
+#shield-bar #unity-progress-bar VisualElement {
+    background-color: rgba(0, 191, 255, 0.43);
+}
+
+#unity-progress-bar {
+    font-size: 42px;
+    max-height: none;
+    width: 100%;
 }
 
 ProgressBar {
@@ -48,9 +64,7 @@ IntegerField #unity-text-input {
 }
 
 .gun-container {
-    width: 50px;
-    height: 50px;
-    background-color: rgb(188, 188, 188);
+    background-color: rgba(126, 126, 126, 0.18);
     padding-top: 0;
     padding-right: 0;
     padding-bottom: 0;
@@ -60,8 +74,16 @@ IntegerField #unity-text-input {
     margin-top: 0;
     margin-bottom: 0;
     flex-basis: 30%;
-    min-width: initial;
-    min-height: initial;
-    max-height: 50px;
-    max-width: 50px;
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.hide {
+    opacity: 0;
+    visibility: visible;
+    transition-property: opacity;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in;
 }
