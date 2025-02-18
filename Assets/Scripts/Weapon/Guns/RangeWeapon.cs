@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RangeWeapon : Weapon {
     [Header("Weapon stats")]
@@ -8,26 +9,25 @@ public class RangeWeapon : Weapon {
     [SerializeField] float currentAmmo = 5f;
     [SerializeField] float reloadSpeed = 0.5f;
 
-
     [Header("Weapon events")]
-    Event onFire;
-    Event onReload;
-    Event onEmptyMagazine;
-
+    public UnityEvent onFire;
+    public UnityEvent onReloadStart;
+    public UnityEvent onReloadEnd;
+    public UnityEvent onEmptyMagazine;
 
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform projectileSpawnPoint;
-    [SerializeField] float projectileSpeed = 1f;
+    [SerializeField] float projectileSpeed = 10f;
 
-    float _fireRateCooldown = 0f;
-    bool _isRealoading = false;
+    protected float _fireRateCooldown = 0f;
+    protected bool _isReloading = false;
 
     public float FireRate { get => fireRate; }
     public float MagazineSize { get => magazineSize; }
     public float CurrentAmmo { get => currentAmmo; }
     public float ReloadSpeed { get => reloadSpeed; }
 
-
+    #region helpers
     protected override void LoadStats(GunData gunData) {
         fireRate = gunData.FireRate;
         magazineSize = gunData.MagazineSize;
@@ -36,8 +36,14 @@ public class RangeWeapon : Weapon {
         projectileSpeed = gunData.ProjectileSpeed;
     }
 
+    #endregion
+
+
+    void Awake() {
+
+    }
+
     void Start() {
-        currentAmmo = magazineSize;
         _fireRateCooldown = Time.time;
     }
 
@@ -51,33 +57,49 @@ public class RangeWeapon : Weapon {
         throw new System.NotImplementedException();
     }
 
-    [ContextMenu("Fire")]
     public override void Fire() {
-
-        if (_fireRateCooldown > Time.time || _isRealoading) {
+        if (_fireRateCooldown > Time.time || _isReloading) {
             return;
         }
 
         if (currentAmmo < 1) {
             StartCoroutine(Reload());
+            return;
         }
 
         ShootProjectile();
     }
 
-    void ShootProjectile() {
-        GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
-        projectile.GetComponent<Rigidbody>().velocity = projectileSpawnPoint.forward * projectileSpeed;
-        _fireRateCooldown = Time.time + (60 / FireRate);
+    [ContextMenu("Fire")]
+    void ShootProjectile(GameObject _projectile = null) {
         currentAmmo -= 1;
+
+        Projectile projectile = Instantiate(projectilePrefab, transform.position, transform.rotation, transform.parent).GetComponent<Projectile>();
+
+        projectile.Initialize(projectileSpawnPoint, projectileSpeed, 10f);
+
+        _fireRateCooldown = Time.time + (60 / FireRate);
+
+        onFire?.Invoke();
+
+        if (currentAmmo < 1) {
+            onEmptyMagazine?.Invoke();
+        }
     }
 
     IEnumerator Reload() {
+        if (currentAmmo >= magazineSize || _isReloading) {
+            yield break;
+        }
 
-        _isRealoading = true;
+        onReloadStart?.Invoke();
+        _isReloading = true;
 
         yield return new WaitForSeconds(ReloadSpeed);
+
+        onReloadEnd?.Invoke();
         currentAmmo = MagazineSize;
-        _isRealoading = false;
+        _isReloading = false;
+
     }
 }
