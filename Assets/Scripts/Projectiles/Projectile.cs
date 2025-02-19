@@ -55,7 +55,7 @@ public class Projectile : MonoBehaviour {
         //implement object pooling
         if (gameObject) {
             onDestroy?.Invoke();
-            Destroy(gameObject, 5f);
+            Destroy(gameObject);
         }
     }
 

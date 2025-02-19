@@ -74,7 +74,7 @@ public class RangeWeapon : Weapon {
     void ShootProjectile(GameObject _projectile = null) {
         currentAmmo -= 1;
 
-        Projectile projectile = Instantiate(projectilePrefab, transform.position, transform.rotation, transform.parent).GetComponent<Projectile>();
+        Projectile projectile = Instantiate(projectilePrefab, transform.position, transform.rotation).GetComponent<Projectile>();
 
         projectile.Initialize(projectileSpawnPoint, projectileSpeed, 10f);
 

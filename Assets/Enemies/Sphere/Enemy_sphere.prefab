@@ -233,7 +233,7 @@ MonoBehaviour:
   triggered: 0
   iddle: 0
   weapons:
-  - {fileID: 2777511305769495124}
+  - {fileID: 7273691470730254482}
   OnAggro:
     m_PersistentCalls:
       m_Calls: []
@@ -397,19 +397,19 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
---- !u!114 &2777511305769495124 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1236102402955607761, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
-  m_PrefabInstance: {fileID: 4011642146400064645}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7579da6974b329c48b5a758c3693d752, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &4946212508178677422 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8288960149758683691, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
   m_PrefabInstance: {fileID: 4011642146400064645}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7273691470730254482 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6007063708906490903, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
+  m_PrefabInstance: {fileID: 4011642146400064645}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a498e14525de4004da6ecfa7aba4d52f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

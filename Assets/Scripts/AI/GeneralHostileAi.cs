@@ -39,7 +39,8 @@ public class GeneralHostileAi : BaseAI {
     #endregion
 
     private void ChangeTarget(GameObject _target) {
-        if (target != null) {
+        if (_target != null) {
+            target = _target;
             movement.SetMovementTarget(target.transform);
             movement.RotateTowards(target.transform);
         }
