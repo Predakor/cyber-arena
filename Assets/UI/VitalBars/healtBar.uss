@@ -1,0 +1,15 @@
+.vital-bar #unity-progress-bar {
+    font-size: 20px;
+    color: rgba(27, 27, 27, 0);
+    padding-bottom: 4%;
+}
+
+.vital-bar #unity-progress-bar VisualElement {
+    background-color: rgba(255, 61, 0, 0.43);
+}
+
+#unity-progress-bar {
+    font-size: 42px;
+    max-height: none;
+    width: 100%;
+}

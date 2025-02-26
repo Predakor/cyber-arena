@@ -1,5 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/overlay.uss?fileID=7433441132597879392&amp;guid=c459ff4b213b7ce4eb721ad15fe82c90&amp;type=3#overlay" />
+    <ui:Template name="BossBar" src="project://database/Assets/UI/BossBar.uxml?fileID=9197481963319205126&amp;guid=605fbc36dfa784640bd3eddbead74e98&amp;type=3#BossBar" />
+    <Style src="project://database/Assets/UI/Overlay/overlay.uss?fileID=7433441132597879392&amp;guid=c459ff4b213b7ce4eb721ad15fe82c90&amp;type=3#overlay" />
     <ui:VisualElement name="Panel" style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; padding-top: 0.5%; padding-right: 0.5%; padding-bottom: 0.5%; padding-left: 0.5%; align-self: stretch;">
         <ui:VisualElement name="TopPanel" style="flex-grow: 1; align-self: auto; justify-content: space-between; flex-direction: row;">
             <ui:VisualElement name="VitalsPanel" style="flex-grow: 1; align-self: auto; flex-basis: 10%;">
@@ -9,15 +10,13 @@
             <ui:VisualElement name="notification-panel" style="flex-grow: 8;" />
             <ui:VisualElement name="placeholder" style="flex-grow: 1; flex-basis: 10%;" />
         </ui:VisualElement>
-        <ui:VisualElement name="BottomPanel" style="flex-grow: 0; flex-direction: row; flex-basis: auto; flex-wrap: nowrap; align-items: center;">
+        <ui:VisualElement name="BottomPanel" style="flex-grow: 0; flex-direction: row; flex-basis: auto; flex-wrap: nowrap; align-items: center; justify-content: space-between;">
             <ui:VisualElement name="GunsPanel" style="align-items: auto; justify-content: space-between; align-self: auto; flex-direction: row; flex-grow: 0; width: 50px; flex-basis: 15%;">
                 <ui:VisualElement focusable="false" class="gun-container" />
                 <ui:VisualElement class="gun-container" />
                 <ui:VisualElement class="gun-container" />
             </ui:VisualElement>
-            <ui:VisualElement name="BossBar" style="flex-grow: 8; align-self: auto; align-items: stretch;">
-                <ui:ProgressBar value="10.7" title="boss-name" class="hide" style="flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 2%; padding-bottom: 0; padding-left: 2%; align-self: center; max-width: 80%; width: 80%;" />
-            </ui:VisualElement>
+            <ui:Instance template="BossBar" name="BossBar" style="flex-grow: 0.8;" />
             <ui:VisualElement name="AmmoPanel" style="flex-basis: 15%; justify-content: flex-end; align-items: flex-end; flex-grow: 0;">
                 <ui:IntegerField value="42" readonly="true" name="ammo-field" focusable="false" style="border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); -unity-text-align: lower-left; flex-grow: 0; flex-shrink: 1; font-size: 80px; height: 199%;" />
             </ui:VisualElement>

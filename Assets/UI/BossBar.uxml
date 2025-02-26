@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="BossBar" style="flex-grow: 8; align-self: auto; align-items: stretch;">
+        <ui:ProgressBar value="10.7" title="boss-name" name="BossHealthBar" class="hide" style="opacity: 0; transition-duration: 0.5s;" />
+    </ui:VisualElement>
+</ui:UXML>
