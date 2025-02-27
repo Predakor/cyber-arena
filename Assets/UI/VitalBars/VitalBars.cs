@@ -23,6 +23,12 @@ public class VitalBars : MonoBehaviour {
         _shieldBar.value = _currentShield;
     }
 
+    void OnHealthChanged(int newHealth) { SetHealth(newHealth); }
+    void OnShieldChanged(int newShield) { SetShield(newShield); }
+    void ClearEvents() {
+        healthTarget.OnHealthChange -= OnHealthChanged;
+        healthTarget.OnShieldChange -= OnShieldChanged;
+    }
 
     void Awake() {
         if (_document == null) {
@@ -46,8 +52,7 @@ public class VitalBars : MonoBehaviour {
     }
 
     void OnDisable() {
-        healthTarget.OnHealthChange -= newHealth => SetHealth(newHealth);
-        healthTarget.OnShieldChange -= newShield => SetShield(newShield);
+        ClearEvents();
     }
 
 
@@ -64,23 +69,21 @@ public class VitalBars : MonoBehaviour {
     }
 
     public void SetHealthTarget(Health newHealthTarget) {
-        if (healthTarget) {
-            healthTarget.OnHealthChange -= newHealth => SetHealth(newHealth);
-            healthTarget.OnShieldChange -= newShield => SetShield(newShield);
-        }
+        if (healthTarget) ClearEvents(); //clear old events
 
         healthTarget = newHealthTarget;
 
         if (_healthBar != null) {
             _healthBar.value = healthTarget.CurrentHealth;
             _healthBar.highValue = healthTarget.MaxHealth;
-            healthTarget.OnHealthChange += newHealth => SetHealth(newHealth);
+            _healthBar.title = healthTarget.name;
+            healthTarget.OnHealthChange += OnHealthChanged;
         }
 
         if (_shieldBar != null) {
             _shieldBar.value = healthTarget.CurrentShield;
             _shieldBar.highValue = healthTarget.MaxShield;
-            healthTarget.OnShieldChange += newShield => SetShield(newShield);
+            healthTarget.OnShieldChange += OnShieldChanged;
         }
     }
 
