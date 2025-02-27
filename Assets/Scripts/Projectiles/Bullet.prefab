@@ -241,9 +241,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e817c8622ead5454ea0fde5ac27a87b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletLive: 5
-  collisionMask: {fileID: 0}
-  vfx: {fileID: 749631931216172601, guid: 4f5726d0cc59e444296a7130cfde3c59, type: 3}
+  duration: 5
+  damage: 5
+  vfx: {fileID: 749631931216172601, guid: a0a9a44346a4f394da87a1d800be7cd5, type: 3}
   onFire:
     m_PersistentCalls:
       m_Calls: []

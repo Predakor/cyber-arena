@@ -48,8 +48,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: raise_shield
-      takeName: raise_shield
+      name: RaiseShield
+      takeName: RaiseShield
       internalID: 138467642260167619
       firstFrame: 0
       lastFrame: 99
@@ -77,8 +77,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: raise_gun
-      takeName: raise_gun
+      name: RaiseCannon
+      takeName: RaiseCannon
       internalID: -7963874524528852453
       firstFrame: 0
       lastFrame: 99
@@ -106,11 +106,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: walk
-      takeName: walk
+      name: Walk
+      takeName: Walk
       internalID: -3419257869308726280
       firstFrame: 0
-      lastFrame: 99
+      lastFrame: 100
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -373,7 +373,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: Main
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1

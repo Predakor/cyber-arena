@@ -240,6 +240,18 @@ MonoBehaviour:
   OnAggroLost:
     m_PersistentCalls:
       m_Calls: []
+  OnTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTriggerLost:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetAcquired:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetLost:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &117083318079128625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 50
   maxHealth: 50
-  shield: 0
+  currentShield: 0
   maxShield: 0
   armor: 0
   InvincibilityFrames: 0
@@ -313,7 +325,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9081711256418742781}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -327,7 +339,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 52
@@ -347,6 +359,14 @@ PrefabInstance:
     - target: {fileID: 1236102402955607761, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
       propertyPath: projectileSpeed
       value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007063708906490903, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
+      propertyPath: currentAmmo
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007063708906490903, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
+      propertyPath: magazineSize
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8288960149758683691, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
       propertyPath: m_LocalPosition.x

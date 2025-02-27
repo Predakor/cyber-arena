@@ -14,36 +14,49 @@ public class GeneralHostileAi : BaseAI {
     [SerializeField] Weapon[] weapons;
 
     [Header("Events")]
-    [SerializeField] UnityEvent OnAggro;
-    [SerializeField] UnityEvent OnAggroLost;
+    public UnityEvent OnAggro;
+    public UnityEvent OnAggroLost;
+    public UnityEvent OnTrigger;
+    public UnityEvent OnTriggerLost;
+    public UnityEvent OnTargetAcquired;
+    public UnityEvent OnTargetLost;
 
     #region methods
+
+    public virtual void Trigger() {
+        SetTarget(target);
+        OnTrigger?.Invoke();
+    }
+
     public virtual void Attack() {
 
     }
-    public virtual void SetTarget(GameObject _target) {
-        target = _target;
+    public virtual void SetTarget(GameObject newTarget) {
+        if (newTarget == null) {
+            OnTargetLost?.Invoke();
+        }
+        if (newTarget != target) {
+            OnTargetAcquired?.Invoke();
+        }
+        ChangeTarget(newTarget);
     }
-    public virtual void OnTrigger() {
 
-    }
-    public virtual void OnTriggerLost() {
 
-    }
-    public virtual void OnTargetAcquired() {
-
-    }
-    public virtual void OnTargetLost() {
-
-    }
     #endregion
 
-    private void ChangeTarget(GameObject _target) {
-        if (_target != null) {
-            target = _target;
-            movement.SetMovementTarget(target.transform);
-            movement.RotateTowards(target.transform);
+    private void ChangeTarget(GameObject newTarget) {
+        if (newTarget == null) {
+            triggered = false;
+            target = null;
+            movement.SetMovementTarget(null);
+            movement.RotateTowards(null);
+            return;
         }
+
+        triggered = true;
+        target = newTarget;
+        movement.SetMovementTarget(target.transform);
+        movement.RotateTowards(target.transform);
     }
 
     private void OnTriggerEnter(Collider other) {

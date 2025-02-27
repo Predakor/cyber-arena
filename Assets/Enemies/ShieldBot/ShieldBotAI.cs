@@ -2,23 +2,45 @@ using UnityEngine;
 
 public class ShieldBotAI : GeneralHostileAi {
 
-    public void StartAttack(bool state = true) {
-        animator.SetBool("Attacking", state);
+    #region variables
+    bool _isShieldUp = false;
+    bool _isAttacking = false;
+
+    public bool IsShieldUp {
+        get => _isShieldUp; private set {
+            _isShieldUp = value;
+            animator.SetBool("Shielding", value);
+        }
     }
 
-    public void RaiseShield(bool state = true) {
-        animator.SetBool("Shielding", state);
+    public bool IsAttacking {
+        get => _isAttacking; private set {
+            _isAttacking = value;
+            animator.SetBool("Attacking", value);
+        }
+    }
+
+    #endregion
+
+    public override void Trigger() {
+        RaiseShield();
+        TogleAttacking();
+        movement.AllowMovement();
+        movement.AllowRotation();
+        base.Trigger();
     }
 
     [ContextMenu("defences/raise shields")]
-    public void TogleShield() {
-        RaiseShield(true);
+    public void RaiseShield(bool state = true) {
+        IsShieldUp = state;
     }
 
     [ContextMenu("attacks/start attack")]
-    public void TogleAttacking() {
-        StartAttack(true);
+    public void TogleAttacking(bool state = true) {
+        IsAttacking = state;
     }
+
+
 
 
 }

@@ -25,8 +25,8 @@ public class BaseMovement : MonoBehaviour {
     public bool CanRotate { get => canRotate; }
 
     public void RotateTowards(Transform _target) => rotateTowards = _target;
-    public void FrezeRotation(bool _freeze = true) => canRotate = !_freeze;
-    public void FreezeMovement(bool _freeze = true) => canMove = !_freeze;
+    public void AllowRotation(bool allow = true) => canRotate = allow;
+    public void AllowMovement(bool allow = true) => canMove = allow;
 
     void Awake() {
         if (rb == null) {

@@ -36,15 +36,15 @@ public class Projectile : MonoBehaviour {
     void OnCollisionEnter(Collision collision) {
         Health objectToDamage = collision.gameObject.GetComponent<Health>();
 
+        onHit?.Invoke();
+
+
         if (objectToDamage) {
             objectToDamage.Damage((int)damage);
             onDamage?.Invoke();
         }
-        else {
-            onHit?.Invoke();
-        }
 
-        Instantiate(vfx, transform.position, transform.rotation, transform.parent);
+        Instantiate(vfx, transform.position, collision.transform.rotation, transform.parent);
 
         SelfDestroy();
     }

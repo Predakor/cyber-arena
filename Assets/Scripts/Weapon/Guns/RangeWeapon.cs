@@ -40,7 +40,6 @@ public class RangeWeapon : Weapon {
 
 
     void Awake() {
-
     }
 
     void Start() {
