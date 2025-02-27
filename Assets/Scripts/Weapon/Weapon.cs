@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Weapon : MonoBehaviour {
+public abstract class Weapon : MonoBehaviour {
 
     #region stats
     [Header("Weapon stats")]
@@ -13,12 +13,8 @@ public class Weapon : MonoBehaviour {
 
     #endregion
 
-    protected virtual void LoadStats(GunData gunData) {
+    public virtual void LoadStats(GunData gunData) {
 
-    }
-    public virtual void PickUp(GunData gunData) {
-        WeaponManager.instance.PickupNewWeapon(gameObject);
-        LoadStats(gunData);
     }
 
     [ContextMenu("Fire")]

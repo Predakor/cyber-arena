@@ -23,11 +23,6 @@ public class MeleWeapon : Weapon {
 
     }
 
-    public void PickUp() {
-        WeaponManager.instance.PickupNewWeapon(gameObject);
-        Destroy(gameObject);
-    }
-
     public void Inspect() {
         throw new System.NotImplementedException();
     }

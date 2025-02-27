@@ -11,7 +11,7 @@ public abstract class ItemInstance {
         ItemName = itemData.itemName;
         Icon = itemData.icon;
         Description = itemData.description;
-        Model = itemData.model;
+        Model = itemData.prefab;
         Rarity = itemData.rarity;
     }
 }

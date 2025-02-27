@@ -2,28 +2,51 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class AmmoTracker : MonoBehaviour {
-    [SerializeField] private RangeWeapon trackedWeapon;
-    [SerializeField] private WeaponManager weaponManager;
-    [SerializeField] private UIDocument uIDocument;
+    UIDocument _uIDocument;
+    IntegerField _ammoField;
 
-    private IntegerField ammoField;
-
-    void Start() {
-        trackedWeapon = weaponManager.CurrentWeapon as RangeWeapon;
-
-        var root = uIDocument.rootVisualElement;
-        ammoField = root.Q<IntegerField>("ammo-field");
-
-        if (trackedWeapon != null) {
-            ammoField.SetValueWithoutNotify((int)trackedWeapon.CurrentAmmo); // Initial UI update
+    int _ammo = 0;
+    public int Ammo {
+        get => _ammo; private set {
+            _ammo = value;
+            _ammoField.value = _ammo;
         }
     }
 
-    void Update() {
-        trackedWeapon = weaponManager.CurrentWeapon as RangeWeapon;
 
-        if (trackedWeapon != null) {
-            ammoField.SetValueWithoutNotify((int)trackedWeapon.CurrentAmmo);
+    void OnWeaponChanged(Weapon weapon, Weapon oldWeapon) {
+        if (weapon is RangeWeapon rangeWeapon) {
+            Ammo = rangeWeapon.CurrentAmmo;
+            rangeWeapon.onAmmoChange.AddListener(OnAmmunitionChange);
         }
+        if (oldWeapon && oldWeapon is RangeWeapon oldRangeWeapon) {
+            oldRangeWeapon.onAmmoChange.RemoveListener(OnAmmunitionChange);
+        }
+    }
+
+    void OnAmmunitionChange(int ammo) { Ammo = ammo; }
+
+
+    void Awake() {
+        _uIDocument = FindObjectOfType<UIDocument>();
+    }
+
+    void Start() {
+        WeaponManager _weaponManager = WeaponManager.Instance;
+        _weaponManager.OnWeaponChange.AddListener(OnWeaponChanged);
+
+        Weapon currentWeapon = _weaponManager.CurrentWeapon;
+        if (currentWeapon != null) {
+            if (currentWeapon is RangeWeapon rangeWeapon) {
+                Ammo = rangeWeapon.CurrentAmmo;
+                return;
+            }
+        }
+        Ammo = 0;
+    }
+
+    void OnEnable() {
+        var root = _uIDocument.rootVisualElement;
+        _ammoField = root.Q<IntegerField>("ammo-field");
     }
 }

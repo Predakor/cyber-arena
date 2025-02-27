@@ -3,12 +3,12 @@ using UnityEngine;
 public class ItemContainer : MonoBehaviour {
     public ItemData itemData;
     [SerializeField] bool showItem = true;
-    [SerializeField] GameObject itemModel;
+    [SerializeField] GameObject prefab;
     [SerializeField] Transform previewLocation;
 
     private void Start() {
-        if (itemModel == null) {
-            itemModel = itemData.model;
+        if (prefab == null) {
+            prefab = itemData.prefab;
         }
 
         if (previewLocation == null) {
@@ -21,11 +21,11 @@ public class ItemContainer : MonoBehaviour {
 
     [ContextMenu("show item")]
     void DisplayItem() {
-        if (!itemModel || !showItem) { return; }
+        if (!prefab || !showItem) { return; }
 
         Transform _transform = previewLocation;
 
-        Instantiate(itemModel, _transform.position, _transform.rotation, _transform);
+        Instantiate(prefab, _transform.position, _transform.rotation, _transform);
 
     }
 

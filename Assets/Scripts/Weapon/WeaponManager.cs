@@ -1,132 +1,116 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+
+enum WeaponState {
+    Idle,
+    Aiming,
+    Shooting,
+    Reloading,
+}
+
 public class WeaponManager : MonoBehaviour {
 
-    [SerializeField] List<GameObject> weapons;
-    [SerializeField] Weapon currentWeapon;
-    [SerializeField] PlayerInputHandler playerInputHandler;
-    [SerializeField] Animator animator;
+    [SerializeField] Weapon _currentWeapon;
+    [SerializeField] WeaponInventory _inventory;
 
-    [SerializeField] Transform weaponTransform;
+    [SerializeField] Animator _animator;
+    [SerializeField] PlayerInputHandler _playerInputHandler;
+
+    [SerializeField] WeaponState _weaponState;
+    [SerializeField] Transform _weaponTransform;
+
+    [SerializeField] bool _autoEquipNewWeapon = false;
+
 
     [Header("Options")]
-    [SerializeField] bool autoEquipWeapon = false;
 
     float _lastShotTime = 0;
 
-    public static WeaponManager instance;
+    public static WeaponManager Instance;
 
     [Header("Events")]
-    public UnityEvent onWeaponPickup;
-    public UnityEvent onWeaponChange;
-    public UnityEvent onWeaponEquiped;
+    public UnityEvent<Weapon> OnWeaponPickup;
+    public UnityEvent<Weapon, Weapon> OnWeaponChange;//1 new weapon 2 old weapon or null
+    public UnityEvent<Weapon> OnWeaponEquiped;
 
-    public Weapon CurrentWeapon { get => currentWeapon; }
-
-    void Awake() {
-        if (instance == null) { instance = this; }
-        if (!animator) {
-            if (gameObject.TryGetComponent(out animator)) {
-                Debug.LogWarning($"No animator asigned in {gameObject}");
-            }
-            animator = GetComponent<Animator>();
+    void WeaponPickup(GameObject gameObject) {
+        if (_autoEquipNewWeapon) {
+            _inventory.EquipWeapon(gameObject.GetComponent<Weapon>());
         }
     }
-    void Start() {
-        if (currentWeapon == null) {
-            currentWeapon = gameObject.GetComponentInChildren<Weapon>();
-            if (currentWeapon == null) {
-                Debug.LogError("No weapon selected ");
+
+    public Weapon CurrentWeapon {
+        get => _currentWeapon; private set {
+            OnWeaponChange?.Invoke(value, _currentWeapon);
+            _inventory.DequipWeapon(_currentWeapon);
+            _currentWeapon = value;
+        }
+    }
+
+    internal WeaponState CurrentWeaponState {
+        get => _weaponState; private set {
+            if (_weaponState == value) { return; }
+
+            _weaponState = value;
+            if (_animator != null) {
+                _animator.SetBool(_weaponState.ToString(), false);
+                _animator.SetBool(value.ToString(), true);
             }
         }
-        weapons[0] = currentWeapon.gameObject;
-        playerInputHandler = PlayerInputHandler.Instance;
+    }
+
+    void Awake() {
+        if (Instance == null) { Instance = this; }
+        if (!_animator) { _animator = GetComponent<Animator>(); }
+        if (!_inventory) { _inventory = GetComponent<WeaponInventory>(); }
+    }
+    void Start() {
+        _playerInputHandler = PlayerInputHandler.Instance;
+        _inventory.OnWeaponPickup += WeaponPickup;
+
+        if (_inventory.IsEmpty) {
+            CurrentWeapon = null;
+            return;
+        }
+
+        EquipWeapon(0);
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
-            SwapWeapon(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) {
-            SwapWeapon(1);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            SwapWeapon(2);
-        }
-        if (playerInputHandler.ShootInput == 1) {
-            animator.SetBool("Shooting", true);
+        if (_inventory.IsEmpty) { return; }
+
+        //!!!!change it to new unity input system since its already in use!!!!
+        if (Input.GetKeyDown(KeyCode.Alpha1)) EquipWeapon(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) EquipWeapon(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) EquipWeapon(2);
+
+        if (_playerInputHandler.ShootInput == 1) {
+            CurrentWeaponState = WeaponState.Shooting;
             _lastShotTime = Time.time;
-            currentWeapon.Fire();
+            CurrentWeapon.Fire();
         }
         else {
             if (Time.time - _lastShotTime > 2) {
-                animator.SetBool("Shooting", false);
+                CurrentWeaponState = WeaponState.Idle;
             }
         }
     }
 
+    public void EquipWeapon(int index) {
+        GameObject weapon = _inventory.EquipWeapon(index);
+        if (weapon != null) {
+            weapon.transform.parent = _weaponTransform;
+            weapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            weapon.SetActive(true);
 
-    #region helpers
-    GameObject InstantiateWeapon(GameObject weapon) {
-        GameObject instantiedWeapon = Instantiate(weapon, weaponTransform.position, weaponTransform.rotation);
-        instantiedWeapon.transform.SetParent(weaponTransform, true);
-        instantiedWeapon.SetActive(false);
-
-        return instantiedWeapon;
-    }
-    void SwitchOtherWeapons(GameObject newWeapon) {
-        weapons.ForEach(weapon => weapon.SetActive(weapon == newWeapon));
-    }
-    public void SwapWeapon(int number) {
-        EquipWeapon(weapons[number]);
-        onWeaponChange.Invoke();
-    }
-    #endregion
-
-    public void EquipWeapon(GameObject selectedWeapon) {
-        if (weapons.Contains(selectedWeapon)) {
-            SwitchOtherWeapons(selectedWeapon);
-            currentWeapon = selectedWeapon.GetComponent<Weapon>();
-            return;
+            CurrentWeapon = weapon.GetComponent<Weapon>();
         }
 
-        GameObject newGun = InstantiateWeapon(selectedWeapon);
-        currentWeapon = newGun.GetComponent<Weapon>();
-        onWeaponEquiped.Invoke();
-    }
-
-    public void PickupNewWeapon(GameObject newWeapon) {
-        void _CreateWeapon() {
-            GameObject newGun = InstantiateWeapon(newWeapon);
-            weapons.Add(newGun);
-        }
-
-        //no weapon
-        if (!weapons.Contains(gameObject)) {
-            _CreateWeapon();
-            newWeapon.SetActive(true);
-            return;
-        }
-
-        //to many weapons
-        if (weapons.Count == 3) {
-            //else show menu which player can pick which weapon he wants to replace
-            return;
-        }
-
-        GameObject _weapon;
-        for (int i = 0; i < weapons.Count; i++) {
-            _weapon = weapons[i];
-            if (_weapon == null) {
-                _CreateWeapon();
-                if (autoEquipWeapon) {
-                    SwitchOtherWeapons(_weapon);
-                }
-                break;
-            }
-        }
-
+        //=========TODO========== 
+        // add handling for weapons that can be used in
+        //1 hand only
+        //need 2 hands
+        //1 is equiped in each hand
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine.Events;
 public class RangeWeapon : Weapon {
     [Header("Weapon stats")]
     [SerializeField] float fireRate = 1f;
-    [SerializeField] float magazineSize = 5f;
-    [SerializeField] float currentAmmo = 5f;
+    [SerializeField] int magazineSize = 5;
+    [SerializeField] int currentAmmo = 5;
     [SerializeField] float reloadSpeed = 0.5f;
 
     [Header("Weapon events")]
@@ -14,6 +14,7 @@ public class RangeWeapon : Weapon {
     public UnityEvent onReloadStart;
     public UnityEvent onReloadEnd;
     public UnityEvent onEmptyMagazine;
+    public UnityEvent<int> onAmmoChange;
 
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] Transform projectileSpawnPoint;
@@ -23,12 +24,21 @@ public class RangeWeapon : Weapon {
     protected bool _isReloading = false;
 
     public float FireRate { get => fireRate; }
-    public float MagazineSize { get => magazineSize; }
-    public float CurrentAmmo { get => currentAmmo; }
+    public int MagazineSize { get => magazineSize; }
+    public int CurrentAmmo {
+        get => currentAmmo; private set {
+            currentAmmo = value;
+            onAmmoChange?.Invoke((int)value);
+
+            if (currentAmmo < 1) onEmptyMagazine?.Invoke();
+
+        }
+    }
+
     public float ReloadSpeed { get => reloadSpeed; }
 
     #region helpers
-    protected override void LoadStats(GunData gunData) {
+    public override void LoadStats(GunData gunData) {
         fireRate = gunData.FireRate;
         magazineSize = gunData.MagazineSize;
         currentAmmo = gunData.CurrentAmmo;
@@ -37,10 +47,6 @@ public class RangeWeapon : Weapon {
     }
 
     #endregion
-
-
-    void Awake() {
-    }
 
     void Start() {
         _fireRateCooldown = Time.time;
@@ -71,19 +77,17 @@ public class RangeWeapon : Weapon {
 
     [ContextMenu("Fire")]
     void ShootProjectile(GameObject _projectile = null) {
-        currentAmmo -= 1;
+        CurrentAmmo--;
 
-        Projectile projectile = Instantiate(projectilePrefab, transform.position, transform.rotation).GetComponent<Projectile>();
+        GameObject overrideProjectile = _projectile == null ? projectilePrefab : _projectile;
+
+        Projectile projectile = Instantiate(overrideProjectile, transform.position, transform.rotation).GetComponent<Projectile>();
 
         projectile.Initialize(projectileSpawnPoint, projectileSpeed, 10f);
 
         _fireRateCooldown = Time.time + (60 / FireRate);
 
         onFire?.Invoke();
-
-        if (currentAmmo < 1) {
-            onEmptyMagazine?.Invoke();
-        }
     }
 
     IEnumerator Reload() {
