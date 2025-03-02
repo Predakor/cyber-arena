@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Laser Gun
   icon: {fileID: 0}
   description: Almost like a Laser machinegun
-  model: {fileID: 8665943807089209489, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
+  prefab: {fileID: 8665943807089209489, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
   rarity: 3
   fireRate: 360
   magazineSize: 90

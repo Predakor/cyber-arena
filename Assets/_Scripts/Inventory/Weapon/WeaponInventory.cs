@@ -85,9 +85,9 @@ public class WeaponInventory : MonoBehaviour {
     GameObject CreateWeapon(GunData data) {
         GameObject InstantiateWeapon(GameObject weapon) {
             GameObject instantiedWeapon = Instantiate(weapon, transform.position, transform.rotation);
+            instantiedWeapon.GetComponent<Weapon>().LoadStats(data);
             instantiedWeapon.transform.SetParent(transform, true);
             instantiedWeapon.SetActive(false);
-
             return instantiedWeapon;
         }
 

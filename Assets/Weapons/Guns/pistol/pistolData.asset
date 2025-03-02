@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: pistol
   icon: {fileID: 0}
   description: "Basic pistol\t"
-  model: {fileID: 6966628669262843933, guid: 9e1959fe663ba214894476a555915621, type: 3}
+  prefab: {fileID: 6966628669262843933, guid: 9e1959fe663ba214894476a555915621, type: 3}
   rarity: 0
   fireRate: 60
   magazineSize: 5

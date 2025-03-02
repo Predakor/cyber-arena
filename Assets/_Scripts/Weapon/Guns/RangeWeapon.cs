@@ -22,6 +22,7 @@ public class RangeWeapon : Weapon {
 
     protected float _fireRateCooldown = 0f;
     protected bool _isReloading = false;
+    protected Coroutine _reloadCoroutine;
 
     public float FireRate { get => fireRate; }
     public int MagazineSize { get => magazineSize; }
@@ -48,34 +49,49 @@ public class RangeWeapon : Weapon {
 
     #endregion
 
-    void Start() {
-        _fireRateCooldown = Time.time;
+    #region public methods
+    [ContextMenu("Start Reload")]
+    public void StartReload() {
+        _reloadCoroutine = StartCoroutine(Reload());
     }
 
-    private void OnEnable() {
-        if (CurrentAmmo <= 0) {
-            StartCoroutine(Reload());
-        }
+    [ContextMenu("End Reload")]
+    public void StopReload() {
+        StopCoroutine(_reloadCoroutine);
     }
 
-    public void Inspect() {
-        throw new System.NotImplementedException();
-    }
-
+    [ContextMenu("Fire")]
     public override void Fire() {
         if (_fireRateCooldown > Time.time || _isReloading) {
             return;
         }
 
         if (currentAmmo < 1) {
-            StartCoroutine(Reload());
+            StartReload();
             return;
         }
 
         ShootProjectile();
     }
+    #endregion
 
-    [ContextMenu("Fire")]
+    void Start() {
+        _fireRateCooldown = Time.time;
+    }
+
+    void OnEnable() {
+        if (CurrentAmmo <= 0) {
+            StartCoroutine(Reload());
+        }
+    }
+    void OnDisable() {
+        StopAllCoroutines();
+    }
+
+    public void Inspect() {
+        throw new System.NotImplementedException();
+    }
+
     void ShootProjectile(GameObject _projectile = null) {
         CurrentAmmo--;
 
@@ -101,7 +117,7 @@ public class RangeWeapon : Weapon {
         yield return new WaitForSeconds(ReloadSpeed);
 
         onReloadEnd?.Invoke();
-        currentAmmo = MagazineSize;
+        CurrentAmmo = MagazineSize;
         _isReloading = false;
 
     }
