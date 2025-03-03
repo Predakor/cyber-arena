@@ -2,8 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameManager : MonoBehaviour {
-    public static GameManager Instance { get; private set; }
+public class GameManager : Singleton<GameManager> {
     public GameState State { get; private set; }
 
     #region events
@@ -17,7 +16,6 @@ public class GameManager : MonoBehaviour {
     public UnityEvent OnGameRestart;
 
     #endregion
-
 
     public void ChangeGameState(GameState newGameState) {
         if (State == newGameState) { return; }
@@ -58,11 +56,6 @@ public class GameManager : MonoBehaviour {
     public void RestartGame() => ChangeGameState(GameState.started);
     #endregion
 
-    void Awake() {
-        if (Instance == null) {
-            Instance = this;
-        }
-    }
 
     void Start() {
         StartGame();
