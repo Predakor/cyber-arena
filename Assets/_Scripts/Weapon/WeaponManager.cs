@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-public class WeaponManager : MonoBehaviour {
+public class WeaponManager : Singleton<WeaponManager> {
 
     [SerializeField] Weapon _currentWeapon;
     [SerializeField] WeaponInventory _inventory;
@@ -15,8 +15,6 @@ public class WeaponManager : MonoBehaviour {
     [Header("Options")]
     [SerializeField] bool _autoEquipNewWeapon = false;
     [SerializeField] float _timeToIdle = 0;
-
-    public static WeaponManager Instance;
 
     [Header("Events")]
     public UnityEvent<Weapon> OnWeaponPickup;
@@ -82,8 +80,8 @@ public class WeaponManager : MonoBehaviour {
         }
     }
 
-    void Awake() {
-        if (Instance == null) Instance = this;
+    override protected void Awake() {
+        base.Awake();
         if (!_animator) _animator = GetComponent<Animator>();
         if (!_inventory) _inventory = GetComponent<WeaponInventory>();
     }

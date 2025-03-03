@@ -2311,13 +2311,14 @@ MonoBehaviour:
   _weaponState: 0
   _weaponTransform: {fileID: 533887859}
   _autoEquipNewWeapon: 0
+  _timeToIdle: 0
   OnWeaponPickup:
     m_PersistentCalls:
       m_Calls: []
   OnWeaponChange:
     m_PersistentCalls:
       m_Calls: []
-  OnWeaponEquiped:
+  OnWeaponEquipped:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &702667882 stripped
@@ -3576,7 +3577,19 @@ MonoBehaviour:
     m_ActionId: 111ba313-4cee-4010-a885-9f1756bd7c85
     m_ActionName: Player/Shoot[/Mouse/leftButton,/Mouse/rightButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 702543873}
+        m_TargetAssemblyTypeName: WeaponManager, Assembly-CSharp
+        m_MethodName: SwapWeapon
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 989bbe7f-6422-41ae-8082-0fac93990261
     m_ActionName: Player/Weapons[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/r,/Keyboard/x]
   - m_PersistentCalls:
@@ -3599,6 +3612,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6396ea6a-179d-40a5-9d88-6bc543a8340e
     m_ActionName: Player/Dash[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 702543873}
+        m_TargetAssemblyTypeName: WeaponManager, Assembly-CSharp
+        m_MethodName: ReloadCurrentWeapon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c3e210dd-9b56-4d93-a314-33cd1442bd53
+    m_ActionName: Player/Reload[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: PC
   m_DefaultActionMap: Player
@@ -4118,63 +4147,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1358826509031999095, guid: 51130d973758bf14ba70a52af39045af, type: 3}
   m_PrefabInstance: {fileID: 1566982030}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1337978108
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1453369535434843710, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_Name
-      value: assault_rifle
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261008537038077060, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 61.85171
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261008537038077060, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0000019073486
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261008537038077060, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -103.412346
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261008537038077060, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261008537038077060, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261008537038077060, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261008537038077060, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261008537038077060, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261008537038077060, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2261008537038077060, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a8d6b6c3e78ee124b906ccd77e4655a0, type: 3}
 --- !u!1 &1349317816 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cf23825f2968d9f4db65189747a761b3, type: 3}
@@ -6691,4 +6663,3 @@ SceneRoots:
   - {fileID: 677046192}
   - {fileID: 2000527285}
   - {fileID: 463292382}
-  - {fileID: 1337978108}
