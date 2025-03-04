@@ -18,7 +18,8 @@ MonoBehaviour:
     hasTreasure: 0
     isGuarded: 0
   prefabs:
-    wallPrefabs: []
+    wallPrefabs:
+    - {fileID: 9220700704462415792, guid: 49d2139d2da068a4a80d3cf27b87de59, type: 3}
     floorPrefabs:
     - {fileID: 4604874459141738577, guid: 4e68df82bb3da254eb2003f95148ab76, type: 3}
     doorPrefabs: []
