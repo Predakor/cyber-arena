@@ -11,6 +11,7 @@ public class RoomGenerator : MonoBehaviour {
     [SerializeField] int _wallSize = 10;
 
     [SerializeField] Vector3 _wallRotationOffest = Vector3.zero;
+    [SerializeField] Vector3 _doorRotationOffset = Vector3.zero;
 
     [SerializeField] List<bool> _doors = new();
 
@@ -51,7 +52,6 @@ public class RoomGenerator : MonoBehaviour {
     public void GenerateRoom() {
         SpawnFloors();
         SpawnWalls();
-        SpawnDoors();
     }
 
 
@@ -104,41 +104,48 @@ public class RoomGenerator : MonoBehaviour {
 
                 wallPosition.Set(posX, 0, posZ);
 
-                if (hasDoor) {
-                    Vector3 wallSegmentScale = wallScale;
-                    float wallRemainingSpace = wallLength - _doorSize;
-                    float scaleRatio = wallRemainingSpace / wallLength / 2;
-                    float offsetValue = wallRemainingSpace / 4 + (_doorSize / 2);
-
-                    Vector3 offset = new(0, 0, offsetValue);
-                    wallSegmentScale.z *= scaleRatio;
-
-                    InstantiateWall(wallSegmentScale, wallPosition, GetRandomWall())
-                        .transform.Translate(offset, Space.Self);
-                    InstantiateWall(wallSegmentScale, wallPosition, GetRandomWall())
-                        .transform.Translate(-offset, Space.Self);
-
-                }
-                else {
-                    InstantiateWall(wallScale, wallPosition, GetRandomWall());
+                if (!hasDoor) {
+                    InstantiateWall(wallScale, wallPosition);
+                    continue;
                 }
 
+                Vector3 wallSegmentScale = wallScale;
+                float wallRemainingSpace = wallLength - _doorSize;
+                float scaleRatio = wallRemainingSpace / wallLength / 2;
+                float offsetValue = wallRemainingSpace / 4 + (_doorSize / 2);
+
+                Vector3 offset = new(0, 0, offsetValue);
+                wallSegmentScale.z *= scaleRatio;
+
+                InstantiateWall(wallSegmentScale, wallPosition)
+                    .transform.Translate(offset, Space.Self);
+                InstantiateWall(wallSegmentScale, wallPosition)
+                    .transform.Translate(-offset, Space.Self);
+
+                InstantiateDoor(wallPosition);
             }
         }
-
-        GameObject InstantiateWall(Vector3 wallScale, Vector3 wallPosition, GameObject randomWall) {
-            GameObject generatedWall = Instantiate(randomWall, transform);
-            generatedWall.transform.localPosition = wallPosition;
-            generatedWall.transform.LookAt(transform.position);
-            generatedWall.transform.Rotate(_wallRotationOffest);
-            generatedWall.transform.localScale = wallScale;
-            return generatedWall;
-        }
-    }
-    void SpawnDoors() {
-        throw new System.NotImplementedException();
     }
 
+
+
+    GameObject InstantiateDoor(Vector3 position) {
+        GameObject generatedDoor = Instantiate(GetRandomDoor(), transform);
+        generatedDoor.transform.localPosition = position;
+        generatedDoor.transform.LookAt(transform.position);
+        generatedDoor.transform.Rotate(_doorRotationOffset);
+        return generatedDoor;
+
+    }
+
+    GameObject InstantiateWall(Vector3 wallScale, Vector3 wallPosition) {
+        GameObject generatedWall = Instantiate(GetRandomWall(), transform);
+        generatedWall.transform.localPosition = wallPosition;
+        generatedWall.transform.LookAt(transform.position);
+        generatedWall.transform.Rotate(_wallRotationOffest);
+        generatedWall.transform.localScale = wallScale;
+        return generatedWall;
+    }
 
     GameObject GetRandomWall() => GetRandomPrefab(_roomPrefabs.wallPrefabs);
     GameObject GetRandomFloor() => GetRandomPrefab(_roomPrefabs.floorPrefabs);
