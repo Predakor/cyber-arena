@@ -18,6 +18,7 @@ public struct RoomPrefabs {
 public struct RoomStats {
     public RoomSize size;
     public RoomType type;
+    [Range(3, 12)] public int sides;
     public bool hasTreasure;
     public bool isGuarded;
 }
