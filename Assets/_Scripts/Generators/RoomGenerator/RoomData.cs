@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "RoomGenerator/Room Data", fileName = "Room Data")]
+[CreateAssetMenu(menuName = "Floor Generation/Room Data", fileName = "Room Data")]
 public class RoomData : ScriptableObject {
     public RoomStats stats;
     public RoomPrefabs prefabs;
