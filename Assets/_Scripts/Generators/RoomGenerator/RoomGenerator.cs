@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class RoomGenerator : MonoBehaviour {
     [SerializeField] RoomStats _roomStats;
     [SerializeField] RoomPrefabs _roomPrefabs;
@@ -15,6 +16,7 @@ public class RoomGenerator : MonoBehaviour {
 
     [SerializeField] List<bool> _doors = new();
 
+    BoxCollider _roomCollider;
 #if UNITY_EDITOR
 
     [ContextMenu("KillAllCHildren")]
@@ -30,22 +32,24 @@ public class RoomGenerator : MonoBehaviour {
         GenerateRoom();
     }
 
-    void OnValidate() {
-        _doors.Clear();
-        for (int i = 0; i < _roomStats.sides; i++) {
-            bool random = Random.Range(0, 4) == 1;
-            _doors.Add(random);
-        }
-    }
-
 #endif
 
     public void LoadData(RoomData roomData) {
         _roomStats = roomData.stats;
         _roomPrefabs = roomData.prefabs;
-        _doors = new List<bool>() { true, false, true, false };
+        _doors = new List<bool>();
+        for (int i = 0; i < roomData.stats.sides; i++) {
+            bool rand = Random.Range(0, 2) == 1;
+            _doors.Add(rand);
+        }
 
+        float size = GetRoomWorldSize();
 
+        if (_roomCollider == null) {
+            _roomCollider = GetComponent<BoxCollider>();
+        }
+
+        _roomCollider.size = new Vector3(size, 1, size);
     }
 
     [ContextMenu("GenerateRoom")]
@@ -53,8 +57,6 @@ public class RoomGenerator : MonoBehaviour {
         SpawnFloors();
         SpawnWalls();
     }
-
-
 
     [ContextMenu("GenerateFlors")]
     void SpawnFloors() {
@@ -82,8 +84,7 @@ public class RoomGenerator : MonoBehaviour {
     }
 
     void SpawnWalls() {
-        int roomWorldSize = GetRoomSizeNumber() * _tileSize;
-        int roomRadius = roomWorldSize / 2;
+        int roomRadius = GetRoomRadius();
 
         SpawnPolygonalWalls();
 
@@ -128,6 +129,12 @@ public class RoomGenerator : MonoBehaviour {
     }
 
 
+    void Awake() {
+        if (!_roomCollider) {
+            _roomCollider = GetComponent<BoxCollider>();
+        }
+    }
+
 
     GameObject InstantiateDoor(Vector3 position) {
         GameObject generatedDoor = Instantiate(GetRandomDoor(), transform);
@@ -152,5 +159,15 @@ public class RoomGenerator : MonoBehaviour {
     GameObject GetRandomDoor() => GetRandomPrefab(_roomPrefabs.doorPrefabs);
     GameObject GetRandomPrefab(GameObject[] prefabs) => prefabs[Random.Range(0, prefabs.Length)];
 
+    public int GetRoomRadius() => (GetRoomSizeNumber() * _tileSize) / 2;
+    public float GetRoomWorldSize() => GetRoomSizeNumber() * _tileSize;
+
     int GetRoomSizeNumber() => (int)_roomStats.size + 1;
+    public static int GetRoomSizeNumber(RoomSize size) => (int)(size + 1);
+
+    void OnDrawGizmos() {
+        Gizmos.color = Color.blue;
+        float size = GetRoomSizeNumber() * _tileSize;
+        Gizmos.DrawWireCube(transform.position, new Vector3(size, 1, size));
+    }
 }

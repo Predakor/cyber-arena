@@ -115,6 +115,7 @@ public struct GuardedRoomSettings {
     }
 }
 
+[Serializable]
 public struct RoomConnectionSettings {
     [Tooltip("Chance of a door spawning in a room")]
     [SerializeField, Range(0f, 10f)] public float doorChance;

@@ -5,6 +5,8 @@ using UnityEngine;
 public class RoomData : ScriptableObject {
     public RoomStats stats;
     public RoomPrefabs prefabs;
+
+    public void LoadPrefabs(RoomPrefabs newPrefabs) => prefabs = newPrefabs;
 }
 
 [Serializable]
