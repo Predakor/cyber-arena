@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FloorGenerator : MonoBehaviour {
@@ -76,97 +77,110 @@ public class FloorGenerator : MonoBehaviour {
         GenerateRooms();
         GenerateLootRooms();
         GenerateGuardedRooms();
+        ForceDoors();
+    }
+    void GenerateRooms() {
+        _generatedRooms.Clear(); // Clear previous rooms before generating
+        Vector3 startPos = transform.position;
+
+        RoomGenerator firstRoom = InstantiateRoom(startPos, transform, _roomDataTemplate);
+        GenerateRoomRecursively(firstRoom.transform.position, startPos, _baseStats.numberOfRooms - 1);
 
     }
 
-    void GenerateRooms() {
-        Vector3 currentPosition = transform.position;
-        Vector3 lastRoomPosition = transform.position;
+    void ForceDoors() {
+        for (int i = _generatedRooms.Count - 1; i > 0; i--) {
+            RoomGenerator currentRoom = _generatedRooms[i - 1];
+            RoomGenerator prevRoom = _generatedRooms[i];
 
+            Vector3 prevPos = prevRoom.transform.position;
+            Vector3 currPos = currentRoom.transform.position;
+
+            var directions = RoomHelpers.GetRoomDirections(currentRoom.RoomStats.sides);
+            Vector3 backwardDirection = (currPos - prevPos).normalized;
+            Vector3 nextRoomDirection = (prevPos - currPos).normalized;
+
+            int backwardDirectionIndex = directions.FindIndex(direction => direction == backwardDirection);
+            int nextRoomDirectionIndex = directions.FindIndex(direction => direction == nextRoomDirection);
+
+            if (backwardDirectionIndex != -1) {
+                prevRoom.RoomStats.doors[backwardDirectionIndex] = true;
+            }
+            if (nextRoomDirectionIndex != -1) {
+                currentRoom.RoomStats.doors[nextRoomDirectionIndex] = true;
+            }
+        }
+    }
+
+    void GenerateRoomRecursively(Vector3 prevPosition, Vector3 currentPosition, int remainingRooms, int tries = 0) {
+        if (remainingRooms <= 0 || tries > 200) return;
+        RoomGenerator prevRoom = _generatedRooms.Last();
+        RoomStats roomStats = RoomHelpers.RandomizeStats(_roomDataTemplate.stats);
+
+        //randomize and validate the data
         int roomSegmentSize = 20;
-        int maxDistFromCenter = 5;
+        int roomWorldSize = RoomGenerator.GetRoomSizeNumber(roomStats.size) * roomSegmentSize;
+        float minDistanceToNextRoom = roomWorldSize + prevRoom.GetRoomWorldSize() + _roomConnectionSettings.roomSpacing;
+        bool[] doors = new bool[roomStats.sides];
 
+        //get all possible directions
+        List<Vector3> directions = RoomHelpers.GetRoomDirections(roomStats.sides);
 
-        //first room
-        InstantiateRoom(currentPosition, transform, _roomDataTemplate);
+        //calculate backwardDirection and place door there
+        Vector3 backwardDirection = (prevPosition - currentPosition).normalized;
 
-        for (int i = 0; i < _baseStats.numberOfRooms; i++) {
-            RoomStats roomStats = RandomizeStats(_roomDataTemplate.stats);
-            int roomWorldSize = RoomGenerator.GetRoomSizeNumber(roomStats.size) * roomSegmentSize;
-
-            float minDistanceToNextRoom = 2 * roomWorldSize;
-
-            Vector3 backwardDirection = (lastRoomPosition - currentPosition).normalized;
-
-            //check free directionss
-            List<Vector3> availablePositions = GetPossibleDirections(roomWorldSize / 2, roomStats.sides, backwardDirection, minDistanceToNextRoom);
-
-
-            //pick random free direction
-            for (int j = 0; j < 1; j++) {
-                if (availablePositions.Count == 0) { break; }
-                Vector3 randomPosition = availablePositions[Random.Range(0, availablePositions.Count)];
-                lastRoomPosition = currentPosition;
-                currentPosition = randomPosition;
-                availablePositions.Remove(randomPosition);
-
-                //mark room generator to create door there
+        //transform directions to point and fillter backwardDirection out
+        List<Vector3> positions = new();
+        foreach (var direction in directions) {
+            if (direction != backwardDirection) {
+                positions.Add(direction * minDistanceToNextRoom + currentPosition);
             }
-
-            _roomDataTemplate.stats = roomStats;
-            InstantiateRoom(currentPosition, transform, _roomDataTemplate);
-
         }
 
+        //check which directions we can fit a room
+        List<Vector3> avaiablePositions = RoomHelpers.GetUnoccupiedPositions(positions, roomWorldSize);
 
-        List<Vector3> GetPossibleDirections(int radius, int sides, Vector3 backwardDirection, float distance) {
-            List<Vector3> availablePositions = new();
+        // if no directions go back
+        if (avaiablePositions.Count == 0) {
+            Debug.LogWarning("No valid placement found for the next room. Backtracking...");
 
-            float angleBase = 360 / sides;
-            Vector3 wallCenterPosition = new();
-            Vector3 center = Vector3.zero;
+            GenerateRoomRecursively(transform.position, transform.position, remainingRooms, tries + 1);
+            //to do dead end backtracking
 
-            for (int i = 0; i < sides; i++) {
-                float angle = angleBase * i;
-                int posX = (int)(radius * Mathf.Cos(Mathf.Deg2Rad * angle));
-                int posZ = (int)(radius * Mathf.Sin(Mathf.Deg2Rad * angle));
-                wallCenterPosition.Set(posX, 0, posZ);
-
-                Vector3 currentDirection = (wallCenterPosition - center).normalized;
-
-                if (Vector3.Dot(backwardDirection, currentDirection) > 0.99f) { continue; }
-
-                Vector3 positionToCheck = currentDirection * distance + currentPosition;
-
-                if (HasSpaceForRoom(positionToCheck, radius)) {
-                    availablePositions.Add(positionToCheck);
-                }
-            }
-            return availablePositions;
+            //go to prev room or go to start and start placing going into different direction
+            return;
         }
 
-        RoomStats RandomizeStats(RoomStats stats) {
-            int[] sizes = new int[] { 4, 8 };
-            stats.size = (RoomSize)Random.Range(1, 3);
-            stats.sides = sizes[Random.Range(0, sizes.Length)];
-            return stats;
-        }
+        // Pick a random valid direction
+        Vector3 newRoomPosition = avaiablePositions[Random.Range(0, avaiablePositions.Count)];
+        Vector3 directionToNewRoom = (newRoomPosition - currentPosition).normalized;
 
-        bool HasSpaceForRoom(Vector3 position, float radius) {
-            int roomMasks = LayerMask.GetMask("Ground");
-            Collider[] detectedRooms = Physics.OverlapSphere(position, radius, roomMasks);
-            bool colided = detectedRooms.Length == 0;
+        // Assign door in the new room direction
+        //int newRoomDirectionIndex = directions.IndexOf(directionToNewRoom);
+        //if (newRoomDirectionIndex != -1) {
+        //    doors[newRoomDirectionIndex] = true;
+        //}
 
-            return colided;
-        }
+        //aaply stats to template
+        roomStats.doors = doors;
+        _roomDataTemplate.stats = roomStats;
 
-        void InstantiateRoom(Vector3 position, Transform transform, RoomData data) {
-            RoomGenerator generatedRoom = Instantiate(roomBasePrefab, position, Quaternion.identity, transform)
-                .GetComponent<RoomGenerator>();
-            generatedRoom.LoadData(data);
-            _generatedRooms.Add(generatedRoom);
-            generatedRoom.gameObject.name = $"Room {data.stats.size}";
-        }
+        // Instantiate the new room
+        RoomGenerator newRoom = InstantiateRoom(newRoomPosition, transform, _roomDataTemplate);
+
+        // Recursively generate the next room
+        GenerateRoomRecursively(currentPosition, newRoomPosition, remainingRooms - 1, tries + 1);
+    }
+
+
+
+    RoomGenerator InstantiateRoom(Vector3 position, Transform transform, RoomData data) {
+        RoomGenerator generatedRoom = Instantiate(roomBasePrefab, position, Quaternion.identity, transform)
+            .GetComponent<RoomGenerator>();
+        generatedRoom.LoadData(data);
+        _generatedRooms.Add(generatedRoom);
+        generatedRoom.gameObject.name = $"Room {data.stats.size}";
+        return generatedRoom;
     }
 
     void GenerateLootRooms() {
@@ -179,11 +193,5 @@ public class FloorGenerator : MonoBehaviour {
         if (_guardedRoomSettings.maxGuardedRooms > 0) {
             Debug.Log($"Generating guarded rooms with chance: {_guardedRoomSettings.guardedRoomChance}%");
         }
-    }
-
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(new Vector3(0, 0, 0), new Vector3(20, 20, 20));
-        Gizmos.DrawWireSphere(new Vector3(0, 0, 0), 20);
     }
 }

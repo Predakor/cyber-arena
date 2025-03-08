@@ -24,9 +24,9 @@ public class FloorData : ScriptableObject {
     }
 
     void OnValidate() {
-        _lootRoomSettings.Validate();
-        _guardedRoomSettings.Validate();
-        _roomConnectionSettings.Validate();
+        //_lootRoomSettings.Validate();
+        //_guardedRoomSettings.Validate();
+        //_roomConnectionSettings.Validate();
     }
 }
 

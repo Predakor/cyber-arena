@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -14,9 +13,10 @@ public class RoomGenerator : MonoBehaviour {
     [SerializeField] Vector3 _wallRotationOffest = Vector3.zero;
     [SerializeField] Vector3 _doorRotationOffset = Vector3.zero;
 
-    [SerializeField] List<bool> _doors = new();
-
     BoxCollider _roomCollider;
+
+    public RoomStats RoomStats { get => _roomStats; private set => _roomStats = value; }
+    public RoomPrefabs RoomPrefabs { get => _roomPrefabs; private set => _roomPrefabs = value; }
 #if UNITY_EDITOR
 
     [ContextMenu("KillAllCHildren")]
@@ -37,11 +37,6 @@ public class RoomGenerator : MonoBehaviour {
     public void LoadData(RoomData roomData) {
         _roomStats = roomData.stats;
         _roomPrefabs = roomData.prefabs;
-        _doors = new List<bool>();
-        for (int i = 0; i < roomData.stats.sides; i++) {
-            bool rand = Random.Range(0, 2) == 1;
-            _doors.Add(rand);
-        }
 
         float size = GetRoomWorldSize();
 
@@ -97,7 +92,7 @@ public class RoomGenerator : MonoBehaviour {
             Vector3 wallPosition = new(0, 0, 0);
 
             for (int i = 0; i < _roomStats.sides; i++) {
-                bool hasDoor = _doors[i];
+                bool hasDoor = _roomStats.doors[i];
 
                 float angle = rotationBase * i;
                 float posX = roomRadius * Mathf.Cos(Mathf.Deg2Rad * angle);

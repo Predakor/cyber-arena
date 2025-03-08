@@ -1,0 +1,57 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class RoomHelpers {
+    static Dictionary<int, List<Vector3>> _angleCache = new();
+
+    public static List<Vector3> GetRoomDirections(int sides) {
+        if (sides == 0) { return null; }
+
+        if (_angleCache.ContainsKey(sides)) return _angleCache[sides];
+
+        List<Vector3> directions = new(sides);
+        Vector3 direction = Vector3.zero;
+
+        int rotationBase = 360 / sides;
+        for (int i = 0; i < sides; i++) {
+            float angle = rotationBase * i;
+            float posX = Mathf.Cos(Mathf.Deg2Rad * angle);
+            float posZ = Mathf.Sin(Mathf.Deg2Rad * angle);
+
+            direction.Set(posX, 0, posZ);
+            directions.Add(direction.normalized);
+        }
+
+        _angleCache.Add(sides, directions);
+        return directions;
+    }
+
+    public static List<Vector3> GetUnoccupiedPositions(List<Vector3> positionsToCheck, float radius) {
+        List<Vector3> availablePositions = new();
+        foreach (var position in positionsToCheck) {
+            if (HasSpaceForRoom(position, radius)) {
+                availablePositions.Add(position);
+            }
+        }
+        return availablePositions;
+    }
+
+    public static bool HasSpaceForRoom(Vector3 position, float radius) {
+        int roomMasks = LayerMask.GetMask("Ground");
+        Collider[] detectedRooms = Physics.OverlapSphere(position, radius, roomMasks);
+        return detectedRooms.Length == 0;
+    }
+
+    public static bool HasSpaceForRoom(Vector3 position, Vector3 boxCordinates) {
+        int roomMasks = LayerMask.GetMask("Ground");
+        Collider[] detectedRooms = Physics.OverlapBox(position, boxCordinates, Quaternion.identity, roomMasks);
+        return detectedRooms.Length == 0;
+    }
+
+    public static RoomStats RandomizeStats(RoomStats stats) {
+        int[] sizes = new int[] { 4 };
+        stats.size = (RoomSize)Random.Range(1, 2);
+        stats.sides = sizes[Random.Range(0, sizes.Length)];
+        return stats;
+    }
+}

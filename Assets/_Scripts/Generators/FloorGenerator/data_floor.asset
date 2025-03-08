@@ -13,28 +13,34 @@ MonoBehaviour:
   m_Name: data_floor
   m_EditorClassIdentifier: 
   _baseStats:
-    name: 
-    numberOfRooms: 0
-    difficulty: 0
-    lootQuality: 0
+    name: Base floor
+    numberOfRooms: 10
+    difficulty: 1
+    lootQuality: 1
   _floorPool:
     floorPrefabs:
-      wallPrefabs: []
-      floorPrefabs: []
-      doorPrefabs: []
+      wallPrefabs:
+      - {fileID: 9220700704462415792, guid: 49d2139d2da068a4a80d3cf27b87de59, type: 3}
+      floorPrefabs:
+      - {fileID: 4604874459141738577, guid: 4e68df82bb3da254eb2003f95148ab76, type: 3}
+      doorPrefabs:
+      - {fileID: 6790197992661217530, guid: d61e8f290ea85164aafb3417da42d272, type: 3}
     enemiesPool: []
     uniqueRoomPool: []
   _floorModifiers:
-    difficultyModifier: 0
-    lootModifier: 0
-    guardModifier: 0
+    difficultyModifier: 1
+    lootModifier: 1
+    guardModifier: 1
   _lootRoomSettings:
     lootRoomChance: 0
-    guaranteedLootRooms: 0
-    maxLootRooms: 0
+    guaranteedLootRooms: 1
+    maxLootRooms: 1
   _guardedRoomSettings:
-    guardedRoomChance: 0
-    guaranteedGuardedRooms: 0
-    maxGuardedRooms: 0
-  _doorChance: 1
-  _roomSpacing: 3
+    guardedRoomChance: 50
+    guaranteedGuardedRooms: 5
+    maxGuardedRooms: 10
+  _roomConnectionSettings:
+    doorChance: 0
+    roomSpacing: 20
+    maxCorridorLength: 10
+    minCorridorWidth: 4
