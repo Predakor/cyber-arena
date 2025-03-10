@@ -49,9 +49,14 @@ public static class RoomHelpers {
     }
 
     public static RoomStats RandomizeStats(RoomStats stats) {
-        int[] sizes = new int[] { 4 };
-        stats.size = (RoomSize)Random.Range(1, 2);
-        stats.sides = sizes[Random.Range(0, sizes.Length)];
+        RoomSize[] defaultSizes = new[] { RoomSize.Small, RoomSize.Medium, RoomSize.Large };
+        int[] defaultSides = new[] { 4, 8, 12 };
+        return RandomizeStats(stats, defaultSizes, defaultSides);
+    }
+
+    public static RoomStats RandomizeStats(RoomStats stats, RoomSize[] roomSizes, int[] roomSides) {
+        stats.size = (RoomSize)Random.Range(0, roomSizes.Length);
+        stats.sides = roomSides[Random.Range(0, roomSides.Length)];
         return stats;
     }
 }

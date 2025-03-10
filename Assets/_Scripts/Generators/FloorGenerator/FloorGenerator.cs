@@ -96,12 +96,16 @@ public class FloorGenerator : MonoBehaviour {
             Vector3 prevPos = prevRoom.transform.position;
             Vector3 currPos = currentRoom.transform.position;
 
-            var directions = RoomHelpers.GetRoomDirections(currentRoom.RoomStats.sides);
+            var currentRoomDirections = RoomHelpers.GetRoomDirections(currentRoom.RoomStats.sides);
+            var prevRoomDirections = RoomHelpers.GetRoomDirections(prevRoom.RoomStats.sides);
+
             Vector3 backwardDirection = (currPos - prevPos).normalized;
             Vector3 nextRoomDirection = (prevPos - currPos).normalized;
 
-            int backwardDirectionIndex = directions.FindIndex(direction => direction == backwardDirection);
-            int nextRoomDirectionIndex = directions.FindIndex(direction => direction == nextRoomDirection);
+            int backwardDirectionIndex = prevRoomDirections.FindIndex(direction => direction == backwardDirection);
+            int nextRoomDirectionIndex = currentRoomDirections.FindIndex(direction => direction == nextRoomDirection);
+
+            Debug.DrawLine(prevPos, currPos, Color.green, 10f);
 
             if (backwardDirectionIndex != -1) {
                 prevRoom.RoomStats.doors[backwardDirectionIndex] = true;
@@ -114,6 +118,7 @@ public class FloorGenerator : MonoBehaviour {
 
     void GenerateRoomRecursively(Vector3 prevPosition, Vector3 currentPosition, int remainingRooms, int tries = 0) {
         if (remainingRooms <= 0 || tries > 200) return;
+
         RoomGenerator prevRoom = _generatedRooms.Last();
         RoomStats roomStats = RoomHelpers.RandomizeStats(_roomDataTemplate.stats);
 
@@ -121,18 +126,16 @@ public class FloorGenerator : MonoBehaviour {
         int roomSegmentSize = 20;
         int roomWorldSize = RoomGenerator.GetRoomSizeNumber(roomStats.size) * roomSegmentSize;
         float minDistanceToNextRoom = roomWorldSize + prevRoom.GetRoomWorldSize() + _roomConnectionSettings.roomSpacing;
-        bool[] doors = new bool[roomStats.sides];
 
         //get all possible directions
-        List<Vector3> directions = RoomHelpers.GetRoomDirections(roomStats.sides);
+        List<Vector3> directions = RoomHelpers.GetRoomDirections(prevRoom.RoomStats.sides);
 
-        //calculate backwardDirection and place door there
-        Vector3 backwardDirection = (prevPosition - currentPosition).normalized;
+        Vector3 prevRoomDirection = (prevPosition - currentPosition).normalized;
 
-        //transform directions to point and fillter backwardDirection out
-        List<Vector3> positions = new();
+        //transform directions to points and fillter backwardDirection out
+        List<Vector3> positions = new(directions.Count - 1);
         foreach (var direction in directions) {
-            if (direction != backwardDirection) {
+            if (direction != prevRoomDirection) {
                 positions.Add(direction * minDistanceToNextRoom + currentPosition);
             }
         }
@@ -143,26 +146,26 @@ public class FloorGenerator : MonoBehaviour {
         // if no directions go back
         if (avaiablePositions.Count == 0) {
             Debug.LogWarning("No valid placement found for the next room. Backtracking...");
-
             GenerateRoomRecursively(transform.position, transform.position, remainingRooms, tries + 1);
-            //to do dead end backtracking
-
-            //go to prev room or go to start and start placing going into different direction
             return;
         }
 
         // Pick a random valid direction
         Vector3 newRoomPosition = avaiablePositions[Random.Range(0, avaiablePositions.Count)];
-        Vector3 directionToNewRoom = (newRoomPosition - currentPosition).normalized;
 
-        // Assign door in the new room direction
-        //int newRoomDirectionIndex = directions.IndexOf(directionToNewRoom);
-        //if (newRoomDirectionIndex != -1) {
-        //    doors[newRoomDirectionIndex] = true;
-        //}
+        //correct room with different shapes // 8gon can't connect diagonally with square
+        bool roomsHaveDifferentShapes = prevRoom.RoomStats.sides != roomStats.sides;
+        if (roomsHaveDifferentShapes) {
+            Vector3 directionToCurrentRoom = (currentPosition - newRoomPosition).normalized;
+            List<Vector3> newRoomDirections = RoomHelpers.GetRoomDirections(roomStats.sides);
 
-        //aaply stats to template
-        roomStats.doors = doors;
+            bool compatibleAxis = newRoomDirections.Exists((direction) => direction == directionToCurrentRoom);
+            if (!compatibleAxis) {
+                roomStats.sides = prevRoom.RoomStats.sides;
+            }
+        }
+
+        roomStats.doors = new bool[roomStats.sides];
         _roomDataTemplate.stats = roomStats;
 
         // Instantiate the new room
