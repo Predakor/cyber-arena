@@ -59,4 +59,28 @@ public static class RoomHelpers {
         stats.sides = roomSides[Random.Range(0, roomSides.Length)];
         return stats;
     }
+
+    public static bool AreRoomsConnectable(RoomStats currentStats, RoomStats newStats, Vector3 prevRoomDirection) {
+        if (currentStats.sides != newStats.sides) {
+            return false;
+        }
+        List<Vector3> newRoomDirections = GetRoomDirections(newStats.sides);
+        return newRoomDirections.Exists((direction) => direction == prevRoomDirection);
+    }
+
+    public static List<Vector3> GetAvaiablePositions(RoomGenerator currentRoom, Vector3 prevRoomDirection, int roomWorldSize, float minDistanceToNextRoom) {
+        List<Vector3> directions = GetRoomDirections(currentRoom.RoomStats.sides);
+
+        //transform directions to points and fillter backwardDirection out
+        List<Vector3> positions = new(directions.Count - 1);
+        foreach (var direction in directions) {
+            if (direction != prevRoomDirection) {
+                positions.Add(direction * minDistanceToNextRoom + currentRoom.transform.position);
+            }
+        }
+
+        //check which directions we can fit a room
+        List<Vector3> avaiablePositions = GetUnoccupiedPositions(positions, roomWorldSize);
+        return avaiablePositions;
+    }
 }
