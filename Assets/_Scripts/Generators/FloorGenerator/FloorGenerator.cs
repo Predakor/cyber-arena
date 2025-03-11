@@ -116,7 +116,8 @@ public class FloorGenerator : MonoBehaviour {
         }
     }
 
-    void GenerateRoomRecursively(Vector3 prevPosition, Vector3 currentPosition, int remainingRooms, int tries = 0) {
+    void GenerateRoomRecursively(Vector3 prevPosition, Vector3 currentPosition,
+        int remainingRooms, int tries = 0) {
         if (remainingRooms <= 0 || tries > 200) return;
 
         RoomGenerator prevRoom = _generatedRooms.Last();
@@ -129,9 +130,7 @@ public class FloorGenerator : MonoBehaviour {
 
         //get all possible directions
         List<Vector3> directions = RoomHelpers.GetRoomDirections(prevRoom.RoomStats.sides);
-
         Vector3 prevRoomDirection = (prevPosition - currentPosition).normalized;
-
         //transform directions to points and fillter backwardDirection out
         List<Vector3> positions = new(directions.Count - 1);
         foreach (var direction in directions) {
@@ -162,6 +161,7 @@ public class FloorGenerator : MonoBehaviour {
             bool compatibleAxis = newRoomDirections.Exists((direction) => direction == directionToCurrentRoom);
             if (!compatibleAxis) {
                 roomStats.sides = prevRoom.RoomStats.sides;
+                roomStats.doors = new bool[prevRoom.RoomStats.sides];
             }
         }
 
