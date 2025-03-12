@@ -16,13 +16,15 @@ public class RoomLinks : MonoBehaviour {
     public RoomGenerator Room { get => room; }
     public RoomConnection? PrevRoom { get => prevRoom; }
 
-    public void SetPrevRoom(RoomLinks roomNode, Vector3 direction) {
-        prevRoom = new(direction, roomNode);
+    public void SetPrevRoom(RoomLinks roomNode, float distance, Vector3 direction) {
+        prevRoom = new(direction, distance, roomNode);
     }
+    public void SetPrevRoom(RoomConnection connection) => prevRoom = connection;
 
-    public void AddNextRoom(RoomLinks roomNode, Vector3 direction) {
-        nextRooms.Add(new(direction, roomNode));
+    public void AddNextRoom(RoomLinks roomNode, float distance, Vector3 direction) {
+        nextRooms.Add(new(direction, distance, roomNode));
     }
+    public void AddNextRoom(RoomConnection connection) => nextRooms.Add(connection);
 
     public RoomConnection? GetPrevRoom() {
         if (PrevRoom.HasValue) {
@@ -57,10 +59,12 @@ public class RoomLinks : MonoBehaviour {
 [Serializable]
 public struct RoomConnection {
     public Vector3 direction;
+    public float distance;
     public RoomLinks room;
 
-    public RoomConnection(Vector3 direction, RoomLinks room) {
+    public RoomConnection(Vector3 direction, float distance, RoomLinks room) {
         this.direction = direction;
+        this.distance = distance;
         this.room = room;
     }
 }

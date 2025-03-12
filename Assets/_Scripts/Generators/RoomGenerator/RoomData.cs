@@ -22,7 +22,6 @@ public struct RoomStats {
     public RoomSize size;
     public RoomType type;
     [Range(3, 12)] public int sides;
-    public bool[] doors;
     public bool hasTreasure;
     public bool isGuarded;
 }

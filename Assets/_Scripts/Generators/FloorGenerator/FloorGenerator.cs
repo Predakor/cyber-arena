@@ -3,21 +3,34 @@ using UnityEngine;
 
 public class FloorGenerator : MonoBehaviour {
 
-    [SerializeField] FloorData _floorDataScriptableObject;
+    #region variables
+    [Header("Prefabs/templates")]
+    [SerializeField] GameObject _roomBasePrefab;
+    [SerializeField] RoomData _roomDataTemplate;
+    [SerializeField] FloorData _floorDataTemplate;
 
+    [Header("Override base template")]
     [SerializeField] BaseFloorStats _baseStats;
     [SerializeField] PrefabPool _floorPool;
     [SerializeField] FloorModifiers _floorModifiers;
     [SerializeField] LootRoomSettings _lootRoomSettings;
     [SerializeField] GuardedRoomSettings _guardedRoomSettings;
     [SerializeField] RoomConnectionSettings _roomConnectionSettings;
+    [SerializeField] RoomRestrictionsSO _roomRestrictions;
 
-    [SerializeField] GameObject roomBasePrefab;
-    [SerializeField] RoomData _roomDataTemplate;
+    [Header("Generation details/beahaviour")]
+    [SerializeField] int _maxDepth = 10;
+    [SerializeField] int _desiredDepth = 10;
+    [SerializeField] int _maxTries = 100;
+    [SerializeField] List<RoomSize> _roomSizes = new();
 
+    [Header("Generated rooms")]
     [SerializeField] List<RoomGenerator> _generatedRooms;
+    [SerializeField] List<RoomNode> _generatedNodes; //TODO implement nodes 
 
-    int _maxTries = 100;
+    int _roomSegmentSize = 20;
+
+    #endregion
 
 #if UNITY_EDITOR
 
@@ -30,7 +43,7 @@ public class FloorGenerator : MonoBehaviour {
 
     [ContextMenu("Load Floor Data")]
     public void LoadData() {
-        LoadData(_floorDataScriptableObject);
+        LoadData(_floorDataTemplate);
     }
     [ContextMenu("Spawn all generated rooms")]
     public void GenerateSpawnedRooms() {
@@ -80,14 +93,16 @@ public class FloorGenerator : MonoBehaviour {
         GenerateGuardedRooms();
     }
     void GenerateRooms() {
-        _maxTries = _baseStats.numberOfRooms * 2;
+        int roomNumber = _baseStats.numberOfRooms;
 
-        _generatedRooms.Clear(); // Clear previous rooms before generating
+        _maxTries = _baseStats.numberOfRooms * 2;
+        _maxDepth = Mathf.Clamp(_maxDepth, _desiredDepth, roomNumber);
+
+        _generatedRooms.Clear();
         Vector3 startPos = transform.position;
 
         RoomGenerator firstRoom = InstantiateRoom(startPos, transform, _roomDataTemplate);
-        GenerateRoomRecursively(firstRoom, null, _baseStats.numberOfRooms - 1);
-
+        GenerateRoomRecursively(firstRoom, null, roomNumber - 1);
     }
 
     void GenerateRoomRecursively(RoomGenerator previousRoom, RoomGenerator currentRoom,
@@ -99,19 +114,20 @@ public class FloorGenerator : MonoBehaviour {
         }
 
         RoomData dataTemple = _roomDataTemplate;
-        RoomStats newRoomStats = RoomHelpers.RandomizeStats(dataTemple.stats);
+        RoomStats newRoomStats = RoomHelpers.RandomizeStats(dataTemple.stats, _roomSizes, _roomRestrictions);
 
         Vector3 currentPosition = currentRoom.transform.position;
         Vector3 previousPosition = previousRoom.transform.position;
 
-        //randomize and validate the data
-        int roomSegmentSize = 20;
-        int roomWorldSize = RoomGenerator.GetRoomSizeNumber(newRoomStats.size) * roomSegmentSize;
-        float minDistanceToNextRoom = roomWorldSize + previousRoom.GetRoomWorldSize() + _roomConnectionSettings.roomSpacing;
+        int newRoomWorldSize = RoomGenerator.GetRoomSizeNumber(newRoomStats.size) * _roomSegmentSize;
 
-        //get possitions that can fit our room
+        float roomSpacing = _roomConnectionSettings.roomSpacing;
+        float roomToRoomDistance = newRoomWorldSize + currentRoom.GetRoomRadius();
+        float minDistanceToNextRoom = roomToRoomDistance + roomSpacing;
+
         Vector3 prevRoomDirection = (previousPosition - currentPosition).normalized;
-        List<Vector3> avaiablePositions = RoomHelpers.GetAvaiablePositions(currentRoom, prevRoomDirection, roomWorldSize, minDistanceToNextRoom);
+
+        List<Vector3> avaiablePositions = RoomHelpers.GetAvaiablePositions(currentRoom, prevRoomDirection, newRoomWorldSize, minDistanceToNextRoom, roomSpacing);
 
         // if no directions go back
         bool noAvaiablePositionsFound = avaiablePositions.Count == 0;
@@ -123,41 +139,48 @@ public class FloorGenerator : MonoBehaviour {
         Vector3 newRoomPosition = avaiablePositions[Random.Range(0, avaiablePositions.Count)];
         Vector3 newRoomDirection = (newRoomPosition - currentPosition).normalized;
 
+
         if (!RoomHelpers.AreRoomsConnectable(currentRoom.RoomStats, newRoomStats, newRoomDirection * -1)) {
-            newRoomStats.sides = previousRoom.RoomStats.sides;
-            newRoomStats.doors = new bool[previousRoom.RoomStats.sides];
+            HandleUnconnectableRooms(currentRoom.RoomStats, newRoomStats);
         }
 
-        newRoomStats.doors = new bool[newRoomStats.sides];
         dataTemple.stats = newRoomStats;
 
+
         RoomGenerator newRoom = InstantiateRoom(newRoomPosition, transform, dataTemple);
-        newRoom.RoomLinks.Depth = depth;
-        newRoom.RoomLinks.Position = newRoomPosition;
-        newRoom.RoomLinks.SetPrevRoom(currentRoom.RoomLinks, newRoomDirection * -1);
-        currentRoom.RoomLinks.AddNextRoom(newRoom.RoomLinks, newRoomDirection);
+        HandleRoomLinks(currentRoom, newRoomPosition, newRoomDirection, newRoom);
 
         GenerateRoomRecursively(currentRoom, newRoom, remainingRooms - 1, tries + 1, depth + 1);
     }
 
+    void HandleRoomLinks(RoomGenerator currentRoom, Vector3 newRoomPosition, Vector3 newRoomDirection, RoomGenerator newRoom) {
+        newRoom.RoomLinks.Position = newRoomPosition;
+        newRoom.RoomLinks.Depth = currentRoom.RoomLinks.Depth + 1;
+        newRoom.RoomLinks.SetPrevRoom(currentRoom.RoomLinks, newRoomDirection * -1);
+        currentRoom.RoomLinks.AddNextRoom(newRoom.RoomLinks, newRoomDirection);
+    }
+
+    void HandleUnconnectableRooms(RoomStats currentRoom, RoomStats newRoom) {
+        newRoom.sides = currentRoom.sides;
+
+    }
     void HandleBacktracking(RoomGenerator prevRoom, int remainingRooms, int tries, int depth) {
-        Debug.LogWarning("No valid placement found for the next room. Backtracking...", prevRoom);
         RoomLinks backtrackedRoom = prevRoom.RoomLinks.GetPrevNode();
-        if (backtrackedRoom != null) {
-            GenerateRoomRecursively(backtrackedRoom.Room, prevRoom, remainingRooms, tries + 1, depth - 1);
-            Debug.DrawLine(backtrackedRoom.transform.position, prevRoom.transform.position, Color.red, 10f);
+        if (backtrackedRoom == null) {
+            Debug.LogError("No Valid place for the room found terminating");
             return;
         }
-        Debug.LogError("No Valid place for the room found terminating");
+        GenerateRoomRecursively(backtrackedRoom.Room, prevRoom, remainingRooms, tries + 1, depth - 1);
+        Debug.DrawLine(backtrackedRoom.transform.position, prevRoom.transform.position, Color.red, 10f);
     }
 
     RoomGenerator InstantiateRoom(Vector3 position, Transform transform, RoomData data) {
-        RoomGenerator generatedRoom = Instantiate(roomBasePrefab, position, Quaternion.identity, transform)
+        RoomGenerator room = Instantiate(_roomBasePrefab, position, Quaternion.identity, transform)
             .GetComponent<RoomGenerator>();
-        generatedRoom.LoadData(data);
-        _generatedRooms.Add(generatedRoom);
-        generatedRoom.gameObject.name = $"Room {data.stats.size}";
-        return generatedRoom;
+        room.LoadData(data);
+        _generatedRooms.Add(room);
+        room.gameObject.name = $"Room {data.stats.size}";
+        return room;
     }
 
 

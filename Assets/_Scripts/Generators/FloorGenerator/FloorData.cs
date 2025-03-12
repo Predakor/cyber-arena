@@ -117,23 +117,29 @@ public struct GuardedRoomSettings {
 
 [Serializable]
 public struct RoomConnectionSettings {
+    const int _minSpacing = 1;
+    const int _maxSpacing = 100;
+
+    const float _doorMinChance = 0;
+    const float _doorMaxChance = 100f;
+
     [Tooltip("Chance of a door spawning in a room")]
-    [SerializeField, Range(0f, 10f)] public float doorChance;
+    [SerializeField, Range(_doorMinChance, _doorMaxChance)] public float doorChance;
 
     [Tooltip("Minimum spacing between rooms")]
-    [SerializeField, Range(5f, 50f)] public float roomSpacing;
+    [SerializeField, Range(_minSpacing, _maxSpacing)] public float roomSpacing;
 
     [Tooltip("Maximum corridor length")]
-    [SerializeField, Range(10f, 50f)] public float maxCorridorLength;
+    [SerializeField, Range(0f, _maxSpacing)] public float maxCorridorLength;
 
     [Tooltip("Minimum corridor width")]
     [SerializeField, Range(0f, 10f)] public float minCorridorWidth;
 
     public void Validate() {
-        maxCorridorLength = Mathf.Clamp(maxCorridorLength, 10f, 50f);
+        maxCorridorLength = Mathf.Clamp(maxCorridorLength, 10f, _maxSpacing);
         minCorridorWidth = Mathf.Clamp(minCorridorWidth, 0f, maxCorridorLength);
 
-        roomSpacing = Mathf.Clamp(roomSpacing, 5f, 50f);
-        doorChance = Mathf.Clamp(doorChance, 0f, 10f);
+        roomSpacing = Mathf.Clamp(roomSpacing, _minSpacing, _maxSpacing);
+        doorChance = Mathf.Clamp(doorChance, _doorMinChance, _doorMaxChance);
     }
 }

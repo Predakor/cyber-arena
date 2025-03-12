@@ -1,3 +1,4 @@
+using Helpers.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -60,6 +61,14 @@ public static class RoomHelpers {
         return stats;
     }
 
+    public static RoomStats RandomizeStats(RoomStats stats, List<RoomSize> sizes, RoomRestrictionsSO restrictions) {
+        RoomStats randomStats = stats;
+        randomStats.size = CollectionHelpers.RandomElement(sizes);
+        List<int> allowedSides = restrictions.GetAllowedSides(randomStats.size);
+        randomStats.sides = CollectionHelpers.RandomElement(allowedSides);
+        return randomStats;
+    }
+
     public static bool AreRoomsConnectable(RoomStats currentStats, RoomStats newStats, Vector3 prevRoomDirection) {
         if (currentStats.sides == newStats.sides) {
             return true;
@@ -68,7 +77,7 @@ public static class RoomHelpers {
         return newRoomDirections.Exists((direction) => direction == prevRoomDirection);
     }
 
-    public static List<Vector3> GetAvaiablePositions(RoomGenerator currentRoom, Vector3 prevRoomDirection, int roomWorldSize, float minDistanceToNextRoom) {
+    public static List<Vector3> GetAvaiablePositions(RoomGenerator currentRoom, Vector3 prevRoomDirection, int roomWorldSize, float minDistanceToNextRoom, float minSpacing) {
         List<Vector3> directions = GetRoomDirections(currentRoom.RoomStats.sides);
 
         //transform directions to points and fillter backwardDirection out
@@ -80,7 +89,8 @@ public static class RoomHelpers {
         }
 
         //check which directions we can fit a room
-        List<Vector3> avaiablePositions = GetUnoccupiedPositions(positions, roomWorldSize);
+        float sizeToCheck = roomWorldSize + minSpacing / 2;
+        List<Vector3> avaiablePositions = GetUnoccupiedPositions(positions, sizeToCheck);
         return avaiablePositions;
     }
 }

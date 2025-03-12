@@ -922,10 +922,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a28a804667942841b8541e1422dc718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _roomBasePrefab: {fileID: 5322528209390247851, guid: 4d22e6e60acb3c149a4aaf4cd7973d8c, type: 3}
+  _roomDataTemplate: {fileID: 11400000, guid: d752a1917a6eb5e41a2de180d21fdece, type: 2}
   _floorDataScriptableObject: {fileID: 11400000, guid: fdba861942bd8ca42a872b2ac9e40a13, type: 2}
   _baseStats:
     name: Base floor
-    numberOfRooms: 500
+    numberOfRooms: 100
     difficulty: 1
     lootQuality: 1
   _floorPool:
@@ -955,10 +957,13 @@ MonoBehaviour:
     roomSpacing: 5
     maxCorridorLength: 10
     minCorridorWidth: 4
-  roomBasePrefab: {fileID: 5322528209390247851, guid: 4d22e6e60acb3c149a4aaf4cd7973d8c, type: 3}
-  _roomDataTemplate: {fileID: 11400000, guid: d752a1917a6eb5e41a2de180d21fdece, type: 2}
+  _roomRestrictions: {fileID: 11400000, guid: 7db2965e5e5aec44087e92182cf94c4f, type: 2}
+  _maxDepth: 10
+  _desiredDepth: 10
+  _maxTries: 200
+  _roomSizes: 000000000100000002000000
   _generatedRooms: []
-  maxTries: 1000
+  _generatedNodes: []
 --- !u!4 &280789764
 Transform:
   m_ObjectHideFlags: 0
