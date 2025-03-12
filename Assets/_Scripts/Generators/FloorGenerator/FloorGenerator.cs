@@ -17,6 +17,8 @@ public class FloorGenerator : MonoBehaviour {
 
     [SerializeField] List<RoomGenerator> _generatedRooms;
 
+    int _maxTries = 100;
+
 #if UNITY_EDITOR
 
     [ContextMenu("Generate Floor")]
@@ -76,9 +78,10 @@ public class FloorGenerator : MonoBehaviour {
         GenerateRooms();
         GenerateLootRooms();
         GenerateGuardedRooms();
-        ForceDoors();
     }
     void GenerateRooms() {
+        _maxTries = _baseStats.numberOfRooms * 2;
+
         _generatedRooms.Clear(); // Clear previous rooms before generating
         Vector3 startPos = transform.position;
 
@@ -87,37 +90,9 @@ public class FloorGenerator : MonoBehaviour {
 
     }
 
-    void ForceDoors() {
-        for (int i = _generatedRooms.Count - 1; i > 0; i--) {
-            RoomGenerator currentRoom = _generatedRooms[i - 1];
-            RoomGenerator prevRoom = _generatedRooms[i];
-
-            Vector3 prevPos = prevRoom.transform.position;
-            Vector3 currPos = currentRoom.transform.position;
-
-            var currentRoomDirections = RoomHelpers.GetRoomDirections(currentRoom.RoomStats.sides);
-            var prevRoomDirections = RoomHelpers.GetRoomDirections(prevRoom.RoomStats.sides);
-
-            Vector3 backwardDirection = (currPos - prevPos).normalized;
-            Vector3 nextRoomDirection = (prevPos - currPos).normalized;
-
-            int backwardDirectionIndex = prevRoomDirections.FindIndex(direction => direction == backwardDirection);
-            int nextRoomDirectionIndex = currentRoomDirections.FindIndex(direction => direction == nextRoomDirection);
-
-            Debug.DrawLine(prevPos, currPos, Color.green, 10f);
-
-            if (backwardDirectionIndex != -1) {
-                prevRoom.RoomStats.doors[backwardDirectionIndex] = true;
-            }
-            if (nextRoomDirectionIndex != -1) {
-                currentRoom.RoomStats.doors[nextRoomDirectionIndex] = true;
-            }
-        }
-    }
-
     void GenerateRoomRecursively(RoomGenerator previousRoom, RoomGenerator currentRoom,
-        int remainingRooms, int tries = 0) {
-        if (remainingRooms <= 0 || tries > 200) return;
+        int remainingRooms, int tries = 0, int depth = 0) {
+        if (remainingRooms <= 0 || tries > _maxTries) return;
 
         if (currentRoom == null) {
             currentRoom = previousRoom;
@@ -138,35 +113,42 @@ public class FloorGenerator : MonoBehaviour {
         Vector3 prevRoomDirection = (previousPosition - currentPosition).normalized;
         List<Vector3> avaiablePositions = RoomHelpers.GetAvaiablePositions(currentRoom, prevRoomDirection, roomWorldSize, minDistanceToNextRoom);
 
-
         // if no directions go back
         bool noAvaiablePositionsFound = avaiablePositions.Count == 0;
         if (noAvaiablePositionsFound) {
-            HandleBacktracking(currentRoom, remainingRooms, tries);
+            HandleBacktracking(previousRoom, remainingRooms, tries, depth);
             return;
         }
 
         Vector3 newRoomPosition = avaiablePositions[Random.Range(0, avaiablePositions.Count)];
+        Vector3 newRoomDirection = (newRoomPosition - currentPosition).normalized;
 
-        bool connectableRooms = RoomHelpers.AreRoomsConnectable(currentRoom.RoomStats, newRoomStats, prevRoomDirection);
-        if (!connectableRooms) {
+        if (!RoomHelpers.AreRoomsConnectable(currentRoom.RoomStats, newRoomStats, newRoomDirection * -1)) {
             newRoomStats.sides = previousRoom.RoomStats.sides;
             newRoomStats.doors = new bool[previousRoom.RoomStats.sides];
         }
 
         newRoomStats.doors = new bool[newRoomStats.sides];
-        _roomDataTemplate.stats = newRoomStats;
+        dataTemple.stats = newRoomStats;
 
-        // Instantiate the new room
-        RoomGenerator newRoom = InstantiateRoom(newRoomPosition, transform, _roomDataTemplate);
+        RoomGenerator newRoom = InstantiateRoom(newRoomPosition, transform, dataTemple);
+        newRoom.RoomLinks.Depth = depth;
+        newRoom.RoomLinks.Position = newRoomPosition;
+        newRoom.RoomLinks.SetPrevRoom(currentRoom.RoomLinks, newRoomDirection * -1);
+        currentRoom.RoomLinks.AddNextRoom(newRoom.RoomLinks, newRoomDirection);
 
-        // Recursively generate the next room
-        GenerateRoomRecursively(currentRoom, newRoom, remainingRooms - 1, tries + 1);
+        GenerateRoomRecursively(currentRoom, newRoom, remainingRooms - 1, tries + 1, depth + 1);
     }
 
-    private void HandleBacktracking(RoomGenerator currentRoom, int remainingRooms, int tries) {
-        Debug.LogWarning("No valid placement found for the next room. Backtracking...");
-        GenerateRoomRecursively(currentRoom, currentRoom, remainingRooms, tries + 1);
+    void HandleBacktracking(RoomGenerator prevRoom, int remainingRooms, int tries, int depth) {
+        Debug.LogWarning("No valid placement found for the next room. Backtracking...", prevRoom);
+        RoomLinks backtrackedRoom = prevRoom.RoomLinks.GetPrevNode();
+        if (backtrackedRoom != null) {
+            GenerateRoomRecursively(backtrackedRoom.Room, prevRoom, remainingRooms, tries + 1, depth - 1);
+            Debug.DrawLine(backtrackedRoom.transform.position, prevRoom.transform.position, Color.red, 10f);
+            return;
+        }
+        Debug.LogError("No Valid place for the room found terminating");
     }
 
     RoomGenerator InstantiateRoom(Vector3 position, Transform transform, RoomData data) {
@@ -181,13 +163,11 @@ public class FloorGenerator : MonoBehaviour {
 
     void GenerateLootRooms() {
         if (_lootRoomSettings.maxLootRooms > 0) {
-            Debug.Log($"Generating loot rooms with chance: {_lootRoomSettings.lootRoomChance}%");
         }
     }
 
     void GenerateGuardedRooms() {
         if (_guardedRoomSettings.maxGuardedRooms > 0) {
-            Debug.Log($"Generating guarded rooms with chance: {_guardedRoomSettings.guardedRoomChance}%");
         }
     }
 }

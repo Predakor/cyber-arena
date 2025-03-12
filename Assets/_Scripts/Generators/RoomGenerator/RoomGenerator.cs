@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
 public class RoomGenerator : MonoBehaviour {
     [SerializeField] RoomStats _roomStats;
-    [SerializeField] RoomPrefabs _roomPrefabs;
+    [SerializeField] FloorPrefabs _floorPrefabs;
+    [SerializeField] RoomLinks _roomLinks;
 
     [Header("Sizes")]
     [SerializeField] int _tileSize = 20;
@@ -16,7 +18,9 @@ public class RoomGenerator : MonoBehaviour {
     BoxCollider _roomCollider;
 
     public RoomStats RoomStats { get => _roomStats; private set => _roomStats = value; }
-    public RoomPrefabs RoomPrefabs { get => _roomPrefabs; private set => _roomPrefabs = value; }
+    public FloorPrefabs FloorPrefabs { get => _floorPrefabs; private set => _floorPrefabs = value; }
+    public RoomLinks RoomLinks { get => _roomLinks; set => _roomLinks = value; }
+
 #if UNITY_EDITOR
 
     [ContextMenu("KillAllCHildren")]
@@ -36,7 +40,8 @@ public class RoomGenerator : MonoBehaviour {
 
     public void LoadData(RoomData roomData) {
         _roomStats = roomData.stats;
-        _roomPrefabs = roomData.prefabs;
+        _floorPrefabs = roomData.prefabs;
+        //_roomLinks = roomData.links;
 
         float size = GetRoomWorldSize();
 
@@ -84,44 +89,27 @@ public class RoomGenerator : MonoBehaviour {
         SpawnPolygonalWalls();
 
         void SpawnPolygonalWalls() {
-            float rotationBase = 360 / _roomStats.sides;
+            List<Vector3> roomDirections = RoomHelpers.GetRoomDirections(_roomStats.sides);
+            List<Vector3> connectedWalls = _roomLinks.GetConnectedDirections();
 
             float wallLength = 2 * roomRadius * Mathf.Tan(Mathf.PI / _roomStats.sides);
-
             Vector3 wallScale = new(1, 1, wallLength / _wallSize);
-            Vector3 wallPosition = new(0, 0, 0);
 
-            for (int i = 0; i < _roomStats.sides; i++) {
-                bool hasDoor = _roomStats.doors[i];
+            foreach (var direction in roomDirections) {
+                Vector3 position = direction * roomRadius;
 
-                float angle = rotationBase * i;
-                float posX = roomRadius * Mathf.Cos(Mathf.Deg2Rad * angle);
-                float posZ = roomRadius * Mathf.Sin(Mathf.Deg2Rad * angle);
-
-                wallPosition.Set(posX, 0, posZ);
+                bool hasDoor = connectedWalls.Exists((connectedDirection) => direction == connectedDirection);
 
                 if (!hasDoor) {
-                    InstantiateWall(wallScale, wallPosition);
-                    continue;
+                    InstantiateWall(wallScale, position);
                 }
-
-                Vector3 wallSegmentScale = wallScale;
-                float wallRemainingSpace = wallLength - _doorSize;
-                float scaleRatio = wallRemainingSpace / wallLength / 2;
-                float offsetValue = wallRemainingSpace / 4 + (_doorSize / 2);
-
-                Vector3 offset = new(0, 0, offsetValue);
-                wallSegmentScale.z *= scaleRatio;
-
-                InstantiateWall(wallSegmentScale, wallPosition)
-                    .transform.Translate(offset, Space.Self);
-                InstantiateWall(wallSegmentScale, wallPosition)
-                    .transform.Translate(-offset, Space.Self);
-
-                InstantiateDoor(wallPosition);
+                else {
+                    InstatiateWallWithDoor(wallLength, wallScale, position);
+                }
             }
         }
     }
+
 
 
     void Awake() {
@@ -130,6 +118,20 @@ public class RoomGenerator : MonoBehaviour {
         }
     }
 
+
+    void InstatiateWallWithDoor(float wallLength, Vector3 wallScale, Vector3 position) {
+        Vector3 wallSegmentScale = wallScale;
+        float wallRemainingSpace = wallLength - _doorSize;
+        float scaleRatio = wallRemainingSpace / wallLength / 2;
+        float offsetValue = wallRemainingSpace / 4 + (_doorSize / 2);
+
+        Vector3 offset = new(0, 0, offsetValue);
+        wallSegmentScale.z *= scaleRatio;
+
+        InstantiateWall(wallSegmentScale, position).transform.Translate(offset, Space.Self);
+        InstantiateWall(wallSegmentScale, position).transform.Translate(-offset, Space.Self);
+        InstantiateDoor(position);
+    }
 
     GameObject InstantiateDoor(Vector3 position) {
         GameObject generatedDoor = Instantiate(GetRandomDoor(), transform);
@@ -149,9 +151,9 @@ public class RoomGenerator : MonoBehaviour {
         return generatedWall;
     }
 
-    GameObject GetRandomWall() => GetRandomPrefab(_roomPrefabs.wallPrefabs);
-    GameObject GetRandomFloor() => GetRandomPrefab(_roomPrefabs.floorPrefabs);
-    GameObject GetRandomDoor() => GetRandomPrefab(_roomPrefabs.doorPrefabs);
+    GameObject GetRandomWall() => GetRandomPrefab(_floorPrefabs.wallPrefabs);
+    GameObject GetRandomFloor() => GetRandomPrefab(_floorPrefabs.floorPrefabs);
+    GameObject GetRandomDoor() => GetRandomPrefab(_floorPrefabs.doorPrefabs);
     GameObject GetRandomPrefab(GameObject[] prefabs) => prefabs[Random.Range(0, prefabs.Length)];
 
     public int GetRoomRadius() => (GetRoomSizeNumber() * _tileSize) / 2;

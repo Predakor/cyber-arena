@@ -15,6 +15,8 @@ MonoBehaviour:
   stats:
     size: 2
     type: 0
+    sides: 3
+    doors: 
     hasTreasure: 0
     isGuarded: 0
   prefabs:
@@ -23,3 +25,4 @@ MonoBehaviour:
     floorPrefabs:
     - {fileID: 4604874459141738577, guid: 4e68df82bb3da254eb2003f95148ab76, type: 3}
     doorPrefabs: []
+  links: {fileID: 0}

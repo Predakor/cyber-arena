@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: Room_Small
   m_EditorClassIdentifier: 
   stats:
-    size: 0
+    size: 1
     type: 0
+    sides: 12
+    doors: 000000000000000000000000
     hasTreasure: 0
     isGuarded: 0
   prefabs:
-    wallPrefabs: []
+    wallPrefabs:
+    - {fileID: 9220700704462415792, guid: 49d2139d2da068a4a80d3cf27b87de59, type: 3}
     floorPrefabs:
     - {fileID: 4604874459141738577, guid: 4e68df82bb3da254eb2003f95148ab76, type: 3}
-    doorPrefabs: []
+    doorPrefabs:
+    - {fileID: 6790197992661217530, guid: d61e8f290ea85164aafb3417da42d272, type: 3}
+  links: {fileID: 0}

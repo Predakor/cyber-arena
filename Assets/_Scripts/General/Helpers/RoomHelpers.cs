@@ -50,7 +50,7 @@ public static class RoomHelpers {
 
     public static RoomStats RandomizeStats(RoomStats stats) {
         RoomSize[] defaultSizes = new[] { RoomSize.Small, RoomSize.Medium, RoomSize.Large };
-        int[] defaultSides = new[] { 4, 8, 12 };
+        int[] defaultSides = new[] { 4, 8 };
         return RandomizeStats(stats, defaultSizes, defaultSides);
     }
 
@@ -61,8 +61,8 @@ public static class RoomHelpers {
     }
 
     public static bool AreRoomsConnectable(RoomStats currentStats, RoomStats newStats, Vector3 prevRoomDirection) {
-        if (currentStats.sides != newStats.sides) {
-            return false;
+        if (currentStats.sides == newStats.sides) {
+            return true;
         }
         List<Vector3> newRoomDirections = GetRoomDirections(newStats.sides);
         return newRoomDirections.Exists((direction) => direction == prevRoomDirection);

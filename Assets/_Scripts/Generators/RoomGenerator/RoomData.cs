@@ -4,13 +4,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Floor Generation/Room Data", fileName = "Room Data")]
 public class RoomData : ScriptableObject {
     public RoomStats stats;
-    public RoomPrefabs prefabs;
+    public FloorPrefabs prefabs;
+    public RoomLinks links;
 
-    public void LoadPrefabs(RoomPrefabs newPrefabs) => prefabs = newPrefabs;
+    public void LoadPrefabs(FloorPrefabs newPrefabs) => prefabs = newPrefabs;
 }
 
 [Serializable]
-public struct RoomPrefabs {
+public struct FloorPrefabs {
     public GameObject[] wallPrefabs;
     public GameObject[] floorPrefabs;
     public GameObject[] doorPrefabs;

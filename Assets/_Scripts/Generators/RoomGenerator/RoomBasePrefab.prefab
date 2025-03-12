@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1864400283379564681}
   - component: {fileID: 2547998665819406926}
+  - component: {fileID: 7833085427427702181}
   - component: {fileID: 3644118871439085141}
   m_Layer: 8
   m_Name: RoomBasePrefab
@@ -49,18 +50,35 @@ MonoBehaviour:
     size: 0
     type: 0
     sides: 4
+    doors: 
     hasTreasure: 0
     isGuarded: 0
-  _roomPrefabs:
+  _floorPrefabs:
     wallPrefabs: []
     floorPrefabs: []
     doorPrefabs: []
+  _roomLinks: {fileID: 7833085427427702181}
   _tileSize: 20
   _doorSize: 4
   _wallSize: 10
   _wallRotationOffest: {x: 0, y: -90, z: 0}
   _doorRotationOffset: {x: 0, y: -90, z: 0}
-  _doors: 00000000
+--- !u!114 &7833085427427702181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5322528209390247851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff191bc9a6d29cc4dbfc4c3874fadbbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depth: 0
+  position: {x: 0, y: 0, z: 0}
+  nextRooms: []
+  room: {fileID: 2547998665819406926}
 --- !u!65 &3644118871439085141
 BoxCollider:
   m_ObjectHideFlags: 0

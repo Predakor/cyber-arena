@@ -58,7 +58,7 @@ public struct BaseFloorStats {
 [Serializable]
 public struct PrefabPool {
     [Tooltip("Prefabs for floor rooms")]
-    [SerializeField] public RoomPrefabs floorPrefabs;
+    [SerializeField] public FloorPrefabs floorPrefabs;
 
     [Tooltip("List of enemy prefabs that can appear on this floor")]
     [SerializeField] public List<GameObject> enemiesPool;
