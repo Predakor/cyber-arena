@@ -1,3 +1,4 @@
+using Helpers.Collections;
 using System;
 using UnityEngine;
 
@@ -15,6 +16,11 @@ public struct FloorPrefabs {
     public GameObject[] wallPrefabs;
     public GameObject[] floorPrefabs;
     public GameObject[] doorPrefabs;
+
+    T GetRandom<T>(T[] collection) => CollectionHelpers.RandomElement(collection);
+    public GameObject RandomWall() => GetRandom(wallPrefabs);
+    public GameObject RandomFloor() => GetRandom(floorPrefabs);
+    public GameObject RandomDoor() => GetRandom(doorPrefabs);
 }
 
 [Serializable]

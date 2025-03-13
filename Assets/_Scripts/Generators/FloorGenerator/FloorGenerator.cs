@@ -1,3 +1,4 @@
+using Helpers.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class FloorGenerator : MonoBehaviour {
     [SerializeField] GameObject _roomBasePrefab;
     [SerializeField] RoomData _roomDataTemplate;
     [SerializeField] FloorData _floorDataTemplate;
+    [SerializeField] GameObject _corridorTemplate;
 
     [Header("Override base template")]
     [SerializeField] BaseFloorStats _baseStats;
@@ -27,6 +29,7 @@ public class FloorGenerator : MonoBehaviour {
     [Header("Generated rooms")]
     [SerializeField] List<RoomGenerator> _generatedRooms;
     [SerializeField] List<RoomNode> _generatedNodes; //TODO implement nodes 
+    [SerializeField] List<CorridorGenerator> _generatedCorridors;
 
     int _roomSegmentSize = 20;
 
@@ -40,7 +43,6 @@ public class FloorGenerator : MonoBehaviour {
         ApplyModifiers();
         GenerateFloor();
     }
-
     [ContextMenu("Load Floor Data")]
     public void LoadData() {
         LoadData(_floorDataTemplate);
@@ -53,6 +55,13 @@ public class FloorGenerator : MonoBehaviour {
         }
         foreach (RoomGenerator room in _generatedRooms) {
             room.GenerateRoom();
+        }
+    }
+
+    [ContextMenu("Spawn corridors")]
+    public void SpawnAllCorridors() {
+        foreach (var corridor in _generatedCorridors) {
+            corridor.GenerateCorridor();
         }
     }
 
@@ -88,9 +97,14 @@ public class FloorGenerator : MonoBehaviour {
     }
 
     public void GenerateFloor() {
+        _generatedRooms.Clear();
+        _generatedNodes.Clear();
+        _generatedCorridors.Clear();
+
         GenerateRooms();
         GenerateLootRooms();
         GenerateGuardedRooms();
+        GenerateCorridors(_generatedRooms, _corridorTemplate, transform);
     }
     void GenerateRooms() {
         int roomNumber = _baseStats.numberOfRooms;
@@ -132,11 +146,11 @@ public class FloorGenerator : MonoBehaviour {
         // if no directions go back
         bool noAvaiablePositionsFound = avaiablePositions.Count == 0;
         if (noAvaiablePositionsFound) {
-            HandleBacktracking(previousRoom, remainingRooms, tries, depth);
+            HandleBacktracking(previousRoom, remainingRooms, tries);
             return;
         }
 
-        Vector3 newRoomPosition = avaiablePositions[Random.Range(0, avaiablePositions.Count)];
+        Vector3 newRoomPosition = CollectionHelpers.RandomElement(avaiablePositions);
         Vector3 newRoomDirection = (newRoomPosition - currentPosition).normalized;
 
 
@@ -146,31 +160,67 @@ public class FloorGenerator : MonoBehaviour {
 
         dataTemple.stats = newRoomStats;
 
-
         RoomGenerator newRoom = InstantiateRoom(newRoomPosition, transform, dataTemple);
-        HandleRoomLinks(currentRoom, newRoomPosition, newRoomDirection, newRoom);
-
+        HandleRoomLinks(currentRoom, newRoom, newRoomDirection);
         GenerateRoomRecursively(currentRoom, newRoom, remainingRooms - 1, tries + 1, depth + 1);
     }
 
-    void HandleRoomLinks(RoomGenerator currentRoom, Vector3 newRoomPosition, Vector3 newRoomDirection, RoomGenerator newRoom) {
-        newRoom.RoomLinks.Position = newRoomPosition;
+    void GenerateCorridors(List<RoomGenerator> generatedRooms,
+    GameObject corridorTemplate, Transform parent) {
+        _generatedCorridors.Clear();
+
+        foreach (var room in generatedRooms) {
+            var prevRoom = room.RoomLinks.GetPrevRoom();
+            if (!prevRoom.Value.room) {
+                continue;
+            }
+
+            float distance = prevRoom.Value.distance;
+            Vector3 direction = prevRoom.Value.direction;
+            Vector3 doorPosition = GetEdgePosition(room, direction);
+            Vector3 corridorPosition = doorPosition + (direction * (distance / 2));
+
+            CorridorData corridorData = new() {
+                prefabs = _roomDataTemplate.prefabs,
+                direction = direction,
+                size = new(_roomConnectionSettings.minCorridorWidth, 1, distance),
+                segments = new(1, 1),
+            };
+
+            CorridorGenerator corridor = Instantiate(corridorTemplate, corridorPosition, Quaternion.identity, parent).GetComponent<CorridorGenerator>();
+            corridor.LoadData(corridorData);
+            _generatedCorridors.Add(corridor);
+        }
+    }
+    static void HandleRoomLinks(RoomGenerator currentRoom, RoomGenerator newRoom, Vector3 newRoomDirection) {
+
+        Vector3 newRoomDoor = GetEdgePosition(currentRoom, newRoomDirection);
+        Vector3 prevRoomDoor = GetEdgePosition(newRoom, -newRoomDirection);
+        float doorDistance = (prevRoomDoor - newRoomDoor).magnitude;
+
+        Debug.DrawLine(newRoomDoor, prevRoomDoor, Color.blue, 10f);
+
+        newRoom.RoomLinks.Position = newRoom.transform.position;
         newRoom.RoomLinks.Depth = currentRoom.RoomLinks.Depth + 1;
-        newRoom.RoomLinks.SetPrevRoom(currentRoom.RoomLinks, newRoomDirection * -1);
-        currentRoom.RoomLinks.AddNextRoom(newRoom.RoomLinks, newRoomDirection);
+        newRoom.RoomLinks.SetPrevRoom(currentRoom.RoomLinks, doorDistance, newRoomDirection * -1);
+        currentRoom.RoomLinks.AddNextRoom(newRoom.RoomLinks, doorDistance, newRoomDirection);
+    }
+    static Vector3 GetEdgePosition(RoomGenerator room, Vector3 direction) {
+        return room.transform.position + (direction * room.GetRoomRadius());
     }
 
-    void HandleUnconnectableRooms(RoomStats currentRoom, RoomStats newRoom) {
+    static void HandleUnconnectableRooms(RoomStats currentRoom, RoomStats newRoom) {
         newRoom.sides = currentRoom.sides;
-
     }
-    void HandleBacktracking(RoomGenerator prevRoom, int remainingRooms, int tries, int depth) {
+
+    void HandleBacktracking(RoomGenerator prevRoom, int remainingRooms, int tries) {
         RoomLinks backtrackedRoom = prevRoom.RoomLinks.GetPrevNode();
         if (backtrackedRoom == null) {
             Debug.LogError("No Valid place for the room found terminating");
             return;
         }
-        GenerateRoomRecursively(backtrackedRoom.Room, prevRoom, remainingRooms, tries + 1, depth - 1);
+        int depth = backtrackedRoom.Depth;
+        GenerateRoomRecursively(backtrackedRoom.Room, prevRoom, remainingRooms, tries + 1, depth);
         Debug.DrawLine(backtrackedRoom.transform.position, prevRoom.transform.position, Color.red, 10f);
     }
 

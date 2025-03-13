@@ -18,7 +18,7 @@ MonoBehaviour:
   - roomSize: 1
     sides: 4
   - roomSize: 2
-    sides: 4,8
+    sides: 4
   - roomSize: 3
     sides: 8
   - roomSize: 4
