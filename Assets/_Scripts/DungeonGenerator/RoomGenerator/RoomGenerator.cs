@@ -142,6 +142,9 @@ public class RoomGenerator : MonoBehaviour {
 
     public int GetRoomRadius() => (GetRoomSizeNumber() * _tileSize) / 2;
     public float GetRoomWorldSize() => GetRoomSizeNumber() * _tileSize;
+    public static int GetRoomWorldSize(RoomStats stats) {
+        return GetRoomSizeNumber(stats.size) * 20;
+    }
 
     int GetRoomSizeNumber() => (int)_roomStats.size + 1;
     public static int GetRoomSizeNumber(RoomSize size) => (int)(size + 1);
