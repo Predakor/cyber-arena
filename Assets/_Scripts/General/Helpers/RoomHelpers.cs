@@ -4,14 +4,14 @@ using UnityEngine;
 
 public static class RoomHelpers {
     static Dictionary<int, List<Vector3>> _angleCache = new();
-
     public static List<Vector3> GetRoomDirections(int sides) {
         if (sides == 0) { return null; }
 
-        if (_angleCache.ContainsKey(sides)) return _angleCache[sides];
+        if (_angleCache.TryGetValue(sides, out List<Vector3> cachedDirections)) {
+            return cachedDirections;
+        }
 
         List<Vector3> directions = new(sides);
-        Vector3 direction = Vector3.zero;
 
         int rotationBase = 360 / sides;
         for (int i = 0; i < sides; i++) {
@@ -19,13 +19,26 @@ public static class RoomHelpers {
             float posX = Mathf.Cos(Mathf.Deg2Rad * angle);
             float posZ = Mathf.Sin(Mathf.Deg2Rad * angle);
 
-            direction.Set(posX, 0, posZ);
+            Vector3 direction = new(posX, 0, posZ);
             directions.Add(direction.normalized);
         }
 
         _angleCache.Add(sides, directions);
         return directions;
     }
+
+
+    static Dictionary<Vector3, float> _directionToAngleCache = new();
+    public static float DirectionToAngle(Vector3 direction) {
+        if (_directionToAngleCache.TryGetValue(direction, out float cachedAngle)) {
+            return cachedAngle;
+        }
+
+        float angle = Vector3.SignedAngle(direction, Vector3.forward, Vector3.up);
+        _directionToAngleCache.Add(direction, angle);
+        return angle;
+    }
+
 
     public static List<Vector3> GetUnoccupiedPositions(List<Vector3> positionsToCheck, float radius) {
         List<Vector3> availablePositions = new();
