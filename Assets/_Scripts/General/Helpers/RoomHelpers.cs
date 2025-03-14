@@ -93,6 +93,7 @@ public static class RoomHelpers {
     public static List<Vector3> GetAvaiablePositions(RoomGenerator currentRoom, Vector3 prevRoomDirection, int roomWorldSize, float minDistanceToNextRoom, float minSpacing) {
         List<Vector3> directions = GetRoomDirections(currentRoom.RoomStats.sides);
 
+
         //transform directions to points and fillter backwardDirection out
         List<Vector3> positions = new(directions.Count - 1);
         foreach (var direction in directions) {
@@ -102,7 +103,8 @@ public static class RoomHelpers {
         }
 
         //check which directions we can fit a room
-        float sizeToCheck = roomWorldSize + minSpacing / 2;
+
+        float sizeToCheck = roomWorldSize / 2 + minSpacing / 2;
         List<Vector3> avaiablePositions = GetUnoccupiedPositions(positions, sizeToCheck);
         return avaiablePositions;
     }

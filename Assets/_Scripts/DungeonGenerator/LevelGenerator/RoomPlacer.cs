@@ -55,7 +55,7 @@ public class RoomPlacer : MonoBehaviour {
 
         Vector3 prevRoomDirection = (previousPosition - currentPosition).normalized;
 
-        List<Vector3> avaiablePositions = RoomHelpers.GetAvaiablePositions(currentRoom, prevRoomDirection, newRoomWorldSize, minDistanceToNextRoom, _roomSpacing);
+        List<Vector3> avaiablePositions = RoomHelpers.GetAvaiablePositions(currentRoom, prevRoomDirection, newRoomWorldSize, minDistanceToNextRoom, _roomSpacing / 2);
 
         // if no directions go back
         bool noAvaiablePositionsFound = avaiablePositions.Count == 0;
@@ -68,7 +68,7 @@ public class RoomPlacer : MonoBehaviour {
         Vector3 newRoomDirection = (newRoomPosition - currentPosition).normalized;
 
         if (!RoomHelpers.AreRoomsConnectable(currentRoom.RoomStats, newRoomStats, newRoomDirection * -1)) {
-            HandleUnconnectableRooms(currentRoom.RoomStats, newRoomStats);
+            HandleUnconnectableRooms(currentRoom.RoomStats, ref newRoomStats);
         }
 
         dataTemple.stats = newRoomStats;
@@ -83,7 +83,7 @@ public class RoomPlacer : MonoBehaviour {
         newRoomStats = RoomHelpers.RandomizeStats(dataTemple.stats, _roomSizes, _roomRestrictions);
     }
 
-    static void HandleUnconnectableRooms(RoomStats currentRoom, RoomStats newRoom) {
+    static void HandleUnconnectableRooms(RoomStats currentRoom, ref RoomStats newRoom) {
         newRoom.sides = currentRoom.sides;
     }
 

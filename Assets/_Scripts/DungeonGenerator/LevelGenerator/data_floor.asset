@@ -18,13 +18,7 @@ MonoBehaviour:
     difficulty: 1
     lootQuality: 1
   _floorPool:
-    floorPrefabs:
-      wallPrefabs:
-      - {fileID: 9220700704462415792, guid: 49d2139d2da068a4a80d3cf27b87de59, type: 3}
-      floorPrefabs:
-      - {fileID: 4604874459141738577, guid: 4e68df82bb3da254eb2003f95148ab76, type: 3}
-      doorPrefabs:
-      - {fileID: 6790197992661217530, guid: d61e8f290ea85164aafb3417da42d272, type: 3}
+    floorPrefabs: {fileID: 11400000, guid: ca279dc2d0b657743a75fc4486538346, type: 2}
     enemiesPool: []
     uniqueRoomPool: []
   _floorModifiers:

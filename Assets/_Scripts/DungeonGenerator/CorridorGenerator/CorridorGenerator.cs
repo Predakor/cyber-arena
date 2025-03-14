@@ -43,7 +43,7 @@ public class CorridorGenerator : MonoBehaviour {
     void RotateTowardsNextRoom() {
         float angle = RoomHelpers.DirectionToAngle(_direction);
         Vector3 rotationAxis = new(0, 1, 0);
-        transform.Rotate(rotationAxis, angle);
+        transform.Rotate(rotationAxis, -angle);
     }
 
     void InstantiateCorridorFloor(LevelPrefab floor, Vector3 position) {
