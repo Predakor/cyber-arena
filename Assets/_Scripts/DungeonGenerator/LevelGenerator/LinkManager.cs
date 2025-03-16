@@ -18,4 +18,18 @@ static public class LinkManager {
         return room.transform.position + (direction * room.GetRoomRadius());
     }
 
+    public static void LinkNodes(RoomGenerator currentRoom, RoomGenerator newRoom) {
+        LinkNodes(currentRoom.RoomNode, newRoom.RoomNode);
+    }
+
+    public static void LinkNodes(RoomNode currentNode, RoomNode newNode) {
+        currentNode.AddNextNode(newNode);
+        newNode.SetPrevNode(currentNode);
+    }
+
+    public static void LinkRoomsAndNodes(RoomGenerator currentRoom, RoomGenerator newRoom,
+        Vector3 direction) {
+        LinkNodes(currentRoom, newRoom);
+        LinkRooms(currentRoom, newRoom, direction);
+    }
 }

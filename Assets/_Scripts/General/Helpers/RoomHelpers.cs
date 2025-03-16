@@ -82,7 +82,8 @@ public static class RoomHelpers {
         return randomStats;
     }
 
-    public static bool AreRoomsConnectable(RoomStats currentStats, RoomStats newStats, Vector3 prevRoomDirection) {
+    public static bool AreConnectable(RoomStats currentStats, RoomStats newStats,
+        Vector3 prevRoomDirection) {
         if (currentStats.sides == newStats.sides) {
             return true;
         }

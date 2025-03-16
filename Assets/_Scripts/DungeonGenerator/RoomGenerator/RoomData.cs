@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Floor Generation/Room Data", fileName = "Room Data")]
+[CreateAssetMenu(menuName = "Level Generation/Room/Data", fileName = "Room Data")]
 public class RoomData : ScriptableObject {
     public RoomStats stats;
     public LevelPrefabs prefabs;
@@ -16,7 +16,9 @@ public struct RoomStats {
     public RoomType type;
     [Range(4, 12)] public int sides;
     public bool hasTreasure;
-    public bool isGuarded;
+    private bool isGuarded;
+
+    public bool IsGuarded { get => isGuarded; set => isGuarded = value; }
 }
 
 public enum RoomSize { Small, Medium, Large, Huge, Giant }

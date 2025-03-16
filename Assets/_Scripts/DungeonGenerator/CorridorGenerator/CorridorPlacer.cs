@@ -4,13 +4,13 @@ using UnityEngine;
 public class CorridorPlacer : MonoBehaviour {
 
     [SerializeField] RoomData _roomDataTemplate;
-    [SerializeField] RoomConnectionSettings _roomConnectionSettings;
+    [SerializeField] PlacerData _placerData;
 
     [SerializeField] List<CorridorGenerator> _generatedCorridors;
 
-    public void LoadData(RoomData roomData, RoomConnectionSettings connectionSettings) {
+    public void LoadData(RoomData roomData, PlacerData placerData) {
         _roomDataTemplate = roomData;
-        _roomConnectionSettings = connectionSettings;
+        _placerData = placerData;
     }
 
     public List<CorridorGenerator> PlaceCorridors(
@@ -31,7 +31,7 @@ public class CorridorPlacer : MonoBehaviour {
             CorridorData corridorData = new() {
                 prefabs = _roomDataTemplate.prefabs,
                 direction = direction,
-                size = new(_roomConnectionSettings.minCorridorWidth, 1, distance),
+                size = new(_placerData.minCorridorWidth, 1, distance),
                 segments = new(1, 1),
             };
 

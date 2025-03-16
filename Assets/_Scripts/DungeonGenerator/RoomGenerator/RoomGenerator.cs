@@ -6,6 +6,7 @@ public class RoomGenerator : MonoBehaviour {
     [SerializeField] RoomStats _roomStats;
     [SerializeField] LevelPrefabs _floorPrefabs;
     [SerializeField] RoomLinks _roomLinks;
+    [SerializeField] RoomNode _roomNode;
 
     [Header("Sizes")]
     [SerializeField] int _tileSize = 20;
@@ -17,9 +18,19 @@ public class RoomGenerator : MonoBehaviour {
 
     BoxCollider _roomCollider;
 
-    public RoomStats RoomStats { get => _roomStats; private set => _roomStats = value; }
+    public RoomStats RoomStats { get => _roomStats; set => _roomStats = value; }
     public LevelPrefabs FloorPrefabs { get => _floorPrefabs; private set => _floorPrefabs = value; }
     public RoomLinks RoomLinks { get => _roomLinks; set => _roomLinks = value; }
+    public RoomNode RoomNode {
+        get {
+            if (_roomNode == null) {
+                Debug.LogWarning("No room node in prefab", this);
+                _roomNode = GetComponent<RoomNode>();
+            }
+            return _roomNode;
+        }
+        set => _roomNode = value;
+    }
 
 #if UNITY_EDITOR
 
@@ -151,6 +162,14 @@ public class RoomGenerator : MonoBehaviour {
 
     void OnDrawGizmos() {
         Gizmos.color = Color.blue;
+        if (RoomStats.IsGuarded) {
+            Gizmos.color = Color.red;
+        }
+
+        if (RoomStats.hasTreasure) {
+            Gizmos.color = Color.green;
+        }
+
         float size = GetRoomSizeNumber() * _tileSize;
         Gizmos.DrawWireCube(transform.position, new Vector3(size, 1, size));
     }

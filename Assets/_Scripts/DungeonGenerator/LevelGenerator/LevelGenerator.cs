@@ -1,3 +1,4 @@
+using Helpers.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,21 +12,23 @@ public class LevelGenerator : MonoBehaviour {
     [SerializeField] CorridorPlacer _corridorPlacer;
 
     [Header("Prefabs/templates")]
+    [SerializeField] FloorData _levelDataTemplate;
+    [SerializeField] GameObject _roomTemplate;
     [SerializeField] RoomData _roomDataTemplate;
-    [SerializeField] FloorData _floorDataTemplate;
+    [SerializeField] RoomRestrictionsSO _roomRestrictions;
     [SerializeField] GameObject _corridorTemplate;
 
     [Header("Override base template")]
     [SerializeField] BaseFloorStats _baseStats;
-    [SerializeField] PrefabPool _floorPool;
-    [SerializeField] FloorModifiers _floorModifiers;
+    [SerializeField] FloorModifiers _levelModifiers;
     [SerializeField] LootRoomSettings _lootRoomSettings;
     [SerializeField] GuardedRoomSettings _guardedRoomSettings;
-    [SerializeField] RoomConnectionSettings _roomConnectionSettings;
+    [SerializeField] PrefabPool _levelPool;
+    [SerializeField] PlacerData _roomPlacerData;
 
-    [Header("Generated rooms")]
+    [Header("Generated structures")]
+    [SerializeField] List<RoomNode> _generatedNodes;
     [SerializeField] List<RoomGenerator> _generatedRooms;
-    [SerializeField] List<RoomNode> _generatedNodes; //TODO implement nodes 
     [SerializeField] List<CorridorGenerator> _generatedCorridors;
 
     #endregion
@@ -40,7 +43,7 @@ public class LevelGenerator : MonoBehaviour {
     }
     [ContextMenu("Load Floor Data")]
     public void LoadData() {
-        LoadData(_floorDataTemplate);
+        LoadData(_levelDataTemplate);
     }
     [ContextMenu("Spawn all generated rooms")]
     public void GenerateSpawnedRooms() {
@@ -75,27 +78,34 @@ public class LevelGenerator : MonoBehaviour {
     public void LoadData(FloorData data) {
         FloorGenerationData floorData = data.GetFloorData();
         _baseStats = floorData.baseStats;
-        _floorPool = floorData.floorPool;
-        _floorModifiers = floorData.floorModifiers;
+        _levelPool = floorData.floorPool;
+        _levelModifiers = floorData.floorModifiers;
         _lootRoomSettings = floorData.lootRoomSettings;
         _guardedRoomSettings = floorData.guardedRoomSettings;
-        _roomConnectionSettings = floorData.roomConnectionSettings;
-
-        _roomDataTemplate.LoadPrefabs(_floorPool.floorPrefabs);
+        _roomPlacerData = floorData.roomPlacerData;
+        _roomDataTemplate.LoadPrefabs(_levelPool.levelPrefabs);
     }
     public void ApplyModifiers() {
-        _baseStats.difficulty = Mathf.FloorToInt(_baseStats.difficulty * _floorModifiers.difficultyModifier);
-        _lootRoomSettings.lootRoomChance *= _floorModifiers.lootModifier;
-        _guardedRoomSettings.guardedRoomChance *= _floorModifiers.guardModifier;
+        _baseStats.difficulty = Mathf.FloorToInt(_baseStats.difficulty * _levelModifiers.difficultyModifier);
+        _lootRoomSettings.lootRoomChance *= _levelModifiers.lootModifier;
+        _guardedRoomSettings.guardedRoomChance *= _levelModifiers.guardModifier;
 
         _lootRoomSettings.Validate();
         _guardedRoomSettings.Validate();
-        _roomConnectionSettings.Validate();
     }
 
     public void SetupDependencies() {
-        _roomPlacer.LoadData(_floorDataTemplate);
-        _corridorPlacer.LoadData(_roomDataTemplate, _roomConnectionSettings);
+        _roomPlacer.Init(
+            new() {
+                roomPrefab = _roomTemplate,
+                roomDataTemplate = _roomDataTemplate,
+                roomRestrictions = _roomRestrictions
+
+            },
+            _roomPlacerData);
+        _roomPlacer.OnFirstRoomCreated += OnFirstRoomHandler;
+        _roomPlacer.OnRoomCreated += HandleRoomCreation;
+        _corridorPlacer.LoadData(_roomDataTemplate, _roomPlacerData);
     }
 
     public void GenerateFloor() {
@@ -103,19 +113,68 @@ public class LevelGenerator : MonoBehaviour {
         _generatedNodes.Clear();
         _generatedCorridors.Clear();
 
-        _generatedRooms = _roomPlacer.GenerateRooms(_baseStats.numberOfRooms);
+        _roomPlacer.GenerateRooms(_roomPlacerData.numberOfRooms);
         GenerateLootRooms();
         GenerateGuardedRooms();
         _generatedCorridors = _corridorPlacer.PlaceCorridors(_generatedRooms, _corridorTemplate);
     }
 
+    void OnFirstRoomHandler(RoomGenerator obj) => _generatedRooms.Add(obj);
+    void HandleRoomCreation(RoomGenerator newRoom, RoomGenerator currentRoom, Vector3 direction) {
+        LinkManager.LinkRoomsAndNodes(currentRoom, newRoom, direction);
+        _generatedRooms.Add(newRoom);
+    }
+
     void GenerateLootRooms() {
-        if (_lootRoomSettings.maxLootRooms > 0) {
+        int maxLootRoms = _lootRoomSettings.maxLootRooms;
+        int gurantedLootRooms = _lootRoomSettings.guaranteedLootRooms;
+        int generatedLootRooms = 0;
+
+        for (int i = 0; i < gurantedLootRooms; i++) {
+            RoomGenerator lootRoom = CollectionHelpers.RandomElement(_generatedRooms, 1);
+            CreateLootRoom(lootRoom);
+        }
+
+        bool lootRoomLimitSurpased = generatedLootRooms >= _lootRoomSettings.maxLootRooms;
+        if (lootRoomLimitSurpased) {
+            return;
+        }
+
+        float lootRoomChance = _lootRoomSettings.lootRoomChance;
+        for (int i = _generatedRooms.Count - 1; i > 0; i--) {
+            if (generatedLootRooms >= maxLootRoms) {
+                return;
+            }
+
+            bool succesfulRoll = Random.Range(0, 101) > lootRoomChance;
+            if (succesfulRoll) {
+                CreateLootRoom(_generatedRooms[i]);
+            };
+        }
+
+
+        void CreateLootRoom(RoomGenerator lootRoom) {
+            RoomStats newStats = lootRoom.RoomStats;
+            newStats.hasTreasure = true;
+            lootRoom.RoomStats = newStats;
+            generatedLootRooms++;
         }
     }
 
     void GenerateGuardedRooms() {
-        if (_guardedRoomSettings.maxGuardedRooms > 0) {
+        float hostileRoomChance = _guardedRoomSettings.guardedRoomChance;
+        for (int i = 1; i < _generatedRooms.Count; i++) {
+
+
+            float roll = Random.Range(0, 101);
+            bool isGuarded = roll > hostileRoomChance;
+
+            if (isGuarded) {
+                RoomGenerator room = _generatedRooms[i];
+                RoomStats newStats = room.RoomStats;
+                newStats.IsGuarded = isGuarded;
+                room.RoomStats = newStats;
+            }
         }
     }
 }

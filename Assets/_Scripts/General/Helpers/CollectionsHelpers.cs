@@ -1,27 +1,28 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 
 namespace Helpers.Collections {
 
-    public class CollectionHelpers : MonoBehaviour {
-
-        T GetElement<T>(IEnumerable<T> collection, int start, int end) {
-            int rand = Random.Range(start, end);
-            return collection.ElementAt(rand);
-        }
-
+    public static class CollectionHelpers {
         public static T RandomElement<T>(List<T> collection, int start = 0) {
-            if (collection.Count == 1) return collection[0];
-            start = Mathf.Clamp(start, 0, collection.Count);
-            return collection[Random.Range(start, collection.Count)];
-        }
-        public static T RandomElement<T>(T[] collection, int start = 0) {
-            if (collection.Length == 1) return collection[0];
-            start = Mathf.Clamp(start, 0, collection.Length);
-            return collection[Random.Range(start, collection.Length)];
+            return GetElement(collection, start, collection?.Count ?? 0);
         }
 
+        public static T RandomElement<T>(T[] collection, int start = 0) {
+            return GetElement(collection, start, collection?.Length ?? 0);
+        }
+
+        private static T GetElement<T>(IList<T> collection, int start, int end) {
+            if (end == 0) {
+                Debug.LogError($"Collection is null or empty: {typeof(T).Name}");
+                return default;
+            }
+
+            start = Mathf.Clamp(start, 0, end - 1);
+            end = Mathf.Clamp(end, start + 1, end);
+
+            return collection[Random.Range(start, end)];
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Room_Restrictions_SO", menuName = "Floor Generation/Room/Restrictions")]
+[CreateAssetMenu(fileName = "Room_Restrictions_SO", menuName = "Level Generation/Room/Restrictions")]
 public class RoomRestrictionsSO : ScriptableObject {
 
     [SerializeField] List<Restriction> restrictions;
