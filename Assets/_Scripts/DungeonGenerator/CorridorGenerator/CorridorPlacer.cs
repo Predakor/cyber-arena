@@ -1,21 +1,26 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CorridorPlacer : MonoBehaviour {
 
-    [SerializeField] RoomData _roomDataTemplate;
+    [SerializeField] LevelPrefabs _levelPrefabs;
     [SerializeField] PlacerData _placerData;
+    [SerializeField] GameObject _corridorTemplatePrefab;
 
-    [SerializeField] List<CorridorGenerator> _generatedCorridors;
+    /// <summary>
+    /// create corridor| corridor data
+    /// </summary>
 
-    public void LoadData(RoomData roomData, PlacerData placerData) {
-        _roomDataTemplate = roomData;
+    public event Action<CorridorGenerator, CorridorData> OnCorridorCreated;
+
+    public void Init(LevelPrefabs prefabs, PlacerData placerData, GameObject corridorTemplate) {
+        _levelPrefabs = prefabs;
         _placerData = placerData;
+        _corridorTemplatePrefab = corridorTemplate;
     }
 
-    public List<CorridorGenerator> PlaceCorridors(
-        List<RoomGenerator> generatedRooms, GameObject corridorTemplate) {
-        _generatedCorridors.Clear();
+    public void PlaceCorridors(List<RoomGenerator> generatedRooms) {
 
         foreach (var room in generatedRooms) {
             var prevRoom = room.RoomLinks.GetPrevRoom();
@@ -28,22 +33,24 @@ public class CorridorPlacer : MonoBehaviour {
             Vector3 doorPosition = LinkManager.GetEdgePosition(room, direction);
             Vector3 corridorPosition = doorPosition + (direction * (distance / 2));
 
-            CorridorData corridorData = new() {
-                prefabs = _roomDataTemplate.prefabs,
-                direction = direction,
-                size = new(_placerData.minCorridorWidth, 1, distance),
-                segments = new(1, 1),
-            };
+            CorridorData corridorData = CreateCorridorData(distance, direction);
 
-            PlaceCorridor(corridorTemplate, corridorPosition, corridorData);
+            CorridorGenerator corridor = PlaceCorridor(_corridorTemplatePrefab, corridorPosition);
+            OnCorridorCreated?.Invoke(corridor, corridorData);
         }
-
-        return _generatedCorridors;
     }
 
-    private void PlaceCorridor(GameObject corridorTemplate, Vector3 corridorPosition, CorridorData corridorData) {
+    CorridorData CreateCorridorData(float distance, Vector3 direction) {
+        return new() {
+            prefabs = _levelPrefabs,
+            direction = direction,
+            size = new(_placerData.minCorridorWidth, 1, distance),
+            segments = new(1, 1),
+        };
+    }
+
+    CorridorGenerator PlaceCorridor(GameObject corridorTemplate, Vector3 corridorPosition) {
         CorridorGenerator corridor = Instantiate(corridorTemplate, corridorPosition, Quaternion.identity, transform).GetComponent<CorridorGenerator>();
-        corridor.LoadData(corridorData);
-        _generatedCorridors.Add(corridor);
+        return corridor;
     }
 }

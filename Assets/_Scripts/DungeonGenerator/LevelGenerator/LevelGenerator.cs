@@ -1,5 +1,6 @@
 using Helpers.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -13,10 +14,12 @@ public class LevelGenerator : MonoBehaviour {
 
     [Header("Prefabs/templates")]
     [SerializeField] FloorData _levelDataTemplate;
+    [SerializeField] TemplatesHolderData _levelDataTemplateHolder;
+
     [SerializeField] GameObject _roomTemplate;
     [SerializeField] RoomData _roomDataTemplate;
-    [SerializeField] RoomRestrictionsSO _roomRestrictions;
     [SerializeField] GameObject _corridorTemplate;
+    [SerializeField] RoomRestrictionsSO _roomRestrictions;
 
     [Header("Override base template")]
     [SerializeField] BaseFloorStats _baseStats;
@@ -41,10 +44,9 @@ public class LevelGenerator : MonoBehaviour {
         ApplyModifiers();
         GenerateFloor();
     }
-    [ContextMenu("Load Floor Data")]
-    public void LoadData() {
-        LoadData(_levelDataTemplate);
-    }
+
+
+
     [ContextMenu("Spawn all generated rooms")]
     public void GenerateSpawnedRooms() {
         if (_generatedRooms.Count == 0) {
@@ -71,10 +73,60 @@ public class LevelGenerator : MonoBehaviour {
         _generatedRooms.Clear();
     }
 
-    [ContextMenu("Load dependencies")]
-    void LoadDependencies() { SetupDependencies(); }
+    [ContextMenu("Load Floor Data")]
+    public void LoadData() { LoadData(_levelDataTemplate); }
+
+    [ContextMenu("Setup Generator")]
+    void LoadDependencies() {
+        Init();
+        ApplyModifiers();
+        SetupDependencies();
+    }
 
 #endif
+
+    public void Init(Level level = Level.Neon_City) {
+        string templatePath = "LevelData/BaseTemplates/Level_Template_Holder";
+        var templates = Resources.Load<TemplatesHolderData>(templatePath);
+
+        if (templates == null) {
+            string templatesName = templatePath.Split('/').Last();
+            Debug.LogError("templates not found" + " " + templatesName);
+        }
+
+        _roomRestrictions = templates.RoomRestrictions;
+        _corridorTemplate = templates.CorridorTemplatePrefab;
+        _roomDataTemplate = templates.RoomDataTemplate;
+        _roomTemplate = templates.RoomTemplatePrefab;
+        _levelDataTemplateHolder = templates;
+        Resources.UnloadAsset(templates);
+
+        string levelPath = $"LevelData/{level}";
+        var levelData = Resources.Load(levelPath);
+        if (levelData == null) {
+            Debug.Log($"No data found for {level} level");
+        }
+        //binding magic
+        Resources.UnloadAsset(levelData);
+    }
+
+    public void SetupDependencies() {
+        InitData roomPlacerData = new() {
+            roomPrefab = _roomTemplate,
+            roomDataTemplate = _roomDataTemplate,
+            roomRestrictions = _roomRestrictions
+        };
+
+        _roomPlacer.Init(_levelDataTemplateHolder, _roomPlacerData);
+
+        _roomPlacer.OnFirstRoomCreated += OnFirstRoomHandler;
+        _roomPlacer.OnRoomCreated += HandleRoomCreation;
+
+        _corridorPlacer.Init(_levelPool.levelPrefabs, _roomPlacerData, _corridorTemplate);
+        _corridorPlacer.OnCorridorCreated += HandleCorridorCreation;
+
+    }
+
     public void LoadData(FloorData data) {
         FloorGenerationData floorData = data.GetFloorData();
         _baseStats = floorData.baseStats;
@@ -83,7 +135,6 @@ public class LevelGenerator : MonoBehaviour {
         _lootRoomSettings = floorData.lootRoomSettings;
         _guardedRoomSettings = floorData.guardedRoomSettings;
         _roomPlacerData = floorData.roomPlacerData;
-        _roomDataTemplate.LoadPrefabs(_levelPool.levelPrefabs);
     }
     public void ApplyModifiers() {
         _baseStats.difficulty = Mathf.FloorToInt(_baseStats.difficulty * _levelModifiers.difficultyModifier);
@@ -94,20 +145,6 @@ public class LevelGenerator : MonoBehaviour {
         _guardedRoomSettings.Validate();
     }
 
-    public void SetupDependencies() {
-        _roomPlacer.Init(
-            new() {
-                roomPrefab = _roomTemplate,
-                roomDataTemplate = _roomDataTemplate,
-                roomRestrictions = _roomRestrictions
-
-            },
-            _roomPlacerData);
-        _roomPlacer.OnFirstRoomCreated += OnFirstRoomHandler;
-        _roomPlacer.OnRoomCreated += HandleRoomCreation;
-        _corridorPlacer.LoadData(_roomDataTemplate, _roomPlacerData);
-    }
-
     public void GenerateFloor() {
         _generatedRooms.Clear();
         _generatedNodes.Clear();
@@ -116,13 +153,18 @@ public class LevelGenerator : MonoBehaviour {
         _roomPlacer.GenerateRooms(_roomPlacerData.numberOfRooms);
         GenerateLootRooms();
         GenerateGuardedRooms();
-        _generatedCorridors = _corridorPlacer.PlaceCorridors(_generatedRooms, _corridorTemplate);
+        _corridorPlacer.PlaceCorridors(_generatedRooms);
     }
 
     void OnFirstRoomHandler(RoomGenerator obj) => _generatedRooms.Add(obj);
     void HandleRoomCreation(RoomGenerator newRoom, RoomGenerator currentRoom, Vector3 direction) {
         LinkManager.LinkRoomsAndNodes(currentRoom, newRoom, direction);
         _generatedRooms.Add(newRoom);
+    }
+
+    void HandleCorridorCreation(CorridorGenerator corridor, CorridorData corridorData) {
+        corridor.LoadData(corridorData);
+        _generatedCorridors.Add(corridor);
     }
 
     void GenerateLootRooms() {
@@ -177,4 +219,10 @@ public class LevelGenerator : MonoBehaviour {
             }
         }
     }
+}
+
+
+public enum Level {
+    Neon_City,
+    Beaver_City,
 }

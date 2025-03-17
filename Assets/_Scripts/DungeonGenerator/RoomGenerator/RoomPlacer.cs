@@ -21,7 +21,7 @@ public class RoomPlacer : MonoBehaviour {
     public event Action<RoomGenerator, RoomGenerator, Vector3> OnRoomCreated;
     public event Action<RoomGenerator> OnFirstRoomCreated;
 
-    public void Init(InitData data, PlacerData placerData) {
+    public void Init(TemplatesHolderData data, PlacerData placerData) {
         _roomSpacing = placerData.minRoomDistance;
         _maxDepth = placerData.maxDepth;
         _desiredDepth = placerData.desiredDepth;
@@ -29,9 +29,9 @@ public class RoomPlacer : MonoBehaviour {
         _roomSizes = placerData.roomSizes;
         _roomCount = placerData.numberOfRooms;
 
-        _roomBasePrefab = data.roomPrefab;
-        _roomDataTemplate = data.roomDataTemplate;
-        _roomRestrictions = data.roomRestrictions;
+        _roomBasePrefab = data.RoomTemplatePrefab;
+        _roomDataTemplate = data.RoomDataTemplate;
+        _roomRestrictions = data.RoomRestrictions;
     }
 
     [ContextMenu("Generate rooms")]
