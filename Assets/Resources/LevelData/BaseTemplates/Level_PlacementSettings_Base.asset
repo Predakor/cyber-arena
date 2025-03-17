@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_PlacementSettings_Base
   m_EditorClassIdentifier: 
   numberOfRooms: 12
-  roomSizes: 
+  roomSizes: 01000000010000000100000001000000020000000200000003000000
   maxDepth: 12
   desiredDepth: 12
   maxTries: 24
