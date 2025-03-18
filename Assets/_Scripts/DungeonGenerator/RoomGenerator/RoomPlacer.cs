@@ -29,7 +29,7 @@ public class RoomPlacer : MonoBehaviour {
         _roomSizes = placerData.roomSizes;
         _roomCount = placerData.numberOfRooms;
 
-        _roomBasePrefab = data.RoomTemplatePrefab;
+        _roomBasePrefab = data.GetRoomTemplate();
         _roomDataTemplate = data.RoomDataTemplate;
         _roomRestrictions = data.RoomRestrictions;
     }
@@ -94,6 +94,7 @@ public class RoomPlacer : MonoBehaviour {
             HandleUnconnectableRooms(currentRoom.RoomStats, ref newRoomStats);
         }
 
+        dataTemple.prefabs =
         dataTemple.stats = newRoomStats;
 
         RoomGenerator newRoom = InstantiateRoom(newRoomPosition, transform, dataTemple);
@@ -126,6 +127,7 @@ public class RoomPlacer : MonoBehaviour {
         RoomGenerator room = Instantiate(_roomBasePrefab, position, Quaternion.identity, transform)
             .GetComponent<RoomGenerator>();
         room.gameObject.name = $"Room {data.stats.size} {data.stats.sides}gon";
+        Debug.Log(data);
         room.LoadData(data);
         return room;
     }

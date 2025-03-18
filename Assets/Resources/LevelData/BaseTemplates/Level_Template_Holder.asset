@@ -12,7 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a090a254b94f03041a8f9a76a1b74a15, type: 3}
   m_Name: Level_Template_Holder
   m_EditorClassIdentifier: 
-  roomTemplatePrefab: {fileID: 5322528209390247851, guid: 4d22e6e60acb3c149a4aaf4cd7973d8c, type: 3}
+  _roomTemplatesList:
+  - type: 0
+    template: {fileID: 7314771928619754224, guid: 3c968176d3489b8488d2064207e85390, type: 3}
+  - type: 1
+    template: {fileID: 3416797981879898188, guid: 313d967a14f4e9444b2cf97f22e1739e, type: 3}
+  - type: 2
+    template: {fileID: 3416797981879898188, guid: 33c5183b2415c8240b7b9fe4a7020b20, type: 3}
+  - type: 3
+    template: {fileID: 3416797981879898188, guid: e3b7bbec3c8242647bc25bec0acf7920, type: 3}
+  - type: 4
+    template: {fileID: 7314771928619754224, guid: 3c968176d3489b8488d2064207e85390, type: 3}
+  - type: 5
+    template: {fileID: 3416797981879898188, guid: 92a972f67b4000a428120f50186d37bd, type: 3}
   roomDataTemplate: {fileID: 11400000, guid: d752a1917a6eb5e41a2de180d21fdece, type: 2}
   roomRestrictions: {fileID: 11400000, guid: 7db2965e5e5aec44087e92182cf94c4f, type: 2}
   corridorTemplatePrefab: {fileID: 952527219157760607, guid: 25911aab4566b09479216c5048a85100, type: 3}

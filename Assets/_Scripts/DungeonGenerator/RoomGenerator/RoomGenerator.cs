@@ -19,7 +19,6 @@ public class RoomGenerator : MonoBehaviour {
     BoxCollider _roomCollider;
 
     public RoomStats RoomStats { get => _roomStats; set => _roomStats = value; }
-    public LevelPrefabs FloorPrefabs { get => _floorPrefabs; private set => _floorPrefabs = value; }
     public RoomLinks RoomLinks { get => _roomLinks; set => _roomLinks = value; }
     public RoomNode RoomNode {
         get {
@@ -160,17 +159,19 @@ public class RoomGenerator : MonoBehaviour {
     int GetRoomSizeNumber() => (int)_roomStats.size + 1;
     public static int GetRoomSizeNumber(RoomSize size) => (int)(size + 1);
 
+
+#if UNITY_EDITOR
     void OnDrawGizmos() {
-        Gizmos.color = Color.blue;
-        if (RoomStats.IsGuarded) {
-            Gizmos.color = Color.red;
+        switch (RoomStats.type) {
+            case RoomType.Normal: Gizmos.color = Color.blue; break;
+            case RoomType.Guarded: Gizmos.color = Color.red; break;
+            case RoomType.Loot: Gizmos.color = Color.green; break;
+            case RoomType.Boss: Gizmos.color = Color.black; break;
+            case RoomType.Puzzle: Gizmos.color = Color.yellow; break;
+            case RoomType.Special: Gizmos.color = Color.white; break;
         }
-
-        if (RoomStats.hasTreasure) {
-            Gizmos.color = Color.green;
-        }
-
         float size = GetRoomSizeNumber() * _tileSize;
         Gizmos.DrawWireCube(transform.position, new Vector3(size, 1, size));
     }
 }
+#endif

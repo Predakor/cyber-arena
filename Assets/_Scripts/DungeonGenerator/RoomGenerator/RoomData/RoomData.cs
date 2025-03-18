@@ -16,11 +16,18 @@ public struct RoomStats {
     public RoomType type;
     [Range(4, 12)] public int sides;
     public bool hasTreasure;
-    private bool isGuarded;
+    public bool isGuarded;
 
-    public bool IsGuarded { get => isGuarded; set => isGuarded = value; }
+    public bool IsGuarded => type == RoomType.Guarded;
+    public bool HasLoot => type == RoomType.Loot;
+
+    public void SetType(RoomType newType) {
+        if (newType != type) {
+            type = newType;
+        }
+    }
 }
 
 public enum RoomSize { Small, Medium, Large, Huge, Giant }
-public enum RoomType { Normal, Combat, Treasure, Boss, Puzzle, Special }
+public enum RoomType { Normal, Guarded, Loot, Boss, Puzzle, Special }
 

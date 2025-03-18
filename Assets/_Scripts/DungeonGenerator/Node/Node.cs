@@ -34,13 +34,12 @@ public abstract class Node : MonoBehaviour {
             list.AddRange(nodes);
         }
 
-        if (node.TryGetPrevNode(out Node prevNode) && !list.Contains(prevNode)) {
+        if (node.TryGetPrevNode(out Node prevNode)) {
             list.Add(prevNode);
         }
 
         return list;
     }
-
     public List<Node> GetNeighbours() {
         return GetNeighbours(this);
     }

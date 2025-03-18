@@ -11,6 +11,7 @@ public class LevelGenerator : MonoBehaviour {
     [Header("Dependencies")]
     [SerializeField] RoomPlacer _roomPlacer;
     [SerializeField] CorridorPlacer _corridorPlacer;
+    [SerializeField] BossPlacer _bossPlacer;
 
     [Header("Prefabs/templates")]
     [SerializeField] FloorData _levelDataTemplate;
@@ -45,23 +46,13 @@ public class LevelGenerator : MonoBehaviour {
         GenerateFloor();
     }
 
-
-
-    [ContextMenu("Spawn all generated rooms")]
+    [ContextMenu("Spawn Generated Level")]
     public void GenerateSpawnedRooms() {
-        if (_generatedRooms.Count == 0) {
-            Debug.LogError("no rooms to generate, generate them first");
-            return;
+        foreach (var corridor in _generatedCorridors) {
+            corridor.GenerateCorridor();
         }
         foreach (RoomGenerator room in _generatedRooms) {
             room.GenerateRoom();
-        }
-    }
-
-    [ContextMenu("Spawn corridors")]
-    public void SpawnAllCorridors() {
-        foreach (var corridor in _generatedCorridors) {
-            corridor.GenerateCorridor();
         }
     }
 
@@ -70,11 +61,11 @@ public class LevelGenerator : MonoBehaviour {
         for (int i = transform.childCount - 1; i >= 0; i--) {
             DestroyImmediate(transform.GetChild(i).gameObject);
         }
-        _generatedRooms.Clear();
+        CleanLists();
     }
 
     [ContextMenu("Load Floor Data")]
-    public void LoadData() { LoadData(_levelDataTemplate); }
+    public void LoadData() => LoadData(_levelDataTemplate);
 
     [ContextMenu("Setup Generator")]
     void LoadDependencies() {
@@ -97,7 +88,7 @@ public class LevelGenerator : MonoBehaviour {
         _roomRestrictions = templates.RoomRestrictions;
         _corridorTemplate = templates.CorridorTemplatePrefab;
         _roomDataTemplate = templates.RoomDataTemplate;
-        _roomTemplate = templates.RoomTemplatePrefab;
+        _roomTemplate = templates.GetRoomTemplate();
         _levelDataTemplateHolder = templates;
         Resources.UnloadAsset(templates);
 
@@ -117,14 +108,15 @@ public class LevelGenerator : MonoBehaviour {
             roomRestrictions = _roomRestrictions
         };
 
+        CleanEventHandler();
+
         _roomPlacer.Init(_levelDataTemplateHolder, _roomPlacerData);
+        _corridorPlacer.Init(_levelPool.levelPrefabs, _roomPlacerData, _corridorTemplate);
+        _bossPlacer.Init(_levelPool.enemiesPool);
 
         _roomPlacer.OnFirstRoomCreated += OnFirstRoomHandler;
         _roomPlacer.OnRoomCreated += HandleRoomCreation;
-
-        _corridorPlacer.Init(_levelPool.levelPrefabs, _roomPlacerData, _corridorTemplate);
         _corridorPlacer.OnCorridorCreated += HandleCorridorCreation;
-
     }
 
     public void LoadData(FloorData data) {
@@ -146,19 +138,30 @@ public class LevelGenerator : MonoBehaviour {
     }
 
     public void GenerateFloor() {
-        _generatedRooms.Clear();
-        _generatedNodes.Clear();
-        _generatedCorridors.Clear();
+        CleanLists();
 
         _roomPlacer.GenerateRooms(_roomPlacerData.numberOfRooms);
         GenerateLootRooms();
         GenerateGuardedRooms();
+        GenerateBossRoom();
+
+
         _corridorPlacer.PlaceCorridors(_generatedRooms);
     }
 
-    void OnFirstRoomHandler(RoomGenerator obj) => _generatedRooms.Add(obj);
+    void GenerateBossRoom() {
+        _bossPlacer.GetBossLocation(_generatedNodes);
+    }
+
+    void OnFirstRoomHandler(RoomGenerator room) {
+        //place player or mark as first idk
+        _generatedNodes.Add(room.RoomNode);
+        _generatedRooms.Add(room);
+    }
+
     void HandleRoomCreation(RoomGenerator newRoom, RoomGenerator currentRoom, Vector3 direction) {
         LinkManager.LinkRoomsAndNodes(currentRoom, newRoom, direction);
+        _generatedNodes.Add(newRoom.RoomNode);
         _generatedRooms.Add(newRoom);
     }
 
@@ -194,7 +197,6 @@ public class LevelGenerator : MonoBehaviour {
             };
         }
 
-
         void CreateLootRoom(RoomGenerator lootRoom) {
             RoomStats newStats = lootRoom.RoomStats;
             newStats.hasTreasure = true;
@@ -207,17 +209,29 @@ public class LevelGenerator : MonoBehaviour {
         float hostileRoomChance = _guardedRoomSettings.guardedRoomChance;
         for (int i = 1; i < _generatedRooms.Count; i++) {
 
-
             float roll = Random.Range(0, 101);
             bool isGuarded = roll > hostileRoomChance;
 
             if (isGuarded) {
                 RoomGenerator room = _generatedRooms[i];
                 RoomStats newStats = room.RoomStats;
-                newStats.IsGuarded = isGuarded;
+                newStats.isGuarded = isGuarded;
                 room.RoomStats = newStats;
             }
         }
+    }
+
+    void CleanEventHandler() {
+        _roomPlacer.OnFirstRoomCreated -= OnFirstRoomHandler;
+        _roomPlacer.OnRoomCreated -= HandleRoomCreation;
+        _corridorPlacer.OnCorridorCreated -= HandleCorridorCreation;
+    }
+
+    void CleanLists() {
+        _generatedRooms.Clear();
+        _generatedNodes.Clear();
+        _generatedCorridors.Clear();
+
     }
 }
 

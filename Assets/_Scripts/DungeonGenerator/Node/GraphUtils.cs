@@ -25,12 +25,14 @@ public static class GraphUtils {
 
         while (queue.Count > 0) {
             Node currentNode = queue.Dequeue();
-            deadEnds.Add(currentNode);
 
             if (currentNode.TryGetNextNodes(out List<Node> nextNodes)) {
                 foreach (var nextNode in nextNodes) {
                     queue.Enqueue(nextNode);
                 }
+            }
+            else {
+                deadEnds.Add(currentNode);
             }
         }
         return deadEnds;

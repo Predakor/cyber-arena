@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5322528209390247851
+--- !u!1 &7314771928619754224
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1864400283379564681}
-  - component: {fileID: 2547998665819406926}
-  - component: {fileID: 7833085427427702181}
-  - component: {fileID: 1322493529906446341}
-  - component: {fileID: 3644118871439085141}
+  - component: {fileID: 3855520306280578514}
+  - component: {fileID: 1081548004060004117}
+  - component: {fileID: 4677714806949497086}
+  - component: {fileID: 4468786612146355550}
+  - component: {fileID: 2219328670864913166}
   m_Layer: 8
-  m_Name: RoomBasePrefab
+  m_Name: Base_Room_Template_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1864400283379564681
+--- !u!4 &3855520306280578514
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5322528209390247851}
+  m_GameObject: {fileID: 7314771928619754224}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -35,13 +35,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2547998665819406926
+--- !u!114 &1081548004060004117
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5322528209390247851}
+  m_GameObject: {fileID: 7314771928619754224}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca2d741b52dd2a94cab9c2d310c49b6e, type: 3}
@@ -52,21 +52,22 @@ MonoBehaviour:
     type: 0
     sides: 4
     hasTreasure: 0
+    isGuarded: 0
   _floorPrefabs: {fileID: 0}
-  _roomLinks: {fileID: 7833085427427702181}
-  _roomNode: {fileID: 1322493529906446341}
+  _roomLinks: {fileID: 4677714806949497086}
+  _roomNode: {fileID: 4468786612146355550}
   _tileSize: 20
   _doorSize: 4
   _wallSize: 10
   _wallRotationOffest: {x: 0, y: -90, z: 0}
   _doorRotationOffset: {x: 0, y: -90, z: 0}
---- !u!114 &7833085427427702181
+--- !u!114 &4677714806949497086
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5322528209390247851}
+  m_GameObject: {fileID: 7314771928619754224}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff191bc9a6d29cc4dbfc4c3874fadbbb, type: 3}
@@ -79,14 +80,14 @@ MonoBehaviour:
     distance: 0
     room: {fileID: 0}
   nextRooms: []
-  room: {fileID: 2547998665819406926}
---- !u!114 &1322493529906446341
+  room: {fileID: 1081548004060004117}
+--- !u!114 &4468786612146355550
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5322528209390247851}
+  m_GameObject: {fileID: 7314771928619754224}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa5a56070b6f7224490b0e2e4263cc1f, type: 3}
@@ -95,15 +96,15 @@ MonoBehaviour:
   prevNode: {fileID: 0}
   nextNodes: []
   roomData: {fileID: 0}
-  roomConnections: {fileID: 7833085427427702181}
-  room: {fileID: 2547998665819406926}
---- !u!65 &3644118871439085141
+  roomConnections: {fileID: 4677714806949497086}
+  room: {fileID: 1081548004060004117}
+--- !u!65 &2219328670864913166
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5322528209390247851}
+  m_GameObject: {fileID: 7314771928619754224}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
