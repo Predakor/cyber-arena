@@ -6,9 +6,9 @@ public class RoomGenerator : MonoBehaviour {
     [SerializeField] LevelPrefabs _levelPrefabs;
 
     [Header("Sizes")]
-    [SerializeField] int _tileSize = 20;
-    [SerializeField] int _wallSize = 20;
-    [SerializeField] Vector3 _doorSize = new(4, 1, 1);
+    [SerializeField] float _tileSize = 20;
+    [SerializeField] float _roomHeight = 6;
+    [SerializeField] float _doorWidth = 6;
 
     [SerializeField] Vector3 _wallRotationOffest = Vector3.zero;
     [SerializeField] Vector3 _doorRotationOffset = Vector3.zero;
@@ -80,12 +80,11 @@ public class RoomGenerator : MonoBehaviour {
             Vector3 position = direction * roomRadius;
             LevelPrefab wall = _levelPrefabs.RandomWall();
 
-            Vector3 wallScale = new(1, 1, wallLength / wall.dimensions.z);
-
             if (wallHasDoor(connectedWalls, direction)) {
-                InstatiateWallWithDoor(wallLength, wallScale, position, parent);
+                InstatiateWallWithDoor(wallLength, position, parent);
             }
             else {
+                Vector3 wallScale = new(1, _roomHeight / wall.dimensions.y, wallLength / wall.dimensions.z);
                 InstantiatePrefab(wall.prefab, wallScale, position, parent);
             }
         }
@@ -95,18 +94,17 @@ public class RoomGenerator : MonoBehaviour {
         }
     }
 
-    void InstatiateWallWithDoor(float wallLength, Vector3 wallScale,
-        Vector3 position, Transform parent) {
+    void InstatiateWallWithDoor(float wallLength, Vector3 position, Transform parent) {
         const int segments = 2;
 
-        float wallRemainingSpace = wallLength - _doorSize.z;
+        float wallRemainingSpace = wallLength - _doorWidth;
         float segmentSize = wallRemainingSpace / segments;
-        float offsetValue = segmentSize / 2 + (_doorSize.z / 2);
+        float offsetValue = segmentSize / 2 + (_doorWidth / 2);
 
         LevelPrefab wall = _levelPrefabs.RandomWall();
 
         Vector3 offset = new(0, 0, offsetValue);
-        Vector3 segmentScale = new(1, 1, segmentSize / wall.dimensions.z);
+        Vector3 segmentScale = new(1, _roomHeight / wall.dimensions.y, segmentSize / wall.dimensions.z);
 
         for (int i = 0; i < 2; i++) {
             InstantiatePrefab(wall.prefab, segmentScale, position, parent)
@@ -117,8 +115,8 @@ public class RoomGenerator : MonoBehaviour {
         LevelPrefab door = _levelPrefabs.RandomDoor();
 
         Vector3 doorSize = door.dimensions;
-        doorSize.y = _doorSize.y / door.dimensions.y;//height
-        doorSize.z = _doorSize.z / door.dimensions.z;//widht
+        doorSize.y = _roomHeight / door.dimensions.y;//height
+        doorSize.z = _doorWidth / door.dimensions.z;//widht
 
         InstantiatePrefab(door.prefab, doorSize, position, parent);
     }
