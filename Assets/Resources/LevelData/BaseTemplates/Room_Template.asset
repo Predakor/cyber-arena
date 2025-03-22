@@ -17,5 +17,6 @@ MonoBehaviour:
     type: 0
     sides: 4
     hasTreasure: 0
-  prefabs: {fileID: 0}
+    isGuarded: 0
+  prefabs: {fileID: 11400000, guid: 8c68d42c14e63a44a9d4dbacc92c619c, type: 2}
   links: {fileID: 0}

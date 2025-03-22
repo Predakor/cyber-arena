@@ -5,20 +5,22 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(RoomPlacer), typeof(CorridorPlacer))]
+[RequireComponent(typeof(RoomGenerator))]
 public class LevelGenerator : MonoBehaviour {
 
     #region variables
     [Header("Dependencies")]
     [SerializeField] RoomPlacer _roomPlacer;
-    [SerializeField] CorridorPlacer _corridorPlacer;
     [SerializeField] BossPlacer _bossPlacer;
+    [SerializeField] CorridorPlacer _corridorPlacer;
+    [SerializeField] RoomGenerator _roomGenerator;
 
     [Header("Prefabs/templates")]
     [SerializeField] FloorData _levelDataTemplate;
     [SerializeField] TemplatesHolderData _levelDataTemplateHolder;
+    [SerializeField] GameObject _collisionChecker;
 
     [SerializeField] GameObject _roomTemplate;
-    [SerializeField] RoomData _roomDataTemplate;
     [SerializeField] GameObject _corridorTemplate;
     [SerializeField] RoomRestrictionsSO _roomRestrictions;
 
@@ -51,8 +53,8 @@ public class LevelGenerator : MonoBehaviour {
         foreach (var corridor in _generatedCorridors) {
             corridor.GenerateCorridor();
         }
-        foreach (RoomGenerator room in _generatedRooms) {
-            room.GenerateRoom();
+        foreach (RoomNode roomNode in _generatedNodes) {
+            _roomGenerator.GenerateRoom(roomNode);
         }
     }
 
@@ -71,7 +73,7 @@ public class LevelGenerator : MonoBehaviour {
     void LoadDependencies() {
         Init();
         ApplyModifiers();
-        SetupDependencies();
+        InitDependencies();
     }
 
 #endif
@@ -82,12 +84,11 @@ public class LevelGenerator : MonoBehaviour {
 
         if (templates == null) {
             string templatesName = templatePath.Split('/').Last();
-            Debug.LogError("templates not found" + " " + templatesName);
+            Debug.LogError($"templates not found {templatesName}");
         }
 
         _roomRestrictions = templates.RoomRestrictions;
         _corridorTemplate = templates.CorridorTemplatePrefab;
-        _roomDataTemplate = templates.RoomDataTemplate;
         _roomTemplate = templates.GetRoomTemplate();
         _levelDataTemplateHolder = templates;
         Resources.UnloadAsset(templates);
@@ -97,25 +98,24 @@ public class LevelGenerator : MonoBehaviour {
         if (levelData == null) {
             Debug.Log($"No data found for {level} level");
         }
-        //binding magic
         Resources.UnloadAsset(levelData);
     }
 
-    public void SetupDependencies() {
+    public void InitDependencies() {
         InitData roomPlacerData = new() {
             roomPrefab = _roomTemplate,
-            roomDataTemplate = _roomDataTemplate,
             roomRestrictions = _roomRestrictions
         };
 
         CleanEventHandler();
 
-        _roomPlacer.Init(_levelDataTemplateHolder, _roomPlacerData);
+        _roomPlacer.Init(_collisionChecker, _levelDataTemplateHolder, _roomPlacerData);
         _corridorPlacer.Init(_levelPool.levelPrefabs, _roomPlacerData, _corridorTemplate);
         _bossPlacer.Init(_levelPool.enemiesPool);
+        _roomGenerator.Init(_levelPool.levelPrefabs, _levelDataTemplateHolder);
 
-        _roomPlacer.OnFirstRoomCreated += OnFirstRoomHandler;
-        _roomPlacer.OnRoomCreated += HandleRoomCreation;
+        _roomPlacer.OnFirstRoomCreated += FirstRoomNodeHandler;
+        _roomPlacer.OnRoomCreated += HandleRoomNodeCreation;
         _corridorPlacer.OnCorridorCreated += HandleCorridorCreation;
     }
 
@@ -144,25 +144,23 @@ public class LevelGenerator : MonoBehaviour {
         GenerateLootRooms();
         GenerateGuardedRooms();
         GenerateBossRoom();
+        //generate placed rooms
+        _corridorPlacer.PlaceCorridors(_generatedNodes);
 
-
-        _corridorPlacer.PlaceCorridors(_generatedRooms);
     }
 
     void GenerateBossRoom() {
         _bossPlacer.GetBossLocation(_generatedNodes);
     }
 
-    void OnFirstRoomHandler(RoomGenerator room) {
+    void FirstRoomNodeHandler(RoomNode roomNode) {
         //place player or mark as first idk
-        _generatedNodes.Add(room.RoomNode);
-        _generatedRooms.Add(room);
+        _generatedNodes.Add(roomNode);
     }
 
-    void HandleRoomCreation(RoomGenerator newRoom, RoomGenerator currentRoom, Vector3 direction) {
+    void HandleRoomNodeCreation(RoomNode newRoom, RoomNode currentRoom, Vector3 direction) {
         LinkManager.LinkRoomsAndNodes(currentRoom, newRoom, direction);
-        _generatedNodes.Add(newRoom.RoomNode);
-        _generatedRooms.Add(newRoom);
+        _generatedNodes.Add(newRoom);
     }
 
     void HandleCorridorCreation(CorridorGenerator corridor, CorridorData corridorData) {
@@ -176,7 +174,7 @@ public class LevelGenerator : MonoBehaviour {
         int generatedLootRooms = 0;
 
         for (int i = 0; i < gurantedLootRooms; i++) {
-            RoomGenerator lootRoom = CollectionHelpers.RandomElement(_generatedRooms, 1);
+            RoomNode lootRoom = CollectionHelpers.RandomElement(_generatedNodes, 1);
             CreateLootRoom(lootRoom);
         }
 
@@ -186,21 +184,19 @@ public class LevelGenerator : MonoBehaviour {
         }
 
         float lootRoomChance = _lootRoomSettings.lootRoomChance;
-        for (int i = _generatedRooms.Count - 1; i > 0; i--) {
+        for (int i = _generatedNodes.Count - 1; i > 0; i--) {
             if (generatedLootRooms >= maxLootRoms) {
                 return;
             }
 
             bool succesfulRoll = Random.Range(0, 101) > lootRoomChance;
             if (succesfulRoll) {
-                CreateLootRoom(_generatedRooms[i]);
+                CreateLootRoom(_generatedNodes[i]);
             };
         }
 
-        void CreateLootRoom(RoomGenerator lootRoom) {
-            RoomStats newStats = lootRoom.RoomStats;
-            newStats.hasTreasure = true;
-            lootRoom.RoomStats = newStats;
+        void CreateLootRoom(RoomNode lootNode) {
+            lootNode.Data.SetType(RoomType.Loot);
             generatedLootRooms++;
         }
     }
@@ -213,17 +209,15 @@ public class LevelGenerator : MonoBehaviour {
             bool isGuarded = roll > hostileRoomChance;
 
             if (isGuarded) {
-                RoomGenerator room = _generatedRooms[i];
-                RoomStats newStats = room.RoomStats;
-                newStats.isGuarded = isGuarded;
-                room.RoomStats = newStats;
+                RoomNode node = _generatedNodes[i];
+                node.Data.SetType(RoomType.Guarded);
             }
         }
     }
 
     void CleanEventHandler() {
-        _roomPlacer.OnFirstRoomCreated -= OnFirstRoomHandler;
-        _roomPlacer.OnRoomCreated -= HandleRoomCreation;
+        _roomPlacer.OnFirstRoomCreated -= FirstRoomNodeHandler;
+        _roomPlacer.OnRoomCreated -= HandleRoomNodeCreation;
         _corridorPlacer.OnCorridorCreated -= HandleCorridorCreation;
     }
 

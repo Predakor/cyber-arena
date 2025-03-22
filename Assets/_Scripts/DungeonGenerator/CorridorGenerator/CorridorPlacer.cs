@@ -11,7 +11,6 @@ public class CorridorPlacer : MonoBehaviour {
     /// <summary>
     /// create corridor| corridor data
     /// </summary>
-
     public event Action<CorridorGenerator, CorridorData> OnCorridorCreated;
 
     public void Init(LevelPrefabs prefabs, PlacerData placerData, GameObject corridorTemplate) {
@@ -20,17 +19,18 @@ public class CorridorPlacer : MonoBehaviour {
         _corridorTemplatePrefab = corridorTemplate;
     }
 
-    public void PlaceCorridors(List<RoomGenerator> generatedRooms) {
-
-        foreach (var room in generatedRooms) {
-            var prevRoom = room.RoomLinks.GetPrevRoom();
-            if (!prevRoom.Value.room) {
+    public void PlaceCorridors(List<RoomNode> generatedNodes) {
+        foreach (var roomNode in generatedNodes) {
+            if (!roomNode.TryGetPrevConnection(out var prevLink)) {
                 continue;
             }
 
-            float distance = prevRoom.Value.distance;
-            Vector3 direction = prevRoom.Value.direction;
-            Vector3 doorPosition = LinkManager.GetEdgePosition(room, direction);
+            RoomNode prevRoomNode = prevLink.room as RoomNode;
+
+            float distance = prevLink.distance;
+            Vector3 direction = -prevLink.direction;
+
+            Vector3 doorPosition = LinkManager.GetEdgePosition(prevRoomNode, direction);
             Vector3 corridorPosition = doorPosition + (direction * (distance / 2));
 
             CorridorData corridorData = CreateCorridorData(distance, direction);

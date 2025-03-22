@@ -61,7 +61,6 @@ public static class RoomHelpers {
         Collider[] detectedRooms = Physics.OverlapBox(position, boxCordinates, Quaternion.identity, roomMasks);
         return detectedRooms.Length == 0;
     }
-
     public static RoomStats RandomizeStats(RoomStats stats) {
         RoomSize[] defaultSizes = new[] { RoomSize.Small, RoomSize.Medium, RoomSize.Large };
         int[] defaultSides = new[] { 4, 8 };
@@ -74,12 +73,14 @@ public static class RoomHelpers {
         return stats;
     }
 
-    public static RoomStats RandomizeStats(RoomStats stats, List<RoomSize> sizes, RoomRestrictionsSO restrictions) {
-        RoomStats randomStats = stats;
-        randomStats.size = CollectionHelpers.RandomElement(sizes);
-        List<int> allowedSides = restrictions.GetAllowedSides(randomStats.size);
-        randomStats.sides = CollectionHelpers.RandomElement(allowedSides);
-        return randomStats;
+    public static RoomStats RandomizeStats(List<RoomSize> sizes, RoomRestrictionsSO restrictions) {
+        RoomSize randSize = CollectionHelpers.RandomElement(sizes);
+        List<int> allowedSides = restrictions.GetAllowedSides(randSize);
+        return new() {
+            type = RoomType.Normal,
+            sides = CollectionHelpers.RandomElement(allowedSides),
+            size = randSize
+        };
     }
 
     public static bool AreConnectable(RoomStats currentStats, RoomStats newStats,
@@ -91,15 +92,15 @@ public static class RoomHelpers {
         return newRoomDirections.Exists((direction) => direction == prevRoomDirection);
     }
 
-    public static List<Vector3> GetAvaiablePositions(RoomGenerator currentRoom, Vector3 prevRoomDirection, int roomWorldSize, float minDistanceToNextRoom, float minSpacing) {
-        List<Vector3> directions = GetRoomDirections(currentRoom.RoomStats.sides);
+    public static List<Vector3> GetAvaiablePositions(RoomNode currentNode, Vector3 prevRoomDirection, int roomWorldSize, float minDistanceToNextRoom, float minSpacing) {
+        List<Vector3> directions = GetRoomDirections(currentNode.Data.sides);
 
 
         //transform directions to points and fillter backwardDirection out
         List<Vector3> positions = new(directions.Count - 1);
         foreach (var direction in directions) {
             if (direction != prevRoomDirection) {
-                positions.Add(direction * minDistanceToNextRoom + currentRoom.transform.position);
+                positions.Add(direction * minDistanceToNextRoom + currentNode.transform.position);
             }
         }
 

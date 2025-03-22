@@ -6,14 +6,12 @@ using UnityEngine;
 public class TemplatesHolderData : ScriptableObject {
     [Header("Room templates")]
     [SerializeField] List<RoomTemplateEtry> _roomTemplatesList = new(6);
-    [SerializeField] RoomData roomDataTemplate;
     [SerializeField] RoomRestrictionsSO roomRestrictions;
 
     [Header("Corridor templates")]
     [SerializeField] GameObject corridorTemplatePrefab;
 
     Dictionary<RoomType, GameObject> roomTemplates = new();
-
     void OnValidate() {
         if (roomTemplates.Count > 0) {
             roomTemplates.Clear();
@@ -24,9 +22,7 @@ public class TemplatesHolderData : ScriptableObject {
         }
     }
 
-    public Dictionary<RoomType, GameObject> RoomTemplates => roomTemplates;
     public GameObject GetRoomTemplate(RoomType type = RoomType.Normal) => roomTemplates[type];
-    public RoomData RoomDataTemplate => roomDataTemplate;
     public RoomRestrictionsSO RoomRestrictions => roomRestrictions;
     public GameObject CorridorTemplatePrefab => corridorTemplatePrefab;
 }
