@@ -53,9 +53,10 @@ public class CorridorGenerator : MonoBehaviour {
 
     void InstantiateCorridorWalls(LevelPrefab walll, Vector3 position) {
         Vector3 scale = CalculateScale(walll.dimensions, _size);
+        scale.x = 1;
         Vector3 perpendicularVector = new(1, 0, 0);
 
-        float distanceToEdge = (_size.x / 2) + (walll.dimensions.y / 2);
+        float distanceToEdge = (_size.x / 2) + (walll.dimensions.x / 2);
         Vector3 wallOffset = perpendicularVector * distanceToEdge;
         Vector3 rotationOffset = new(0, 180, 0);
 

@@ -22,5 +22,5 @@ MonoBehaviour:
     rotations: {x: 0, y: 90, z: 0}
   doorPrefabs:
   - prefab: {fileID: 6790197992661217530, guid: d61e8f290ea85164aafb3417da42d272, type: 3}
-    dimensions: {x: 0.4, y: 2.28, z: 5.25}
+    dimensions: {x: 0.4, y: 5, z: 5.25}
     rotations: {x: 0, y: 90, z: 0}
