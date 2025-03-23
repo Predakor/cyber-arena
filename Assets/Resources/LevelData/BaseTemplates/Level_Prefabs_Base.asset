@@ -18,7 +18,7 @@ MonoBehaviour:
     rotations: {x: 0, y: 0, z: 0}
   wallPrefabs:
   - prefab: {fileID: 9220700704462415792, guid: 49d2139d2da068a4a80d3cf27b87de59, type: 3}
-    dimensions: {x: 10, y: 6, z: 10}
+    dimensions: {x: 0.2, y: 6, z: 10}
     rotations: {x: 0, y: 90, z: 0}
   doorPrefabs:
   - prefab: {fileID: 6790197992661217530, guid: d61e8f290ea85164aafb3417da42d272, type: 3}

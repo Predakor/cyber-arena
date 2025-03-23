@@ -77,7 +77,7 @@ public static class RoomHelpers {
         RoomSize randSize = CollectionHelpers.RandomElement(sizes);
         List<int> allowedSides = restrictions.GetAllowedSides(randSize);
         return new() {
-            type = RoomType.Normal,
+            Type = RoomType.Normal,
             sides = CollectionHelpers.RandomElement(allowedSides),
             size = randSize
         };

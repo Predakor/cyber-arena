@@ -2,26 +2,33 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public struct RoomStats {
+public class RoomStats {
     public RoomSize size;
-    public RoomType type;
+    RoomType type;
     [Range(4, 12)] public int sides;
 
     const int _tileSize = 20;
 
-    public readonly bool HasLoot => type == RoomType.Loot;
-    public readonly bool HasEnemies => type == RoomType.Guarded;
+    public bool HasLoot => Type == RoomType.Loot;
+    public bool HasEnemies => Type == RoomType.Guarded;
 
-    public void SetType(RoomType newType) {
-        if (newType != type) {
-            type = newType;
+    public RoomType Type {
+        get => type;
+        set {
+            if (type == value) return;
+            type = value;
         }
     }
 
+    public void SetType(RoomType newType) {
+        if (newType != Type) {
+            Type = newType;
+        }
+    }
 
-    public readonly int GetRoomSizeNumber() => (int)size + 1;
-    public readonly int GetRoomRadius() => (GetRoomSizeNumber() * _tileSize) / 2;
-    public readonly float GetRoomWorldSize() => GetRoomSizeNumber() * _tileSize;
+    public int GetRoomSizeNumber() => (int)size + 1;
+    public int GetRoomRadius() => (GetRoomSizeNumber() * _tileSize) / 2;
+    public float GetRoomWorldSize() => GetRoomSizeNumber() * _tileSize;
 }
 
 public enum RoomSize { Small, Medium, Large, Huge, Giant }

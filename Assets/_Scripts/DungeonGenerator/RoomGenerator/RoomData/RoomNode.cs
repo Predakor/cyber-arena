@@ -12,7 +12,7 @@ public class RoomNode : Node {
     public int Depth { get => depth; set => depth = value; }
 
     void OnDrawGizmos() {
-        switch (roomStats.type) {
+        switch (roomStats.Type) {
             case RoomType.Normal: Gizmos.color = Color.blue; break;
             case RoomType.Guarded: Gizmos.color = Color.red; break;
             case RoomType.Loot: Gizmos.color = Color.green; break;

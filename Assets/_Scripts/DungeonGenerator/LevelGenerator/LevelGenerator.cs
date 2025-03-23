@@ -141,8 +141,8 @@ public class LevelGenerator : MonoBehaviour {
         CleanLists();
 
         _roomPlacer.GenerateRooms(_roomPlacerData.numberOfRooms);
-        GenerateLootRooms();
         GenerateGuardedRooms();
+        GenerateLootRooms();
         GenerateBossRoom();
         //generate placed rooms
         _corridorPlacer.PlaceCorridors(_generatedNodes);
@@ -150,11 +150,11 @@ public class LevelGenerator : MonoBehaviour {
     }
 
     void GenerateBossRoom() {
-        _bossPlacer.GetBossLocation(_generatedNodes);
+        RoomNode bossNode = _bossPlacer.GetBossLocation(_generatedNodes);
+        bossNode.Data.SetType(RoomType.Boss);
     }
 
     void FirstRoomNodeHandler(RoomNode roomNode) {
-        //place player or mark as first idk
         _generatedNodes.Add(roomNode);
     }
 
@@ -203,7 +203,7 @@ public class LevelGenerator : MonoBehaviour {
 
     void GenerateGuardedRooms() {
         float hostileRoomChance = _guardedRoomSettings.guardedRoomChance;
-        for (int i = 1; i < _generatedRooms.Count; i++) {
+        for (int i = 1; i < _generatedNodes.Count; i++) {
 
             float roll = Random.Range(0, 101);
             bool isGuarded = roll > hostileRoomChance;

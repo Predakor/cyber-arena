@@ -39,7 +39,7 @@ public class RoomGenerator : MonoBehaviour {
         Vector3 position = roomNode.Position;
         Transform transform = roomNode.transform;
 
-        InstantiateTemplate(roomNode.Data.type, position, transform);
+        InstantiateTemplate(roomNode.Data.Type, position, transform);
 
         SpawnFloors(roomNode.Data.size, transform);
         SpawnWalls(roomNode, transform);
