@@ -126,7 +126,7 @@ public class RoomPlacer : MonoBehaviour {
         float size = RoomGenerator.GetRoomWorldSize(data);
 
         GameObject obj = GenerateFakeRoom(position, transform);
-        obj.name = $"Room {data.size} {data.sides}gon";
+        obj.name = $"Room {data.Size} {data.sides}gon";
         obj.GetComponent<BoxCollider>().size = new(size, 1, size);
 
         RoomNode node = obj.GetComponent<RoomNode>();

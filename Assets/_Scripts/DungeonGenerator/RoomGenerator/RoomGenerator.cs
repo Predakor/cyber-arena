@@ -39,9 +39,10 @@ public class RoomGenerator : MonoBehaviour {
         Vector3 position = roomNode.Position;
         Transform transform = roomNode.transform;
 
-        InstantiateTemplate(roomNode.Data.Type, position, transform);
+        InstantiateTemplate(roomNode.Data.Type, position, transform)
+           .GetComponent<Room>().Init(roomNode);
 
-        SpawnFloors(roomNode.Data.size, transform);
+        SpawnFloors(roomNode.Data.Size, transform);
         SpawnWalls(roomNode, transform);
     }
 
@@ -136,7 +137,7 @@ public class RoomGenerator : MonoBehaviour {
     }
 
     public static int GetRoomWorldSize(RoomStats stats) {
-        return GetRoomSizeNumber(stats.size) * 20;
+        return GetRoomSizeNumber(stats.Size) * 20;
     }
 
     public static int GetRoomSizeNumber(RoomSize size) => (int)(size + 1);

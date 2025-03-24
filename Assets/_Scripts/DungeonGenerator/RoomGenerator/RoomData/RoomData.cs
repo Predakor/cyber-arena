@@ -3,15 +3,15 @@ using UnityEngine;
 
 [Serializable]
 public class RoomStats {
-    public RoomSize size;
-    RoomType type;
+    [SerializeField] RoomSize size;
+    [SerializeField] RoomType type;
     [Range(4, 12)] public int sides;
 
     const int _tileSize = 20;
 
     public bool HasLoot => Type == RoomType.Loot;
     public bool HasEnemies => Type == RoomType.Guarded;
-
+    public RoomSize Size { get => size; set => size = value; }
     public RoomType Type {
         get => type;
         set {
@@ -20,13 +20,14 @@ public class RoomStats {
         }
     }
 
+
     public void SetType(RoomType newType) {
         if (newType != Type) {
             Type = newType;
         }
     }
 
-    public int GetRoomSizeNumber() => (int)size + 1;
+    public int GetRoomSizeNumber() => (int)Size + 1;
     public int GetRoomRadius() => (GetRoomSizeNumber() * _tileSize) / 2;
     public float GetRoomWorldSize() => GetRoomSizeNumber() * _tileSize;
 }

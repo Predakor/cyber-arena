@@ -1,3 +1,4 @@
+using Helpers.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,4 +11,7 @@ public class EnemyPoolData : ScriptableObject {
     public List<Enemy> Enemies => enemies;
     public List<Enemy> MiniBosses => miniBosses;
     public List<Enemy> Bosses => bosses;
+
+    public Enemy GetRandomEnemy() => CollectionHelpers.RandomElement(enemies);
+
 }

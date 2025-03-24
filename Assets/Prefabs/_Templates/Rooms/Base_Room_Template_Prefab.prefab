@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3855520306280578514}
   - component: {fileID: 2219328670864913166}
+  - component: {fileID: 1778233410977710197}
   m_Layer: 8
   m_Name: Base_Room_Template_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3855520306280578514
 Transform:
@@ -53,3 +54,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 20, y: 1, z: 20}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1778233410977710197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7314771928619754224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a616eb02c947154b9f0089bc8905c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

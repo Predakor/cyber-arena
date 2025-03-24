@@ -57,7 +57,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7314771928619754224, guid: 3c968176d3489b8488d2064207e85390, type: 3}
-      insertIndex: 4
+      insertIndex: -1
       addedObject: {fileID: -6584041836782324390}
   m_SourcePrefab: {fileID: 100100000, guid: 3c968176d3489b8488d2064207e85390, type: 3}
 --- !u!1 &3416797981879898188 stripped
@@ -75,5 +75,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83ba159137303a44180addf3e4911a8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  room: {fileID: 5927898351408706249}
+  _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
+  _enemies: []
+  _spawnedEnemies: []
+  enemiesToGenerate: 4
+--- !u!114 &5927898351408706249 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1778233410977710197, guid: 3c968176d3489b8488d2064207e85390, type: 3}
+  m_PrefabInstance: {fileID: 5398036913495487164}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3416797981879898188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a616eb02c947154b9f0089bc8905c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

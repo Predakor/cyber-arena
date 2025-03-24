@@ -21,7 +21,7 @@ public class CorridorPlacer : MonoBehaviour {
 
     public void PlaceCorridors(List<RoomNode> generatedNodes) {
         foreach (var roomNode in generatedNodes) {
-            if (!roomNode.TryGetPrevConnection(out var prevLink)) {
+            if (!roomNode.TryGetPrevConnection(out var prevLink) || prevLink.room == null) {
                 continue;
             }
 

@@ -68,7 +68,7 @@ public static class RoomHelpers {
     }
 
     public static RoomStats RandomizeStats(RoomStats stats, RoomSize[] roomSizes, int[] roomSides) {
-        stats.size = (RoomSize)Random.Range(0, roomSizes.Length);
+        stats.Size = (RoomSize)Random.Range(0, roomSizes.Length);
         stats.sides = roomSides[Random.Range(0, roomSides.Length)];
         return stats;
     }
@@ -79,7 +79,7 @@ public static class RoomHelpers {
         return new() {
             Type = RoomType.Normal,
             sides = CollectionHelpers.RandomElement(allowedSides),
-            size = randSize
+            Size = randSize
         };
     }
 

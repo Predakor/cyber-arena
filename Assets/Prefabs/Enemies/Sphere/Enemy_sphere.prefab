@@ -361,12 +361,24 @@ PrefabInstance:
       value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 6007063708906490903, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
+      propertyPath: fireRate
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007063708906490903, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
       propertyPath: currentAmmo
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6007063708906490903, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
+      propertyPath: reloadSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007063708906490903, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
       propertyPath: magazineSize
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007063708906490903, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
+      propertyPath: projectileSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8288960149758683691, guid: 3133bfc403c20814b8f5618120a70e73, type: 3}
       propertyPath: m_LocalPosition.x

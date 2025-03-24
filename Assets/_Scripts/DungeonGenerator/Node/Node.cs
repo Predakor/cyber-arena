@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Node : MonoBehaviour {
-    private RoomLink<Node> prevNode = null;
-    private List<RoomLink<Node>> nextNodes = new();
-
+    [SerializeField] RoomLink<Node> prevNode = null;
+    [SerializeField] List<RoomLink<Node>> nextNodes = new();
     public void AddNextNode(Node node) {
         nextNodes.Add(new RoomLink<Node>(node));
     }
@@ -80,7 +79,6 @@ public abstract class Node : MonoBehaviour {
         if (node.TryGetPrevNode(out Node prevNode)) {
             list.Add(prevNode);
         }
-
         return list;
     }
 
@@ -98,7 +96,6 @@ public abstract class Node : MonoBehaviour {
         if (TryGetPrevConnection(out var prevNode)) {
             list.Add(prevNode);
         }
-
         return list;
     }
 
