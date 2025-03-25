@@ -74,11 +74,11 @@ public static class RoomHelpers {
     }
 
     public static RoomStats RandomizeStats(List<RoomSize> sizes, RoomRestrictionsSO restrictions) {
-        RoomSize randSize = CollectionHelpers.RandomElement(sizes);
+        RoomSize randSize = CollectionUtils.RandomElement(sizes);
         List<int> allowedSides = restrictions.GetAllowedSides(randSize);
         return new() {
             Type = RoomType.Normal,
-            sides = CollectionHelpers.RandomElement(allowedSides),
+            sides = CollectionUtils.RandomElement(allowedSides),
             Size = randSize
         };
     }

@@ -5,9 +5,22 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class Enemy : MonoBehaviour {
 
-    [SerializeField] GeneralHostileAi AI;
-    [SerializeField] BaseMovement Controller;
-    [SerializeField] Health Health;
+    public GeneralHostileAi AI;
+    public BaseMovement Controller;
+    public Health Health;
+
+
+    public void Freeze() {
+        AI.enabled = false;
+        Controller.enabled = false;
+        Health.enabled = false;
+    }
+
+    public void ActivateEnemy() {
+        AI.enabled = true;
+        Controller.enabled = true;
+        Health.enabled = true;
+    }
     // Start is called before the first frame update
     void Start() {
 

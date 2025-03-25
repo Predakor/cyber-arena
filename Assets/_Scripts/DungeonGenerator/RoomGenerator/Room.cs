@@ -11,8 +11,6 @@ public class Room : MonoBehaviour {
     public event Action OnRoomExit;
     public event Action OnPlayerNearby;
 
-
-
     public void Init(RoomNode roomNode) {
         _roomNode = roomNode;
         float roomSize = roomNode.Data.GetRoomWorldSize() * 0.8f;
@@ -31,17 +29,6 @@ public class Room : MonoBehaviour {
             return;
         }
         OnExit();
-    }
-
-    private void OnEnable() {
-        OnPlayerNearby += Room_OnPlayerNearby;
-    }
-    private void OnDisable() {
-        OnPlayerNearby -= Room_OnPlayerNearby;
-    }
-
-    void Room_OnPlayerNearby() {
-        Debug.Log("player nearby", this);
     }
 
     void OnEnter() {

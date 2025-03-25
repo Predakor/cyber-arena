@@ -31,6 +31,7 @@ public class GeneralHostileAi : BaseAI {
     public virtual void Attack() {
 
     }
+
     public virtual void SetTarget(GameObject newTarget) {
         if (newTarget == null) {
             OnTargetLost?.Invoke();

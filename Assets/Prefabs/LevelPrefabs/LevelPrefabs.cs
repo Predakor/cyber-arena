@@ -9,7 +9,7 @@ public class LevelPrefabs : ScriptableObject {
     public LevelPrefab[] wallPrefabs;
     public LevelPrefab[] doorPrefabs;
 
-    T GetRandom<T>(T[] collection) => CollectionHelpers.RandomElement(collection);
+    T GetRandom<T>(T[] collection) => CollectionUtils.RandomElement(collection);
     public LevelPrefab RandomFloor() => GetRandom(floorPrefabs);
     public LevelPrefab RandomWall() => GetRandom(wallPrefabs);
     public LevelPrefab RandomDoor() => GetRandom(doorPrefabs);

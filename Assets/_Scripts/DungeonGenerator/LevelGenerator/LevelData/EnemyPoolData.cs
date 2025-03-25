@@ -12,6 +12,6 @@ public class EnemyPoolData : ScriptableObject {
     public List<Enemy> MiniBosses => miniBosses;
     public List<Enemy> Bosses => bosses;
 
-    public Enemy GetRandomEnemy() => CollectionHelpers.RandomElement(enemies);
+    public Enemy GetRandomEnemy() => CollectionUtils.RandomElement(enemies);
 
 }

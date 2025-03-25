@@ -16,8 +16,8 @@ public class BossPlacer : MonoBehaviour {
 
         var deadEnds = GraphUtils.GetDeadEnds(generatedNodes[0]);
 
-        RoomNode selectedNode = CollectionHelpers.RandomElement(deadEnds) as RoomNode;
-        var boss = CollectionHelpers.RandomElement(_bossPool);
+        RoomNode selectedNode = CollectionUtils.RandomElement(deadEnds) as RoomNode;
+        var boss = CollectionUtils.RandomElement(_bossPool);
 
         return selectedNode;
     }

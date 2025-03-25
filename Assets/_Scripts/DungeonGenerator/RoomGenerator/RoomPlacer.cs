@@ -85,7 +85,7 @@ public class RoomPlacer : MonoBehaviour {
             return;
         }
 
-        Vector3 newRoomPosition = CollectionHelpers.RandomElement(avaiablePositions);
+        Vector3 newRoomPosition = CollectionUtils.RandomElement(avaiablePositions);
         Vector3 currentRoomDirection = (currentPosition - newRoomPosition).normalized;
 
 

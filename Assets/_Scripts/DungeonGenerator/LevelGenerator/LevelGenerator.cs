@@ -174,7 +174,7 @@ public class LevelGenerator : MonoBehaviour {
         int generatedLootRooms = 0;
 
         for (int i = 0; i < gurantedLootRooms; i++) {
-            RoomNode lootRoom = CollectionHelpers.RandomElement(_generatedNodes, 1);
+            RoomNode lootRoom = CollectionUtils.RandomElement(_generatedNodes, 1);
             CreateLootRoom(lootRoom);
         }
 

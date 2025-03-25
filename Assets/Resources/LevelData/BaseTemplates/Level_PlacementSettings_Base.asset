@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0bbe84af0765a04da6b180828a65610, type: 3}
   m_Name: Level_PlacementSettings_Base
   m_EditorClassIdentifier: 
-  numberOfRooms: 12
+  numberOfRooms: 6
   roomSizes: 01000000010000000100000001000000020000000200000003000000
-  maxDepth: 12
+  maxDepth: 6
   desiredDepth: 12
   maxTries: 24
   minRoomDistance: 20

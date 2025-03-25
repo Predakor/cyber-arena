@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Helpers.Collections {
 
-    public static class CollectionHelpers {
+    public static class CollectionUtils {
         public static T RandomElement<T>(List<T> collection, int start = 0) {
             return GetElement(collection, start, collection?.Count ?? 0);
         }
