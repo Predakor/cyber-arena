@@ -110,4 +110,12 @@ public static class RoomHelpers {
         List<Vector3> avaiablePositions = GetUnoccupiedPositions(positions, sizeToCheck);
         return avaiablePositions;
     }
+
+    public static int GetPointInsideRoom(Room room, int inset = 2) {
+        int roomRadius = 10 - inset;
+        int randomPoint = Random.Range(-roomRadius, roomRadius);
+        int roomSize = room.Node.Data.GetRoomSizeNumber();
+        return randomPoint * roomSize;
+    }
+
 }

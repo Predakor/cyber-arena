@@ -13,5 +13,7 @@ public class EnemyPoolData : ScriptableObject {
     public List<Enemy> Bosses => bosses;
 
     public Enemy GetRandomEnemy() => CollectionUtils.RandomElement(enemies);
+    public Enemy GetRandomBoss() => CollectionUtils.RandomElement(bosses);
+
 
 }

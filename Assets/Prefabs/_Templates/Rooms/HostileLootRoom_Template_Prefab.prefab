@@ -77,7 +77,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ba159137303a44180addf3e4911a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  room: {fileID: 5927898351408706249}
+  _room: {fileID: 5927898351408706249}
+  _isPreloaded: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _spawnedEnemies: []
