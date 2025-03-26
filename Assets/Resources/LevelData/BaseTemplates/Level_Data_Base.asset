@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01c56298feb1a3a4ba61b249d14b3713, type: 3}
+  m_Name: Level_Data_Base
+  m_EditorClassIdentifier: 
+  _baseStats:
+    name: Base floor
+    difficulty: 1
+    lootQuality: 1
+  _floorPool:
+    levelPrefabs: {fileID: 11400000, guid: 8c68d42c14e63a44a9d4dbacc92c619c, type: 2}
+    enemiesPool: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
+    uniqueRoomPool: []
+  _floorModifiers:
+    difficultyModifier: 1
+    lootModifier: 1
+    guardModifier: 1
+  _lootRoomSettings:
+    lootRoomChance: 0
+    guaranteedLootRooms: 1
+    maxLootRooms: 1
+  _guardedRoomSettings:
+    guardedRoomChance: 50
+    guaranteedGuardedRooms: 5
+    maxGuardedRooms: 10
+  _roomPlacerData: {fileID: 11400000, guid: f686c2960b6c77f40a47667b0942aedf, type: 2}

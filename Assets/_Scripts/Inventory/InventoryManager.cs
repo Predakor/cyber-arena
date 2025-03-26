@@ -14,7 +14,7 @@ public class InventoryManager : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.TryGetComponent(out ItemContainer itemContainer)) {
-            ItemData pickedItem = itemContainer.TakeItem();
+            ItemData pickedItem = itemContainer.Pickup();
             if (pickedItem is GunData pickedGunData) {
                 _weaponInventory.Pickup(pickedGunData);
             }

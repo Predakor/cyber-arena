@@ -1,36 +1,44 @@
 using UnityEngine;
 
 public class ItemContainer : MonoBehaviour {
-    public ItemData itemData;
-    [SerializeField] bool showItem = true;
-    [SerializeField] GameObject prefab;
-    [SerializeField] Transform previewLocation;
+    [SerializeField] ItemData _itemData;
+    [SerializeField] GameObject _prefab;
+    [SerializeField] Transform _previewLocation;
+    [SerializeField] bool _showItem = true;
 
-    private void Start() {
-        if (prefab == null) {
-            prefab = itemData.prefab;
+    public ItemData ItemData { get => _itemData; }
+    public ItemData Pickup() {
+        Destroy(gameObject);
+        return ItemData;
+    }
+
+    public void SetItem(ItemData item) {
+        _itemData = item;
+        _prefab = item.prefab;
+    }
+
+    void Start() {
+        if (_prefab == null) {
+            _prefab = ItemData.prefab;
         }
 
-        if (previewLocation == null) {
-            previewLocation = transform;
+        if (_previewLocation == null) {
+            _previewLocation = transform;
         }
-        if (showItem) {
+        if (_showItem) {
             DisplayItem();
         }
     }
 
     [ContextMenu("show item")]
     void DisplayItem() {
-        if (!prefab || !showItem) { return; }
+        if (!_prefab || !_showItem) { return; }
 
-        Transform _transform = previewLocation;
+        Transform _transform = _previewLocation;
 
-        Instantiate(prefab, _transform.position, _transform.rotation, _transform);
+        Instantiate(_prefab, _transform.position, _transform.rotation, _transform);
 
     }
 
-    public ItemData TakeItem() {
-        Destroy(gameObject);
-        return itemData;
-    }
+
 }

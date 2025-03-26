@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3e9caacd57995419ec1821ade9dc74, type: 3}
+  m_Name: Level_Enemies_BasePool
+  m_EditorClassIdentifier: 
+  enemies:
+  - {fileID: 1377713371498894471, guid: 89b09853986c42648a68a3d516f26815, type: 3}
+  - {fileID: 8567272601639946418, guid: 3c5ed94983b583d439ea205b6eb15cf6, type: 3}
+  miniBosses: []
+  bosses:
+  - {fileID: 678126137198191473, guid: 76208ac18c2db194687c5eaa0e4d5396, type: 3}
