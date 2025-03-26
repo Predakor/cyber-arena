@@ -50,10 +50,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7314771928619754224, guid: 3c968176d3489b8488d2064207e85390, type: 3}
       propertyPath: m_Name
-      value: Room_Template_Prefab 1
+      value: LootRoom_Template_Prefab
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7314771928619754224, guid: 3c968176d3489b8488d2064207e85390, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3475169268215407751}
   m_SourcePrefab: {fileID: 100100000, guid: 3c968176d3489b8488d2064207e85390, type: 3}
+--- !u!1 &3416797981879898188 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7314771928619754224, guid: 3c968176d3489b8488d2064207e85390, type: 3}
+  m_PrefabInstance: {fileID: 5398036913495487164}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3475169268215407751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3416797981879898188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf532a7739517b448093c9928bf69a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lootPedestal: {fileID: 4595793074790098196, guid: 2116666bd2dfcc14aaceea8e843fe2a6, type: 3}
+  _room: {fileID: 5927898351408706249}
+--- !u!114 &5927898351408706249 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1778233410977710197, guid: 3c968176d3489b8488d2064207e85390, type: 3}
+  m_PrefabInstance: {fileID: 5398036913495487164}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3416797981879898188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a616eb02c947154b9f0089bc8905c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
