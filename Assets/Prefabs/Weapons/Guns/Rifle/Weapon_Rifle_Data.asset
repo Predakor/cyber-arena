@@ -19,7 +19,7 @@ MonoBehaviour:
 '
   prefab: {fileID: 1263010016473339890, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
   rarity: 1
-  fireRate: 120
+  fireRate: 240
   magazineSize: 30
   currentAmmo: 60
   reloadSpeed: 1
