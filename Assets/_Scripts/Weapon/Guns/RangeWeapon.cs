@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class RangeWeapon : Weapon {
+
+    [SerializeField] GunData gunData;
+
     [Header("Weapon stats")]
     [SerializeField] float fireRate = 1f;
     [SerializeField] int magazineSize = 5;
@@ -29,7 +32,7 @@ public class RangeWeapon : Weapon {
     public int CurrentAmmo {
         get => currentAmmo; private set {
             currentAmmo = value;
-            onAmmoChange?.Invoke((int)value);
+            onAmmoChange?.Invoke(value);
 
             if (currentAmmo < 1) onEmptyMagazine?.Invoke();
 
@@ -50,6 +53,10 @@ public class RangeWeapon : Weapon {
     #endregion
 
     #region public methods
+
+    [ContextMenu("Load Data")]
+    public void LoadData() => LoadStats(gunData);
+
     [ContextMenu("Start Reload")]
     public void StartReload() {
         _reloadCoroutine = StartCoroutine(Reload());
@@ -75,6 +82,12 @@ public class RangeWeapon : Weapon {
     }
     #endregion
 
+    void Awake() {
+        if (gunData == null) {
+            LoadStats(gunData);
+        }
+    }
+
     void Start() {
         _fireRateCooldown = Time.time;
     }
@@ -86,6 +99,12 @@ public class RangeWeapon : Weapon {
     }
     void OnDisable() {
         StopAllCoroutines();
+    }
+
+    void OnValidate() {
+        if (gunData) {
+            LoadData();
+        }
     }
 
     public void Inspect() {

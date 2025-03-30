@@ -24,30 +24,34 @@ public class WeaponManager : Singleton<WeaponManager> {
     public Weapon CurrentWeapon {
         get => _currentWeapon;
         private set {
-            if (_currentWeapon != value) {
-                OnWeaponChange?.Invoke(value, _currentWeapon);
-                _inventory.DequipWeapon(_currentWeapon);
-                _currentWeapon = value;
-
-                if (_currentWeapon != null) {
-                    _currentWeapon.transform.SetParent(_weaponTransform);
-                    _currentWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-                    _currentWeapon.gameObject.SetActive(true);
-                    OnWeaponEquipped?.Invoke(_currentWeapon);
-                }
+            if (_currentWeapon == value) {
+                return;
             }
+
+            OnWeaponChange?.Invoke(value, _currentWeapon);
+            _inventory.DequipWeapon(_currentWeapon);
+            _currentWeapon = value;
+
+            if (_currentWeapon == null) {
+                return;
+            }
+            _currentWeapon.transform.SetParent(_weaponTransform);
+            _currentWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            _currentWeapon.gameObject.SetActive(true);
+            OnWeaponEquipped?.Invoke(_currentWeapon);
         }
     }
 
     internal WeaponState CurrentWeaponState {
         get => _weaponState;
         private set {
-            if (_weaponState != value) {
-                _weaponState = value;
-                if (_animator != null) {
-                    _animator.SetBool(_weaponState.ToString(), false);
-                    _animator.SetBool(value.ToString(), true);
-                }
+            if (_weaponState == value) {
+                return;
+            }
+            _weaponState = value;
+            if (_animator != null) {
+                _animator.SetBool(_weaponState.ToString(), false);
+                _animator.SetBool(value.ToString(), true);
             }
         }
     }
@@ -113,9 +117,10 @@ public class WeaponManager : Singleton<WeaponManager> {
         }
     }
     void WeaponPickup(GameObject gameObject) {
-        OnWeaponPickup?.Invoke(gameObject.GetComponent<Weapon>());
+        Weapon weapon = gameObject.GetComponent<Weapon>();
+        OnWeaponPickup?.Invoke(weapon);
         if (_autoEquipNewWeapon) {
-            _inventory.EquipWeapon(gameObject.GetComponent<Weapon>());
+            _inventory.EquipWeapon(weapon);
         }
     }
 }
