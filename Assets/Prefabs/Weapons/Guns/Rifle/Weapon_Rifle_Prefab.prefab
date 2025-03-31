@@ -39,22 +39,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -7357345836237329452, guid: f6b1c8eadc1392d44be43d85a2446c8e, type: 3}
-      propertyPath: fireRate
-      value: 600
-      objectReference: {fileID: 0}
-    - target: {fileID: -7357345836237329452, guid: f6b1c8eadc1392d44be43d85a2446c8e, type: 3}
-      propertyPath: currentAmmo
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: -7357345836237329452, guid: f6b1c8eadc1392d44be43d85a2446c8e, type: 3}
-      propertyPath: reloadSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -7357345836237329452, guid: f6b1c8eadc1392d44be43d85a2446c8e, type: 3}
-      propertyPath: magazineSize
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 74808181bbfef124587f1d393114e56f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -103,6 +87,22 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Weapon
       objectReference: {fileID: 0}
+    - target: {fileID: -7357345836237329452, guid: f6b1c8eadc1392d44be43d85a2446c8e, type: 3}
+      propertyPath: fireRate
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: -7357345836237329452, guid: f6b1c8eadc1392d44be43d85a2446c8e, type: 3}
+      propertyPath: currentAmmo
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: -7357345836237329452, guid: f6b1c8eadc1392d44be43d85a2446c8e, type: 3}
+      propertyPath: reloadSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7357345836237329452, guid: f6b1c8eadc1392d44be43d85a2446c8e, type: 3}
+      propertyPath: magazineSize
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -135,10 +135,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handTransform: {fileID: 0}
-  fireRate: 1
-  magazineSize: 5
-  currentAmmo: 5
-  reloadSpeed: 0.5
+  gunData: {fileID: 11400000, guid: c23a1e5f2804f71468273a2109b731c9, type: 2}
+  fireRate: 240
+  magazineSize: 30
+  currentAmmo: 60
+  reloadSpeed: 1
   onFire:
     m_PersistentCalls:
       m_Calls:
@@ -168,7 +169,7 @@ MonoBehaviour:
       m_Calls: []
   projectilePrefab: {fileID: 4081963984601000776, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
   projectileSpawnPoint: {fileID: 4481915334571154433}
-  projectileSpeed: 10
+  projectileSpeed: 50
 --- !u!95 &2982722331780221592
 Animator:
   serializedVersion: 5
