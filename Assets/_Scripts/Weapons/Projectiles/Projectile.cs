@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,56 +7,43 @@ using UnityEngine.Events;
 public class Projectile : MonoBehaviour {
 
     [SerializeField] float _duration = 5f;
-    [SerializeField] float _damage = 5f;
-
     [SerializeField] GameObject _vfx;
 
+    Action<Projectile> _killSelf;
     Rigidbody _rb;
 
     [Header("Events")]
-    public UnityEvent onFire;
-    public UnityEvent onDamage;
     public UnityEvent onHit;
-    public UnityEvent onDestroy;
+    public event Action<IDamageable> OnDamageableHit;
 
     void Awake() {
-        _rb = GetComponent<Rigidbody>();
-
+        if (_rb == null) {
+            _rb = GetComponent<Rigidbody>();
+        }
     }
 
-    public void Initialize(Transform spawnPoint, float speed, float damage) {
-        _damage = damage;
-        gameObject.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+    public void Init(Action<Projectile> killSelf, Vector3 position, float speed) {
+        transform.SetLocalPositionAndRotation(position, Quaternion.identity);
 
-        _rb.velocity = spawnPoint.forward * speed;
-        Invoke(nameof(SelfDestroy), _duration);
-        onFire?.Invoke();
+        _rb.velocity = transform.forward * speed;
+        _killSelf = killSelf;
 
+        Invoke(nameof(killSelf), _duration);
+    }
+
+    void OnDisable() {
+        onHit.RemoveAllListeners();
     }
 
     void OnTriggerEnter(Collider other) {
-        Health objectToDamage = other.gameObject.GetComponent<Health>();
-
-        Debug.Log(other.name, other);
-        onHit?.Invoke();
-
-
-        if (objectToDamage) {
-            objectToDamage.Damage((int)_damage);
-            onDamage?.Invoke();
+        if (other.TryGetComponent(out IDamageable damageable)) {
+            OnDamageableHit(damageable);
         }
 
+        onHit.Invoke();
         Instantiate(_vfx, transform.position, other.transform.rotation, transform.parent);
 
-        SelfDestroy();
-    }
-
-    void SelfDestroy() {
-        //implement object pooling
-        if (gameObject) {
-            onDestroy?.Invoke();
-            Destroy(gameObject);
-        }
+        _killSelf(this);
     }
 
 }

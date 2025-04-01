@@ -16,9 +16,4 @@ public abstract class Weapon : MonoBehaviour {
     public virtual void LoadStats(GunData gunData) {
 
     }
-
-    [ContextMenu("Fire")]
-    public virtual void Fire() {
-
-    }
 }

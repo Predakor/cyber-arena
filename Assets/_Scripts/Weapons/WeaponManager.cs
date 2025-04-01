@@ -79,7 +79,7 @@ public class WeaponManager : Singleton<WeaponManager> {
         CurrentWeapon = weapon.GetComponent<Weapon>();
     }
     public void ReloadCurrentWeapon() {
-        if (CurrentWeapon is RangeWeapon rangeWeapon) {
+        if (CurrentWeapon is Gun rangeWeapon) {
             rangeWeapon.StartReload();
         }
     }
@@ -108,7 +108,9 @@ public class WeaponManager : Singleton<WeaponManager> {
         if (_playerInputHandler.ShootInput == 1) {
             CurrentWeaponState = WeaponState.Shooting;
             _timeToIdle = Time.time;
-            CurrentWeapon.Fire();
+            if (CurrentWeapon is Gun gun) {
+                gun.Fire();
+            }
         }
         else {
             if (Time.time - _timeToIdle > 2) {
@@ -125,9 +127,4 @@ public class WeaponManager : Singleton<WeaponManager> {
     }
 }
 
-enum WeaponState {
-    Idle,
-    Aiming,
-    Shooting,
-    Reloading,
-}
+

@@ -2,7 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class RangeWeapon : Weapon {
+public interface IGun {
+    public void Shoot();
+    public void Reload();
+}
+
+
+public class Gun : Weapon, IGun {
 
     [SerializeField] GunData gunData;
 
@@ -68,7 +74,7 @@ public class RangeWeapon : Weapon {
     }
 
     [ContextMenu("Fire")]
-    public override void Fire() {
+    public void Fire() {
         if (_fireRateCooldown > Time.time || _isReloading) {
             return;
         }
@@ -112,13 +118,14 @@ public class RangeWeapon : Weapon {
     }
 
     void ShootProjectile(GameObject _projectile = null) {
+        return;
         CurrentAmmo--;
 
         GameObject overrideProjectile = _projectile == null ? projectilePrefab : _projectile;
 
         Projectile projectile = Instantiate(overrideProjectile, transform.position, transform.rotation).GetComponent<Projectile>();
 
-        projectile.Initialize(projectileSpawnPoint, projectileSpeed, 10f);
+        //projectile.Init(projectileSpawnPoint, projectileSpeed, 10f);
 
         _fireRateCooldown = Time.time + (60 / FireRate);
 
@@ -126,6 +133,7 @@ public class RangeWeapon : Weapon {
     }
 
     IEnumerator Reload() {
+        yield break;
         if (currentAmmo >= magazineSize || _isReloading) {
             yield break;
         }
@@ -140,4 +148,19 @@ public class RangeWeapon : Weapon {
         _isReloading = false;
 
     }
+
+    public void Shoot() {
+        throw new System.NotImplementedException();
+    }
+
+    void IGun.Reload() {
+        throw new System.NotImplementedException();
+    }
+}
+
+enum WeaponState {
+    Idle,
+    Aiming,
+    Shooting,
+    Reloading,
 }

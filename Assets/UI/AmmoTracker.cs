@@ -15,11 +15,11 @@ public class AmmoTracker : MonoBehaviour {
 
 
     void OnWeaponChanged(Weapon weapon, Weapon oldWeapon) {
-        if (weapon is RangeWeapon rangeWeapon) {
+        if (weapon is Gun rangeWeapon) {
             Ammo = rangeWeapon.CurrentAmmo;
             rangeWeapon.onAmmoChange.AddListener(OnAmmunitionChange);
         }
-        if (oldWeapon && oldWeapon is RangeWeapon oldRangeWeapon) {
+        if (oldWeapon && oldWeapon is Gun oldRangeWeapon) {
             oldRangeWeapon.onAmmoChange.RemoveListener(OnAmmunitionChange);
         }
     }
@@ -37,7 +37,7 @@ public class AmmoTracker : MonoBehaviour {
 
         Weapon currentWeapon = _weaponManager.CurrentWeapon;
         if (currentWeapon != null) {
-            if (currentWeapon is RangeWeapon rangeWeapon) {
+            if (currentWeapon is Gun rangeWeapon) {
                 Ammo = rangeWeapon.CurrentAmmo;
                 return;
             }

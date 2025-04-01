@@ -84,9 +84,10 @@ public class GeneralHostileAi : BaseAI {
             return;
         }
         IEnumerator AsyncFire() {
-
             foreach (Weapon weapon in weapons) {
-                weapon.Fire();
+                if (weapon is Gun gun) {
+                    gun.Fire();
+                }
                 yield return new WaitForSeconds(0.2f);
             }
         }
