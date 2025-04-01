@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 20320235524471629}
   - component: {fileID: 644149556115206556}
   - component: {fileID: 286033481154664590}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Floor_Corridor_Small
   m_TagString: Untagged
   m_Icon: {fileID: 0}

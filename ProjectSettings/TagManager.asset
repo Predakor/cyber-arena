@@ -17,8 +17,8 @@ TagManager:
   - Wall
   - Ground
   - Interactable
-  - 
-  - 
+  - Projectile
+  - PlayerDetection
   - 
   - 
   - 

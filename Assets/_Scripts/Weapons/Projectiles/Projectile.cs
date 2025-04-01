@@ -5,12 +5,12 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour {
 
-    [SerializeField] float duration = 5f;
-    [SerializeField] float damage = 5f;
+    [SerializeField] float _duration = 5f;
+    [SerializeField] float _damage = 5f;
 
-    [SerializeField] GameObject vfx;
+    [SerializeField] GameObject _vfx;
 
-    Rigidbody rb;
+    Rigidbody _rb;
 
     [Header("Events")]
     public UnityEvent onFire;
@@ -19,37 +19,36 @@ public class Projectile : MonoBehaviour {
     public UnityEvent onDestroy;
 
     void Awake() {
-        rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
 
     }
 
-    public void Initialize(Transform spawnPoint, float speed, float _damage) {
-        damage = _damage;
+    public void Initialize(Transform spawnPoint, float speed, float damage) {
+        _damage = damage;
         gameObject.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
 
-        rb.velocity = spawnPoint.forward * speed;
-        Invoke(nameof(SelfDestroy), duration);
+        _rb.velocity = spawnPoint.forward * speed;
+        Invoke(nameof(SelfDestroy), _duration);
         onFire?.Invoke();
 
     }
 
-    void OnCollisionEnter(Collision collision) {
-        Health objectToDamage = collision.gameObject.GetComponent<Health>();
+    void OnTriggerEnter(Collider other) {
+        Health objectToDamage = other.gameObject.GetComponent<Health>();
 
+        Debug.Log(other.name, other);
         onHit?.Invoke();
 
 
         if (objectToDamage) {
-            objectToDamage.Damage((int)damage);
+            objectToDamage.Damage((int)_damage);
             onDamage?.Invoke();
         }
 
-        Instantiate(vfx, transform.position, collision.transform.rotation, transform.parent);
+        Instantiate(_vfx, transform.position, other.transform.rotation, transform.parent);
 
         SelfDestroy();
     }
-
-
 
     void SelfDestroy() {
         //implement object pooling

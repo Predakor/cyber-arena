@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3855520306280578514}
   - component: {fileID: 1778233410977710197}
   - component: {fileID: 2219328670864913166}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Base_Room_Template_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,10 +56,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 384
+    m_Bits: 2046
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0

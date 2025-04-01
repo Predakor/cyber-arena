@@ -9,7 +9,7 @@ public class FollowMouse : MonoBehaviour {
 
     public Vector3 MousePosition { get => mousePosition; }
 
-    void Start() {
+    void Awake() {
         if (_camera == null) {
             _camera = Camera.main;
         }

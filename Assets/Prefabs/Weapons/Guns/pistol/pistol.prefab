@@ -124,13 +124,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handTransform: {fileID: 0}
-  fireRate: 1
+  gunData: {fileID: 11400000, guid: 47b5dfeb525a69b4a945ea13d6f21a11, type: 2}
+  fireRate: 60
   magazineSize: 5
   currentAmmo: 5
   reloadSpeed: 0.5
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
+  onReloadStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onReloadEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onEmptyMagazine:
+    m_PersistentCalls:
+      m_Calls: []
+  onAmmoChange:
+    m_PersistentCalls:
+      m_Calls: []
   projectilePrefab: {fileID: 4081963984601000776, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
   projectileSpawnPoint: {fileID: 8775169516530188463}
-  projectileSpeed: 1
+  projectileSpeed: 50
 --- !u!4 &7774830826793372327 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 711b6df72a8084d4e9e36cf6aa6d367e, type: 3}

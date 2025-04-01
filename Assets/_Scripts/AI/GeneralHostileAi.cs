@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -79,7 +80,9 @@ public class GeneralHostileAi : BaseAI {
 
     [ContextMenu("weapons/fireAll")]
     void FireAllWeapons() {
-
+        if (weapons.Count() < 1) {
+            return;
+        }
         IEnumerator AsyncFire() {
 
             foreach (Weapon weapon in weapons) {
