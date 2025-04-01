@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour {
     [SerializeField] float _duration = 5f;
     [SerializeField] GameObject _vfx;
 
+    float _speed = 1.0f;
     Action<Projectile> _killSelf;
     Rigidbody _rb;
 
@@ -24,11 +25,14 @@ public class Projectile : MonoBehaviour {
 
     public void Init(Action<Projectile> killSelf, Vector3 position, float speed) {
         transform.SetLocalPositionAndRotation(position, Quaternion.identity);
-
-        _rb.velocity = transform.forward * speed;
+        _speed = speed;
         _killSelf = killSelf;
+    }
 
-        Invoke(nameof(killSelf), _duration);
+    public void Fire() {
+        _rb.velocity = transform.forward * _speed;
+        Invoke(nameof(_killSelf), _duration);
+
     }
 
     void OnDisable() {

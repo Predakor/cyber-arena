@@ -3,9 +3,10 @@ using System.Collections;
 using UnityEngine;
 
 [Serializable]
-public abstract class AmmoModule {
-    [SerializeField] int _currentAmmo;
+public abstract class AmmoModule : MonoBehaviour {
     [SerializeField] int _magazineSize;
+    [SerializeField] int _currentAmmo;
+    [Range(0f, 10f)]
     [SerializeField] float _reloadSpeed;
 
     public event Action OnReload;

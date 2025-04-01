@@ -9,8 +9,8 @@ public class PhysicProjectileModule : ProjectileModule {
 
     ObjectPool<Projectile> _pool;
 
-    public override void Generate() {
-        _projectile = _pool.Get();
+    public override Projectile Generate() {
+        return _projectile = _pool.Get();
     }
 
     public override void AddImpactEffect() {

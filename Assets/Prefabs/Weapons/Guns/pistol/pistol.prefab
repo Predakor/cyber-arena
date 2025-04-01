@@ -125,6 +125,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handTransform: {fileID: 0}
   gunData: {fileID: 11400000, guid: 47b5dfeb525a69b4a945ea13d6f21a11, type: 2}
+  _ammoModule: {fileID: 0}
+  _shootModule: {fileID: 0}
+  _projectileModule: {fileID: 0}
+  _state: 0
   fireRate: 60
   magazineSize: 5
   currentAmmo: 5

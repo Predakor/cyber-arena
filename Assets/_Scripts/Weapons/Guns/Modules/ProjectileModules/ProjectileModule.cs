@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 public interface IProjectileModule {
-    public void Generate();
+    public Projectile Generate();
     public void Init();
     public void AddImpactEffect();
 }
@@ -14,6 +14,6 @@ public abstract class ProjectileModule : MonoBehaviour, IProjectileModule {
     [SerializeField] protected int _poolMaxSize = 200;
 
     public abstract void AddImpactEffect();
-    public abstract void Generate();
+    public abstract Projectile Generate();
     public abstract void Init();
 }

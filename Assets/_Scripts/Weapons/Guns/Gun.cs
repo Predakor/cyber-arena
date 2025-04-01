@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,16 +6,20 @@ public interface IGun {
     public void Reload();
 }
 
+[RequireComponent(typeof(AmmoModule), typeof(ShootModule), typeof(ProjectileModule))]
+public abstract class Gun : Weapon {
 
-public class Gun : Weapon, IGun {
-
-    [SerializeField] GunData gunData;
+    [SerializeField] protected GunData gunData;
+    [SerializeField] protected AmmoModule _ammoModule;
+    [SerializeField] protected ShootModule _shootModule;
+    [SerializeField] protected ProjectileModule _projectileModule;
 
     [Header("Weapon stats")]
-    [SerializeField] float fireRate = 1f;
-    [SerializeField] int magazineSize = 5;
-    [SerializeField] int currentAmmo = 5;
-    [SerializeField] float reloadSpeed = 0.5f;
+    [SerializeField] protected float fireRate = 1f;
+    [SerializeField] protected int magazineSize = 5;
+    [SerializeField] protected int currentAmmo = 5;
+    [SerializeField] protected float reloadSpeed = 0.5f;
+    [SerializeField] protected GunState _state = GunState.Holster;
 
     [Header("Weapon events")]
     public UnityEvent onFire;
@@ -33,10 +36,8 @@ public class Gun : Weapon, IGun {
     protected bool _isReloading = false;
     protected Coroutine _reloadCoroutine;
 
-    public float FireRate { get => fireRate; }
-    public int MagazineSize { get => magazineSize; }
     public int CurrentAmmo {
-        get => currentAmmo; private set {
+        get => _ammoModule.CurrentAmmo; private set {
             currentAmmo = value;
             onAmmoChange?.Invoke(value);
 
@@ -44,8 +45,6 @@ public class Gun : Weapon, IGun {
 
         }
     }
-
-    public float ReloadSpeed { get => reloadSpeed; }
 
     #region helpers
     public override void LoadStats(GunData gunData) {
@@ -62,105 +61,51 @@ public class Gun : Weapon, IGun {
 
     [ContextMenu("Load Data")]
     public void LoadData() => LoadStats(gunData);
+    public void Init(GunData data) {
+        LoadStats(data);
+        _ammoModule.OnReload += () => _state = GunState.Reloading;
+        _ammoModule.OnReloadEnd += () => _state = GunState.Ready;
+        _ammoModule.OnAmmoChange += (amount) => CurrentAmmo = amount;
+
+    }
 
     [ContextMenu("Start Reload")]
-    public void StartReload() {
-        _reloadCoroutine = StartCoroutine(Reload());
-    }
-
-    [ContextMenu("End Reload")]
-    public void StopReload() {
-        StopCoroutine(_reloadCoroutine);
-    }
+    abstract public void Reload();
 
     [ContextMenu("Fire")]
-    public void Fire() {
-        if (_fireRateCooldown > Time.time || _isReloading) {
-            return;
-        }
-
-        if (currentAmmo < 1) {
-            StartReload();
-            return;
-        }
-
-        ShootProjectile();
-    }
-    #endregion
-
-    void Awake() {
-        if (gunData == null) {
-            LoadStats(gunData);
-        }
-    }
-
-    void Start() {
-        _fireRateCooldown = Time.time;
-    }
-
-    void OnEnable() {
-        if (CurrentAmmo <= 0) {
-            StartCoroutine(Reload());
-        }
-    }
-    void OnDisable() {
-        StopAllCoroutines();
-    }
-
-    void OnValidate() {
-        if (gunData) {
-            LoadData();
-        }
-    }
+    abstract public void Fire();
 
     public void Inspect() {
         throw new System.NotImplementedException();
     }
 
-    void ShootProjectile(GameObject _projectile = null) {
-        return;
-        CurrentAmmo--;
+    #endregion
 
-        GameObject overrideProjectile = _projectile == null ? projectilePrefab : _projectile;
-
-        Projectile projectile = Instantiate(overrideProjectile, transform.position, transform.rotation).GetComponent<Projectile>();
-
-        //projectile.Init(projectileSpawnPoint, projectileSpeed, 10f);
-
-        _fireRateCooldown = Time.time + (60 / FireRate);
-
-        onFire?.Invoke();
+    protected virtual void Start() {
+        _fireRateCooldown = Time.time;
     }
 
-    IEnumerator Reload() {
-        yield break;
-        if (currentAmmo >= magazineSize || _isReloading) {
-            yield break;
+    protected virtual void OnEnable() {
+        if (CurrentAmmo < 1) {
+            Reload();
         }
-
-        onReloadStart?.Invoke();
-        _isReloading = true;
-
-        yield return new WaitForSeconds(ReloadSpeed);
-
-        onReloadEnd?.Invoke();
-        CurrentAmmo = MagazineSize;
-        _isReloading = false;
-
     }
 
-    public void Shoot() {
-        throw new System.NotImplementedException();
+    protected virtual void OnDisable() {
+        StopAllCoroutines();
     }
 
-    void IGun.Reload() {
-        throw new System.NotImplementedException();
+    virtual protected void OnValidate() {
+        if (gunData) {
+            LoadData();
+        }
     }
 }
 
-enum WeaponState {
-    Idle,
-    Aiming,
-    Shooting,
-    Reloading,
+public enum GunState {
+    Ready,      // can shoot 
+    Aiming,     // can shot and gets extra buufs
+    Holster,    // can't shoot need to wait for holster animation to finish
+    Shooting,   // can shoot but is shooting
+    Reloading,  // can't shoot need to wait for reload to end
 }

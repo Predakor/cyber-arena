@@ -9,7 +9,7 @@ public class WeaponManager : Singleton<WeaponManager> {
     [SerializeField] WeaponInventory _inventory;
     [SerializeField] Animator _animator;
     [SerializeField] PlayerInputHandler _playerInputHandler;
-    [SerializeField] WeaponState _weaponState;
+    [SerializeField] GunState _weaponState;
     [SerializeField] Transform _weaponTransform;
 
     [Header("Options")]
@@ -42,7 +42,7 @@ public class WeaponManager : Singleton<WeaponManager> {
         }
     }
 
-    internal WeaponState CurrentWeaponState {
+    internal GunState CurrentWeaponState {
         get => _weaponState;
         private set {
             if (_weaponState == value) {
@@ -80,7 +80,7 @@ public class WeaponManager : Singleton<WeaponManager> {
     }
     public void ReloadCurrentWeapon() {
         if (CurrentWeapon is Gun rangeWeapon) {
-            rangeWeapon.StartReload();
+            rangeWeapon.Reload();
         }
     }
 
@@ -106,7 +106,7 @@ public class WeaponManager : Singleton<WeaponManager> {
         if (_inventory.IsEmpty || CurrentWeapon == null) return;
 
         if (_playerInputHandler.ShootInput == 1) {
-            CurrentWeaponState = WeaponState.Shooting;
+            CurrentWeaponState = GunState.Shooting;
             _timeToIdle = Time.time;
             if (CurrentWeapon is Gun gun) {
                 gun.Fire();
@@ -114,7 +114,7 @@ public class WeaponManager : Singleton<WeaponManager> {
         }
         else {
             if (Time.time - _timeToIdle > 2) {
-                CurrentWeaponState = WeaponState.Idle;
+                CurrentWeaponState = GunState.Ready;
             }
         }
     }
