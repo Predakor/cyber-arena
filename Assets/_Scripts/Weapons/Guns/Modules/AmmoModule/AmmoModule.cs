@@ -20,9 +20,6 @@ public abstract class AmmoModule : MonoBehaviour {
             if (_currentAmmo == value) {
                 return;
             }
-            if (value == 0) {
-                Reload();
-            }
             _currentAmmo = value;
             OnAmmoChange(value);
         }
@@ -40,10 +37,10 @@ public abstract class AmmoModule : MonoBehaviour {
         }
     }
 
-    public virtual void Init(int magazineSize, int ammoCount, float reloadSpeed) {
-        _currentAmmo = ammoCount;
-        _magazineSize = magazineSize;
-        _reloadSpeed = reloadSpeed;
+    public virtual void Init(GunData data) {
+        _currentAmmo = data.CurrentAmmo;
+        _magazineSize = data.MagazineSize;
+        _reloadSpeed = data.ReloadSpeed;
     }
 
     public abstract IEnumerator Reload();
@@ -56,11 +53,11 @@ public abstract class AmmoModule : MonoBehaviour {
         }
         _isReloading = true;
         OnReload?.Invoke();
-        Reload();
     }
 
     protected virtual void FinishReload() {
         _isReloading = false;
+        CurrentAmmo = MagazineSize;
         OnReloadEnd?.Invoke();
     }
 }

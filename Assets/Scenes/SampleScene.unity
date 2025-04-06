@@ -6254,6 +6254,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2306900079802513450, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
   m_PrefabInstance: {fileID: 2082780207291574141}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &468083201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 468083202}
+  m_Layer: 0
+  m_Name: WeaponSlot
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &468083202
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468083201}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -1.205, y: 3.132, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1850359733}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &468461907
 GameObject:
   m_ObjectHideFlags: 0
@@ -9439,7 +9470,7 @@ MonoBehaviour:
   _currentWeapon: {fileID: 0}
   _inventory: {fileID: 2039004764}
   _animator: {fileID: 1850359738}
-  _playerInputHandler: {fileID: 0}
+  _playerInputHandler: {fileID: 1648641686}
   _weaponState: 0
   _weaponTransform: {fileID: 533887859}
   _autoEquipNewWeapon: 0
@@ -13923,6 +13954,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 47970921}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1094177220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1094177221}
+  m_Layer: 0
+  m_Name: ProjectileStart
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1094177221
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094177220}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.039, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1943159553}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1115421208
 GameObject:
@@ -18873,13 +18935,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1584231224}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 3.0839, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1943159553}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
 --- !u!33 &1584231226
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -23100,7 +23162,7 @@ GameObject:
   - component: {fileID: 1943159550}
   - component: {fileID: 1943159549}
   m_Layer: 0
-  m_Name: GunTest
+  m_Name: Rifle_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23118,10 +23180,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa57f2c3c5d09b243bf2cc4e7db3f759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _poolSize: 100
-  _poolMaxSize: 200
-  _projectilePrefab: {fileID: 0}
+  _poolSize: 400
+  _poolMaxSize: 800
+  _projectilePrefab: {fileID: 2344025093709548507, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
   _projectile: {fileID: 0}
+  _speed: 70
 --- !u!114 &1943159550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23134,6 +23197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 099ef1807a7a2204b9258c56c9de899e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _projectile: {fileID: 0}
+  _bulletStart: {fileID: 1094177221}
 --- !u!114 &1943159551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23147,7 +23212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _magazineSize: 60
-  _currentAmmo: 30
+  _currentAmmo: 60
   _reloadSpeed: 1
 --- !u!114 &1943159552
 MonoBehaviour:
@@ -23162,14 +23227,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handTransform: {fileID: 0}
-  gunData: {fileID: 0}
-  _ammoModule: {fileID: 0}
-  _shootModule: {fileID: 0}
-  _projectileModule: {fileID: 0}
-  fireRate: 1
-  magazineSize: 5
-  currentAmmo: 5
-  reloadSpeed: 0.5
+  _gunData: {fileID: 11400000, guid: f0961d44c61b7db49939c416bd5d6d40, type: 2}
+  _ammoModule: {fileID: 1943159551}
+  _shootModule: {fileID: 1943159550}
+  _projectileModule: {fileID: 1943159549}
+  _fireRate: 20
+  _magazineSize: 60
+  _currentAmmo: 60
+  _reloadSpeed: 1
+  _state: 0
   onFire:
     m_PersistentCalls:
       m_Calls: []
@@ -23179,15 +23245,10 @@ MonoBehaviour:
   onReloadEnd:
     m_PersistentCalls:
       m_Calls: []
-  onEmptyMagazine:
-    m_PersistentCalls:
-      m_Calls: []
   onAmmoChange:
     m_PersistentCalls:
       m_Calls: []
-  projectilePrefab: {fileID: 4081963984601000776, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
-  projectileSpawnPoint: {fileID: 0}
-  projectileSpeed: 10
+  _spread: {x: 0.3, y: 0.3, z: 0.3}
 --- !u!4 &1943159553
 Transform:
   m_ObjectHideFlags: 0
@@ -23197,11 +23258,12 @@ Transform:
   m_GameObject: {fileID: 1943159548}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.75, y: 0, z: 0}
+  m_LocalPosition: {x: 9.75, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1584231225}
+  - {fileID: 1094177221}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1956265364
@@ -26342,6 +26404,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4106483964953909843, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1548202621}
+    - targetCorrespondingSourceObject: {fileID: 4106483964953909843, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 468083202}
     - targetCorrespondingSourceObject: {fileID: 514643103646258021, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
       insertIndex: 0
       addedObject: {fileID: 897134386}

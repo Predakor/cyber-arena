@@ -5,30 +5,26 @@ using UnityEngine.Pool;
 public class PhysicProjectileModule : ProjectileModule {
 
     [SerializeField] Projectile _projectilePrefab;
-    [SerializeField] Projectile _projectile;
 
+    [SerializeField] float _speed;
     ObjectPool<Projectile> _pool;
 
-    public override Projectile Generate() {
-        return _projectile = _pool.Get();
+    public override Projectile Get() {
+        return _pool.Get();
     }
 
     public override void AddImpactEffect() {
     }
 
-    public override void Init() {
-        if (_projectile == null) {
-            Generate();
-        }
-        _projectile.enabled = true;
-        _projectile.Init(DeInitProjectile, transform.position, 20);
-    }
+    public override void Init(GunData data) {
+        _speed = data.ProjectileSpeed;
+        _poolSize = data.MagazineSize;
+        _poolMaxSize = 2 * _poolSize;
 
-    void Awake() {
         _pool = new(
-            InstantiateProjectile,
-            InitProjectile,
-            DeInitProjectile,
+            CreateProjectile,
+            OnGetProjectile,
+            OnReleaseProjectile,
             DestroyProjectile,
             false,
             _poolSize,
@@ -40,18 +36,21 @@ public class PhysicProjectileModule : ProjectileModule {
         return damagable => damagable.Damage(10);
     }
 
-    Projectile InstantiateProjectile() {
-        return _projectile = Instantiate(_projectilePrefab, transform.position, transform.rotation);
+    Projectile CreateProjectile() {
+        Projectile projectile = Instantiate(_projectilePrefab);
+        projectile.Init((p) =>
+        _pool.Release(p), _speed);
+        return projectile;
     }
 
-    void InitProjectile(Projectile projectile) {
-        _projectile.OnDamageableHit += HandleImpact();
-        projectile.enabled = true;
+    void OnGetProjectile(Projectile projectile) {
+        projectile.gameObject.SetActive(true);
+        projectile.OnDamageableHit += HandleImpact();
     }
 
-    void DeInitProjectile(Projectile projectile) {
-        _projectile.OnDamageableHit -= HandleImpact();
-        projectile.enabled = false;
+    void OnReleaseProjectile(Projectile projectile) {
+        projectile.gameObject.SetActive(false);
+        projectile.OnDamageableHit -= HandleImpact();
     }
 
     void DestroyProjectile(Projectile projectile) {

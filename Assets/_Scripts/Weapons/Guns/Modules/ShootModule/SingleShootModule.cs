@@ -1,10 +1,11 @@
+using UnityEngine;
+
 public class SingleShootModule : ShootModule {
-    public override void Shoot() {
-        _projectile.Fire();
-    }
+    [SerializeField] Transform _bulletStart;
 
     public override void Shoot(Projectile projectile) {
-        projectile.Fire();
+        projectile.Reuse(_bulletStart.position, _bulletStart.rotation);
+        projectile.enabled = true;
     }
 
 }

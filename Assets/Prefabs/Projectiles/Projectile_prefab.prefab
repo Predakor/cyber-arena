@@ -96,32 +96,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _duration: 5
-  _damage: 5
   _vfx: {fileID: 749631931216172601, guid: a0a9a44346a4f394da87a1d800be7cd5, type: 3}
-  onFire:
-    m_PersistentCalls:
-      m_Calls: []
-  onDamage:
-    m_PersistentCalls:
-      m_Calls: []
+  _trail: {fileID: 2819515566720938708}
   onHit:
     m_PersistentCalls:
       m_Calls: []
-  onDestroy:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 692498051062771610, guid: 4f5726d0cc59e444296a7130cfde3c59, type: 3}
-        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!96 &2819515566720938708
 TrailRenderer:
   serializedVersion: 3
@@ -232,6 +211,6 @@ TrailRenderer:
     generateLightingData: 0
   m_MinVertexDistance: 0.1
   m_MaskInteraction: 0
-  m_Autodestruct: 1
+  m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1

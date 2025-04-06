@@ -1,19 +1,13 @@
 using System;
 using UnityEngine;
 
-
-public interface IProjectileModule {
-    public Projectile Generate();
-    public void Init();
-    public void AddImpactEffect();
-}
-public abstract class ProjectileModule : MonoBehaviour, IProjectileModule {
+public abstract class ProjectileModule : MonoBehaviour {
     public event Action<GameObject> OnImpact;
 
     [SerializeField] protected int _poolSize = 100;
     [SerializeField] protected int _poolMaxSize = 200;
 
+    public abstract void Init(GunData data);
+    public abstract Projectile Get();
     public abstract void AddImpactEffect();
-    public abstract Projectile Generate();
-    public abstract void Init();
 }
