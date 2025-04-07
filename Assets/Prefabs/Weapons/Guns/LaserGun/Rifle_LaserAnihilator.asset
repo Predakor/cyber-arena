@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea15e54cb77a7cb4684e00fdad54badd, type: 3}
-  m_Name: Rifle_Data
+  m_Name: Rifle_LaserAnihilator
   m_EditorClassIdentifier: 
-  itemName: Beaver Unaliver
+  itemName: 
   icon: {fileID: 0}
-  description: Perfect wayto make your neighbour beaver less ugly
-  prefab: {fileID: 1263010016473339890, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
-  rarity: 1
-  fireRate: 20
-  magazineSize: 60
-  currentAmmo: 60
-  reloadSpeed: 1
-  projectileSpeed: 70
-  _spread: {x: 0.3, y: 0.3, z: 0.3}
+  description: 
+  prefab: {fileID: 0}
+  rarity: 0
+  fireRate: 1
+  magazineSize: 5
+  currentAmmo: 5
+  reloadSpeed: 0.5
+  projectileSpeed: 1
+  _spread: {x: 0, y: 0, z: 0}

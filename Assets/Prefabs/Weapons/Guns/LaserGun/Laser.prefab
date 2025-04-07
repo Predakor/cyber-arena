@@ -12,7 +12,7 @@ GameObject:
   m_Layer: 0
   m_Name: BulletSpawn
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2559894078447369269}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.168, z: 1.108}
+  m_LocalPosition: {x: 0, y: -0.128, z: 0.791}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -112,7 +112,16 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58e12cd97088a164e97145d13bba7ebb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6007063708906490903}
+      addedObject: {fileID: 1311454429033132012}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58e12cd97088a164e97145d13bba7ebb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2107236615711283742}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58e12cd97088a164e97145d13bba7ebb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5687847165293056928}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58e12cd97088a164e97145d13bba7ebb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1997901985031790605}
   m_SourcePrefab: {fileID: 100100000, guid: 58e12cd97088a164e97145d13bba7ebb, type: 3}
 --- !u!4 &8288960149758683691 stripped
 Transform:
@@ -124,7 +133,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 58e12cd97088a164e97145d13bba7ebb, type: 3}
   m_PrefabInstance: {fileID: 8395541123526905280}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6007063708906490903
+--- !u!114 &1311454429033132012
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,14 +142,73 @@ MonoBehaviour:
   m_GameObject: {fileID: 8665943807089209489}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a498e14525de4004da6ecfa7aba4d52f, type: 3}
+  m_Script: {fileID: 11500000, guid: c2cc6854034fb42448685c76c82ecd2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handTransform: {fileID: 0}
-  fireRate: 1
-  magazineSize: 5
-  currentAmmo: 5
-  reloadSpeed: 0.5
-  projectilePrefab: {fileID: 4081963984601000776, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
-  projectileSpawnPoint: {fileID: 1889776803149376905}
-  projectileSpeed: 1
+  handTransform: {fileID: 1889776803149376905}
+  _gunData: {fileID: 11400000, guid: f2242fcb0f885c84594d38190071be5f, type: 2}
+  _ammoModule: {fileID: 2107236615711283742}
+  _shootModule: {fileID: 5687847165293056928}
+  _projectileModule: {fileID: 1997901985031790605}
+  _fireRate: 10
+  _magazineSize: 30
+  _currentAmmo: 30
+  _reloadSpeed: 2
+  _state: 2
+  onFire:
+    m_PersistentCalls:
+      m_Calls: []
+  onReloadStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onReloadEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onAmmoChange:
+    m_PersistentCalls:
+      m_Calls: []
+  _spread: {x: 0.3, y: 0, z: 0.3}
+--- !u!114 &2107236615711283742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8665943807089209489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b8f9dd93c773a44ea3accecfb4a4bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _magazineSize: 30
+  _currentAmmo: 30
+  _reloadSpeed: 2
+--- !u!114 &5687847165293056928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8665943807089209489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099ef1807a7a2204b9258c56c9de899e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bulletStart: {fileID: 1889776803149376905}
+--- !u!114 &1997901985031790605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8665943807089209489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa57f2c3c5d09b243bf2cc4e7db3f759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poolSize: 30
+  _poolMaxSize: 60
+  _projectilePrefab: {fileID: 2344025093709548507, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
+  _speed: 1
