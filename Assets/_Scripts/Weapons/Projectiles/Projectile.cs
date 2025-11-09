@@ -18,9 +18,10 @@ public class Projectile : MonoBehaviour {
     public UnityEvent onHit;
     public event Action<IDamageable> OnDamageableHit;
 
-    public void Init(Action<Projectile> killSelf, float speed) {
+    public Projectile Init(Action<Projectile> killSelf, float speed) {
         _speed = speed;
         _killSelf = killSelf;
+        return this;
     }
 
     public void Reuse(Vector3 position, Quaternion rotation) {
