@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using Systems.Guns.Modules.ShootModules;
 using UnityEngine;
 
-public class SprayFireModule : ShootModule, IFireModule {
+public class SprayFireModule : ShootModuleBase {
     [SerializeField]
     private Projectile _projectile;
 
@@ -12,42 +13,41 @@ public class SprayFireModule : ShootModule, IFireModule {
     private byte _bulletsPerShoot = 8;
 
     [SerializeField]
-    private float _fireRate = 1.0f;
-
-    [SerializeField]
     private float _spreadAngle = 10f;
 
     [SerializeField]
     private float _projectileSpeed = 50f;
 
-    private FireRateController _fireRateController;
     private PelletCollection _pelletCollection;
 
-    private void Awake() {
-        _fireRateController = FireRateController.FromRoundsPerSecond(_fireRate);
+    protected override void Awake() {
         _pelletCollection = PelletCollection
             .For(_projectile)
             .WithPelletsPerShoot(_bulletsPerShoot)
             .WithSpreadAngle(_spreadAngle)
             .WithOrigin(_bulletOrigin);
+        base.Awake();
     }
 
-    [ContextMenu("Fire the fucker")]
     public void Fire() {
-        if (_fireRateController.IsReadyToFire) {
-            _pelletCollection
-                .Create()
-                .ForEach(p => {
-                    p.Init(null, _projectileSpeed)
-                    .Fire();
-                });
-
-            _fireRateController.Fired();
+        if (!fireRateController.IsReadyToFire) {
+            return;
         }
+
+        _pelletCollection
+            .Create()
+            .ForEach(p => {
+                p.Init(p => Destroy(p.gameObject), _projectileSpeed).Fire();
+            });
+
+        fireRateController.Fired();
     }
 
-    public override void Shoot(Projectile projectile) {
+    public override void Pressed() {
         Fire();
+    }
+
+    public override void Released() {
     }
 }
 
@@ -95,26 +95,4 @@ public sealed class PelletCollection {
     }
 }
 
-public sealed class FireRateController {
-    private float _fireDelay;
-    private float _lastFiretime = Time.time;
 
-    private FireRateController(float fireDelay) {
-        _fireDelay = fireDelay;
-    }
-
-    public static FireRateController FromRPM(float roundsPerMinute) =>
-        new(1f / (roundsPerMinute / 60));
-
-    public static FireRateController FromRoundsPerSecond(float roundsPerSeconds) =>
-        new(roundsPerSeconds);
-
-    public void Fired() => _lastFiretime = Time.time;
-
-    public bool IsReadyToFire => Time.time >= _lastFiretime + _fireDelay;
-
-    public FireRateController UpdateRPM(float roundsPerMinute) {
-        _fireDelay = 1f / (roundsPerMinute / 60);
-        return this;
-    }
-}

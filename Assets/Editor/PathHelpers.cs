@@ -16,7 +16,8 @@ internal static class PathHelpers {
     }
 
     public static string GetNamespaceFromPath(string path) {
-        var parts = path.Replace("Assets", "")
+        var parts = path
+            .Replace("Assets", "")
             .Split(pathBreaks, System.StringSplitOptions.RemoveEmptyEntries)
             .Select(StringHelpers.Capitalize);
 

@@ -5,14 +5,19 @@ using UnityEngine;
 public static class CustomScriptCreator {
     private const string MenuPath = "Assets/Create/Scripts";
 
-    [MenuItem(MenuPath + "/C# Monobehaviour ", false, 80)]
+    [MenuItem(MenuPath + "/C# Monobehaviour ", false, 70)]
     public static void CreateScriptWithNamespace() {
         StartNameEditing("DefaultScriptTemplate");
     }
 
-    [MenuItem(MenuPath + "/C# Plain ", false, 80)]
+    [MenuItem(MenuPath + "/C# Plain ", false, 71)]
     public static void CreatePlainCSharpScript() {
-        StartNameEditing("DefaultPlainScript");
+        StartNameEditing("PlainScriptTemplate");
+    }
+
+    [MenuItem(MenuPath + "/C# Interface ", false, 72)]
+    public static void CreateInterface() {
+        StartNameEditing("DefaultInterfaceTemplate");
     }
 
     private static void StartNameEditing(string templateName) {
@@ -42,9 +47,7 @@ public static class CustomScriptCreator {
 
         var updatedTemplate = File.ReadAllText(templatePath)
             .Replace("#SCRIPTNAME#", scriptName.ToCapitalized())
-            .Replace("#NAMESPACE#", namespaceName)
-            .Replace("#ROOTNAMESPACEBEGIN#", "")
-            .Replace("#ROOTNAMESPACEEND#", "");
+            .Replace("#NAMESPACE#", namespaceName);
 
         File.WriteAllText(filePath, updatedTemplate);
     }
