@@ -58,8 +58,8 @@ namespace Systems.Inputs {
             lookAction.performed += ct => _channel.RaiseLook(ct.ReadValue<Vector2>());
             lookAction.canceled += _ => _channel.Raise(Vector2.zero);
 
-            shootAction.performed += ct => _channel.RaiseShoot(ct.ReadValue<float>(), true);
-            shootAction.canceled += _ => _channel.RaiseShoot(0, true);
+            shootAction.performed += ct => _channel.RaiseShoot(ct.ReadValue<float>());
+            shootAction.canceled += _ => _channel.RaiseShoot(0);
 
             dashAction.performed += _ => _channel.RaiseAbility(true);
             dashAction.canceled += _ => _channel.RaiseAbility(false);

@@ -2,18 +2,25 @@ using UnityEngine;
 
 namespace Systems.Guns.Modules.ShootModules {
     public class ChargedShootModule : ShootModuleBase {
-
+        [SerializeField]
         private float _minChargeTime;
+
+        [SerializeField]
         private float _maxChargeTime;
+
+        [SerializeField]
+        private Projectile _projectile;
+
+        [SerializeField]
+        private Transform _muzzle;
 
         private ChargeTimer _chargeTracker;
 
-        private bool MinChargeTimeExceeded => _chargeTracker.GetDuration() < _minChargeTime;
+        private bool MinChargeTimeExceeded => _chargeTracker.GetDuration() > _minChargeTime;
 
         protected override void Awake() {
             base.Awake();
             _chargeTracker = new ChargeTimer();
-
         }
 
         public override void Pressed() {
@@ -23,12 +30,24 @@ namespace Systems.Guns.Modules.ShootModules {
         }
 
         public override void Released() {
-            if (MinChargeTimeExceeded) {
-                //do some logic
-                //include boostable stats by some modifier related to chargeTime
-                // config.FinalDamage *= (ChargeTimeMultiplier * ChargeDuration) 
-                fireRateController.Fired();
+            _chargeTracker.Stop();
+
+            if (!MinChargeTimeExceeded) {
+                _chargeTracker.Reset();
+                return;
             }
+
+            //do some logic
+            //include boostable stats by some modifier related to chargeTime
+            // config.FinalDamage *= (ChargeTimeMultiplier * ChargeDuration)
+            var projectile = Instantiate(_projectile, _muzzle.position, _muzzle.rotation)
+                .Init(d => Destroy(d.gameObject), 10f);
+
+            projectile.transform.localScale *= 10f;
+            projectile.OnDamageableHit += d => d.Damage(50);
+            projectile.Fire();
+
+            fireRateController.Fired();
 
             _chargeTracker.Reset();
         }
@@ -62,11 +81,8 @@ internal class ChargeTimer {
         return this;
     }
 
-
     public float GetDuration() {
-        return _chargeEndTime != 0
-            ? _chargeEndTime - _chargeStartTime
-            : Now - _chargeStartTime;
+        return _chargeEndTime != 0 ? _chargeEndTime - _chargeStartTime : Now - _chargeStartTime;
     }
 
     public float GetMaxChargePercentile() {
@@ -83,5 +99,5 @@ internal enum ChargeState {
     None,
     Charging,
     Paused, //add actual support
-    Full
+    Full,
 }

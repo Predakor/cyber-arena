@@ -52,7 +52,7 @@ MonoBehaviour:
   handTransform: {fileID: 0}
   _gunData: {fileID: 11400000, guid: f0961d44c61b7db49939c416bd5d6d40, type: 2}
   _ammoModule: {fileID: 7870448290166945322}
-  _shootModule: {fileID: 4241228248038674}
+  _shootModule: {fileID: 0}
   _projectileModule: {fileID: 7451695223287640016}
   _fireRate: 12
   _magazineSize: 60
@@ -115,10 +115,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae19f1c274afe44685f8358bd0b6fec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roundPerMinute: 0
   _muzzle: {fileID: 170692320446043841}
   _interclipTime: 0.1
   _clipSize: 3
-  _fireRate: 60
+  _projectile: {fileID: 0}
 --- !u!1 &2619004677376558415
 GameObject:
   m_ObjectHideFlags: 0

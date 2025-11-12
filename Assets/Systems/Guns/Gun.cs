@@ -21,16 +21,21 @@ namespace Systems.Guns {
             _channel.Unsubscribe<InputEvents.Shoot>(OnShoot);
         }
 
-        private void OnShoot(InputEvents.Shoot evt) {
-            _config.shootModule.Pressed();
+        private void OnShoot(InputEvents.Shoot shootEvent) {
+            if (shootEvent.IsPressed) {
+                _config.shootModule.Pressed();
+            }
+            else {
+                _config.shootModule.Released();
+            }
+
         }
 
-    }
-
-    [Serializable]
-    public class GunConfiguration {
-        [SerializeField] public ShootModuleBase shootModule;
-        [SerializeField] public AmmoModule ammoModule;
-        [SerializeField] public ProjectileModule projectileModule;
+        [Serializable]
+        public class GunConfiguration {
+            [SerializeField] public ShootModuleBase shootModule;
+            [SerializeField] public AmmoModule ammoModule;
+            [SerializeField] public ProjectileModule projectileModule;
+        }
     }
 }

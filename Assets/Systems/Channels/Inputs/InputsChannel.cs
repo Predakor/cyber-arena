@@ -8,7 +8,7 @@ namespace Systems.Channels {
 
         public void RaiseLook(Vector2 direction) => Raise(new InputEvents.Look(direction));
 
-        public void RaiseShoot(float value, bool isPressed) => Raise(new InputEvents.Shoot(value, isPressed));
+        public void RaiseShoot(float value) => Raise(new InputEvents.Shoot(value > 0.9f));
 
         public void RaiseAbility(bool isPressed) => Raise(new InputEvents.RaiseAbility(isPressed));
     }
