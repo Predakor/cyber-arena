@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Obsolete("Write a new one for IWeapon or something")]
 public class WeaponInventory : MonoBehaviour {
     const int MAX_WEAPONS = 3;
 

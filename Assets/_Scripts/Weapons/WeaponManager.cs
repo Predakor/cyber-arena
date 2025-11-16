@@ -56,7 +56,6 @@ public class WeaponManager : Singleton<WeaponManager> {
 
             EquipWeapon(_currentWeapon.gameObject);
 
-
             OnWeaponEquipped?.Invoke(_currentWeapon);
         }
     }
@@ -108,12 +107,8 @@ public class WeaponManager : Singleton<WeaponManager> {
 
     protected override void Awake() {
         base.Awake();
-        gameObject
-            .EnsureComponent(out _animator)
-            .EnsureComponent(out _inventory);
+        gameObject.EnsureComponent(out _animator).EnsureComponent(out _inventory);
     }
-
-
 
     void Start() {
         //_playerInputHandler = PlayerInputHandler.Instance;
@@ -128,8 +123,8 @@ public class WeaponManager : Singleton<WeaponManager> {
 
     private void OnEnable() {
         _inventory.OnWeaponPickup += WeaponPickup;
-
     }
+
     private void OnDisable() {
         _inventory.OnWeaponPickup -= WeaponPickup;
     }

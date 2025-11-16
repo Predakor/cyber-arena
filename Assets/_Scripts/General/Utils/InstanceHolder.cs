@@ -1,3 +1,4 @@
+using Systems.Shared;
 using UnityEngine;
 
 public class InstanceHolder : Singleton<InstanceHolder> {

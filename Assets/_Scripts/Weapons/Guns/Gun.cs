@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
+[Obsolete("Use weapon class from systems.guns")]
 public abstract class Gun : Weapon {
     [SerializeField] protected GunData _gunData;
     [SerializeField] protected AmmoModule _ammoModule;

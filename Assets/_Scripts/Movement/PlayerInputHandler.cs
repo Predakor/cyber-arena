@@ -1,6 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+[Obsolete("Use Input Handler")]
 public class PlayerInputHandler : MonoBehaviour {
 
     [SerializeField] InputActionAsset playerControls;

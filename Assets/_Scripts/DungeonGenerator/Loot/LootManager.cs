@@ -1,5 +1,6 @@
 using Helpers.Collections;
 using System.Collections.Generic;
+using Systems.Shared;
 using UnityEngine;
 
 public class LootManager : Singleton<LootManager> {

@@ -9,7 +9,7 @@ namespace Systems.Shared {
             Instance = null;
         }
 
-        private void Awake() {
+        protected virtual void Awake() {
             if (Instance != null) {
                 Destroy(gameObject);
                 return;

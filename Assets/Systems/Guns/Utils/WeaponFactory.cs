@@ -10,13 +10,11 @@ namespace Systems.Guns.Utils {
 
         public TWeapon Create<TWeapon>(IConfig<TWeapon> config)
             where TWeapon : IWeapon {
-
             return config switch {
                 IConfig<Gun> gunConfig => (TWeapon)(object)Instantiate(_gun).Configure(gunConfig),
                 //IConfig<Meele> meleeConfig => Instantiate(_meele).Configure(meleeConfig).gameObject,
                 _ => throw new NotImplementedException(),
             };
-
         }
     }
 }
