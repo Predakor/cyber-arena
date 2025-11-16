@@ -92,14 +92,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2455298597139384862}
-  - component: {fileID: 5153540793804060397}
+  - component: {fileID: 4233339957980026790}
   - component: {fileID: 3153459003531328477}
-  - component: {fileID: 7505090827593807919}
   - component: {fileID: 2343372675173229014}
   - component: {fileID: 2015568912095558255}
   m_Layer: 0
-  m_Name: Rifle_Prefab (1)
-  m_TagString: Untagged
+  m_Name: Shotgun_Prefab
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,7 +120,7 @@ Transform:
   - {fileID: 3823725288876646767}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5153540793804060397
+--- !u!114 &4233339957980026790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,32 +129,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4883880556467886209}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2cc6854034fb42448685c76c82ecd2d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e27721a61780c54db54f0ee2a3b2d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handTransform: {fileID: 0}
-  _gunData: {fileID: 11400000, guid: f0961d44c61b7db49939c416bd5d6d40, type: 2}
-  _ammoModule: {fileID: 3153459003531328477}
-  _shootModule: {fileID: 2015568912095558255}
-  _projectileModule: {fileID: 2343372675173229014}
-  _fireRate: 12
-  _magazineSize: 60
-  _currentAmmo: 60
-  _reloadSpeed: 1
-  _state: 0
-  onFire:
-    m_PersistentCalls:
-      m_Calls: []
-  onReloadStart:
-    m_PersistentCalls:
-      m_Calls: []
-  onReloadEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  onAmmoChange:
-    m_PersistentCalls:
-      m_Calls: []
-  _spread: {x: 0.3, y: 0.3, z: 0.3}
+  _channel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
+  _config:
+    shootModule: {fileID: 2015568912095558255}
+    ammoModule: {fileID: 3153459003531328477}
+    projectileModule: {fileID: 2343372675173229014}
 --- !u!114 &3153459003531328477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,19 +152,6 @@ MonoBehaviour:
   _magazineSize: 60
   _currentAmmo: 60
   _reloadSpeed: 1
---- !u!114 &7505090827593807919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4883880556467886209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 099ef1807a7a2204b9258c56c9de899e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bulletStart: {fileID: 3823725288876646767}
 --- !u!114 &2343372675173229014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,10 +180,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 449e9ac5037465147b76536cec57d983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roundPerMinute: 60
   _projectile: {fileID: 2344025093709548507, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
   _bulletOrigin: {fileID: 3823725288876646767}
   _bulletsPerShoot: 8
-  _fireRate: 1
   _spreadAngle: 5
   _projectileSpeed: 50
 --- !u!1 &6393929737118724275

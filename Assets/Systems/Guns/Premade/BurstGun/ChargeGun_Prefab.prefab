@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 591589417983975139}
   - component: {fileID: 7870448290166945322}
   - component: {fileID: 7451695223287640016}
-  - component: {fileID: 4241228248038674}
+  - component: {fileID: 7408599823220854809}
   m_Layer: 0
-  m_Name: BurstRifle_Prefab
-  m_TagString: Untagged
+  m_Name: ChargeGun_Prefab
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _channel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
   _config:
-    shootModule: {fileID: 4241228248038674}
+    shootModule: {fileID: 7408599823220854809}
     ammoModule: {fileID: 7870448290166945322}
     projectileModule: {fileID: 7451695223287640016}
 --- !u!114 &7870448290166945322
@@ -85,7 +85,7 @@ MonoBehaviour:
   _poolMaxSize: 120
   _projectilePrefab: {fileID: 2344025093709548507, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
   _speed: 70
---- !u!114 &4241228248038674
+--- !u!114 &7408599823220854809
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,14 +94,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 905182092263094128}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ae19f1c274afe44685f8358bd0b6fec, type: 3}
+  m_Script: {fileID: 11500000, guid: 757c515c58d01bb418ca428ece563374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roundPerMinute: 30
-  _muzzle: {fileID: 170692320446043841}
-  _interclipTime: 0.1
-  _clipSize: 3
+  roundPerMinute: 6
+  _minChargeTime: 0.1
+  _maxChargeTime: 1
   _projectile: {fileID: 2344025093709548507, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
+  _muzzle: {fileID: 170692320446043841}
 --- !u!1 &2619004677376558415
 GameObject:
   m_ObjectHideFlags: 0

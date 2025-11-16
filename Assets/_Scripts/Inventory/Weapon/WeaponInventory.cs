@@ -50,13 +50,15 @@ public class WeaponInventory : MonoBehaviour {
     }
 
     public GameObject EquipWeapon(int index) {
-        if (index > _inventory.Count) return null;
+        if (index > _inventory.Count)
+            return null;
         index = Mathf.Clamp(index, 0, _inventory.Count);
         return _inventory[index];
     }
 
     public void DequipWeapon(int index) {
-        if (index > _inventory.Count) return;
+        if (index > _inventory.Count)
+            return;
         index = Mathf.Clamp(index, 0, _inventory.Count);
         _inventory[index].SetActive(false);
     }
@@ -70,14 +72,16 @@ public class WeaponInventory : MonoBehaviour {
 
     //some method to pickup gun in item form
     public void Pickup(GunData data) {
-        if (!IsFull) _scriptableInventoryCopy.Add(data);
+        if (!IsFull)
+            _scriptableInventoryCopy.Add(data);
         _inventory.Add(CreateWeapon(data));
 
         OnInventoryFull?.Invoke();
     }
     //pickup onnly ads to intentory
     public void Pickup(Weapon weapon) {
-        if (!IsFull) AddItem(weapon.gameObject);
+        if (!IsFull)
+            AddItem(weapon.gameObject);
         OnInventoryFull?.Invoke();
     }
 

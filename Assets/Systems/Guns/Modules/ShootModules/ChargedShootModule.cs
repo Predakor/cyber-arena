@@ -82,7 +82,9 @@ internal class ChargeTimer {
     }
 
     public float GetDuration() {
-        return _chargeEndTime != 0 ? _chargeEndTime - _chargeStartTime : Now - _chargeStartTime;
+        return _chargeEndTime != 0
+            ? _chargeEndTime - _chargeStartTime
+            : Now - _chargeStartTime;
     }
 
     public float GetMaxChargePercentile() {
