@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: New Trail Projectile Configuration
+  m_Name: trailProj
   m_EditorClassIdentifier: Assembly-CSharp:Systems.Guns.Projectiles.Physics:TrailProjectileConfiguration
-  Size: 1
-  Damage: 50
-  Speed: 20
+  Size: 0
+  Damage: 0
+  Speed: 0
   Trail: {fileID: 0}

@@ -1,3 +1,5 @@
+using Systems.Guns.Projectiles;
+using Systems.Guns.Projectiles.Physics;
 using UnityEngine;
 
 namespace Systems.Guns.Modules.ShootModules {
@@ -13,6 +15,9 @@ namespace Systems.Guns.Modules.ShootModules {
 
         [SerializeField]
         private Transform _muzzle;
+
+        [SerializeField]
+        private ProjectileConfigurationSO _projectileConfig;
 
         private ChargeTimer _chargeTracker;
 
@@ -37,15 +42,22 @@ namespace Systems.Guns.Modules.ShootModules {
                 return;
             }
 
+
+            var chargeTime = _chargeTracker.GetDuration();
+
+
+            var config = Instantiate(_projectileConfig);
+            config.Size *= (10 * chargeTime);
+            config.Speed += (10 * chargeTime);
+            config.Damage = Mathf.RoundToInt(config.Damage * chargeTime);
+
             //do some logic
             //include boostable stats by some modifier related to chargeTime
             // config.FinalDamage *= (ChargeTimeMultiplier * ChargeDuration)
-            var projectile = Instantiate(_projectile, _muzzle.position, _muzzle.rotation)
-                .Init(d => Destroy(d.gameObject), 10f);
 
-            projectile.transform.localScale *= 10f;
-            projectile.OnDamageableHit += d => d.Damage(50);
-            projectile.Fire();
+            var projectile = ProjectileFactory.Instance.Create(config);
+
+            projectile.Shoot();
 
             fireRateController.Fired();
 

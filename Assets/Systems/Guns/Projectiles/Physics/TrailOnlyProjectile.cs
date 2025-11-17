@@ -1,11 +1,12 @@
 using Assets._Scripts.Utils;
 using System.Collections.Generic;
 using Systems.Guns.HitEffects;
+using Systems.Guns.Interfaces;
 using UnityEngine;
 
 namespace Systems.Guns.Projectiles.Physics {
     [RequireComponent(typeof(TrailRenderer), typeof(Rigidbody), typeof(SphereCollider))]
-    internal sealed class TrailOnlyProjectile : MonoBehaviour, IProjectile {
+    internal sealed class TrailOnlyProjectile : ProjectileBase<TrailOnlyProjectile> {
         [SerializeField]
         ProjectileConfigurationSO _config;
 
@@ -15,29 +16,26 @@ namespace Systems.Guns.Projectiles.Physics {
         [SerializeField]
         Rigidbody _rigidbody;
 
-        [SerializeField]
-        Collider _collider;
-
-        private void Awake() {
-            gameObject
-                .EnsureComponent(out _trail)
-                .EnsureComponent(out _rigidbody)
-                .EnsureComponent(out _collider);
+        protected override void Awake() {
+            base.Awake();
+            gameObject.EnsureComponent(out _trail).EnsureComponent(out _rigidbody);
         }
 
-        public void Configure(IProjectileConfig configuration) {
-            _config = configuration as ProjectileConfigurationSO;
-            _trail.startWidth = _config.Size;
-            _trail.endWidth = _config.Size;
-            _trail.time = _config.Size / 2;
-        }
-
-        public void Shoot() {
+        public override void Shoot() {
             _rigidbody.velocity = Vector3.forward * _config.Speed;
+        }
+
+        public override TrailOnlyProjectile Configure(IConfig<TrailOnlyProjectile> config) {
+            var c = config as ProjectileConfigurationSO;
+            _trail.startWidth = c.Size;
+            _trail.endWidth = c.Size / 2;
+            _trail.time = c.Size / 2;
+
+            return this;
         }
     }
 
-    public abstract class ProjectileConfigurationSO : ScriptableObject //, IProjectileConfig
+    public abstract class ProjectileConfigurationSO : ScriptableObject, IConfig//, IProjectileConfig
     {
         protected const string menuPath = "Weapons/Projectiles";
         public float Size;
@@ -47,7 +45,7 @@ namespace Systems.Guns.Projectiles.Physics {
     }
 
     [CreateAssetMenu(menuName = menuPath + "/" + nameof(TrailProjectileConfiguration))]
-    public sealed class TrailProjectileConfiguration : ProjectileConfigurationSO {
+    public sealed class TrailProjectileConfiguration : ProjectileConfigurationSO, IConfig<TrailOnlyProjectile> {
         public TrailRenderer Trail;
     }
 }

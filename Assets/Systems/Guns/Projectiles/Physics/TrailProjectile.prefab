@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2496f78e2ebaacd4fb90463e3d7ca4a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _config: {fileID: 11400000, guid: 24258973066f1234bbe72d4cdb5a480e, type: 2}
+  colider: {fileID: 0}
+  _config: {fileID: 11400000, guid: 2527b61a7a2587342a51f0e8d5383223, type: 2}
   _trail: {fileID: 0}
   _rigidbody: {fileID: 0}
-  _collider: {fileID: 0}
