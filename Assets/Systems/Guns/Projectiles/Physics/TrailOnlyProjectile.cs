@@ -25,6 +25,11 @@ namespace Systems.Guns.Projectiles.Physics {
             _rigidbody.velocity = Vector3.forward * _config.Speed;
         }
 
+        public override void Shoot(Transform origin) {
+            transform.SetPositionAndRotation(origin.position, origin.rotation);
+            _rigidbody.velocity = origin.forward * _config.Speed;
+        }
+
         public override TrailOnlyProjectile Configure(IConfig<TrailOnlyProjectile> config) {
             var c = config as ProjectileConfigurationSO;
             _trail.startWidth = c.Size;
@@ -35,7 +40,7 @@ namespace Systems.Guns.Projectiles.Physics {
         }
     }
 
-    public abstract class ProjectileConfigurationSO : ScriptableObject, IConfig//, IProjectileConfig
+    public abstract class ProjectileConfigurationSO : ScriptableObject, IConfig //, IProjectileConfig
     {
         protected const string menuPath = "Weapons/Projectiles";
         public float Size;
@@ -45,7 +50,9 @@ namespace Systems.Guns.Projectiles.Physics {
     }
 
     [CreateAssetMenu(menuName = menuPath + "/" + nameof(TrailProjectileConfiguration))]
-    public sealed class TrailProjectileConfiguration : ProjectileConfigurationSO, IConfig<TrailOnlyProjectile> {
+    public sealed class TrailProjectileConfiguration
+        : ProjectileConfigurationSO,
+            IConfig<TrailOnlyProjectile> {
         public TrailRenderer Trail;
     }
 }

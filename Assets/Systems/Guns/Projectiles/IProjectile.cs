@@ -14,6 +14,7 @@ namespace Systems.Guns.Projectiles {
 
     public interface IShootable {
         void Shoot();
+        void Shoot(Transform origin);
     }
 
     public interface IProjectileConfig : IConfig {
@@ -35,6 +36,7 @@ namespace Systems.Guns.Projectiles {
         }
 
         public abstract void Shoot();
+        public abstract void Shoot(Transform origin);
 
         public abstract TProjectile Configure(IConfig<TProjectile> config);
     }

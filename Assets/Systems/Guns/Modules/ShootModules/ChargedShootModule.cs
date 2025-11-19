@@ -45,10 +45,9 @@ namespace Systems.Guns.Modules.ShootModules {
 
             var chargeTime = _chargeTracker.GetDuration();
 
-
             var config = Instantiate(_projectileConfig);
-            config.Size *= (10 * chargeTime);
-            config.Speed += (10 * chargeTime);
+            config.Size *= (2 * chargeTime);
+            config.Speed += (2 * chargeTime);
             config.Damage = Mathf.RoundToInt(config.Damage * chargeTime);
 
             //do some logic
@@ -56,8 +55,7 @@ namespace Systems.Guns.Modules.ShootModules {
             // config.FinalDamage *= (ChargeTimeMultiplier * ChargeDuration)
 
             var projectile = ProjectileFactory.Instance.Create(config);
-
-            projectile.Shoot();
+            projectile.Shoot(_muzzle);
 
             fireRateController.Fired();
 
