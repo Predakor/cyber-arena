@@ -19,8 +19,13 @@ namespace Systems.Guns.Modules.ShootModules {
         [SerializeField]
         private ProjectileConfigurationSO _projectileConfig;
 
+        [SerializeField]
+        private ParticleSystem _chargeEffect;
+
         private ChargeTimer _chargeTracker;
 
+
+        private ParticleSystem _particles;
         private bool MinChargeTimeExceeded => _chargeTracker.GetDuration() > _minChargeTime;
 
         protected override void Awake() {
@@ -31,11 +36,15 @@ namespace Systems.Guns.Modules.ShootModules {
         public override void Pressed() {
             if (_chargeTracker.State == ChargeState.None) {
                 _chargeTracker.Start();
+                _particles = Instantiate(_chargeEffect, _muzzle);
+                _particles.Play();
             }
         }
 
         public override void Released() {
             _chargeTracker.Stop();
+            _particles.Stop();
+
 
             if (!MinChargeTimeExceeded) {
                 _chargeTracker.Reset();
@@ -45,14 +54,7 @@ namespace Systems.Guns.Modules.ShootModules {
 
             var chargeTime = _chargeTracker.GetDuration();
 
-            var config = Instantiate(_projectileConfig);
-            config.Size *= (2 * chargeTime);
-            config.Speed += (2 * chargeTime);
-            config.Damage = Mathf.RoundToInt(config.Damage * chargeTime);
-
-            //do some logic
-            //include boostable stats by some modifier related to chargeTime
-            // config.FinalDamage *= (ChargeTimeMultiplier * ChargeDuration)
+            var config = CreateProjectileConfig(chargeTime);
 
             var projectile = ProjectileFactory.Instance.Create(config);
             projectile.Shoot(_muzzle);
@@ -61,55 +63,15 @@ namespace Systems.Guns.Modules.ShootModules {
 
             _chargeTracker.Reset();
         }
-    }
-}
 
-internal class ChargeTimer {
-    private float _chargeStartTime;
-    private float _chargeEndTime;
-    private float _maxChargeTime;
-
-    private static float Now => Time.time;
-    public ChargeState State { get; private set; } = ChargeState.None;
-
-    public ChargeTimer Start() {
-        _chargeStartTime = Now;
-        State = ChargeState.Charging;
-        return this;
-    }
-
-    public ChargeTimer Stop() {
-        _chargeEndTime = Now;
-        State = ChargeState.Paused;
-        return this;
-    }
-
-    public ChargeTimer Reset() {
-        _chargeEndTime = default;
-        _chargeStartTime = default;
-        State = ChargeState.None;
-        return this;
-    }
-
-    public float GetDuration() {
-        return _chargeEndTime != 0
-            ? _chargeEndTime - _chargeStartTime
-            : Now - _chargeStartTime;
-    }
-
-    public float GetMaxChargePercentile() {
-        if (_maxChargeTime <= 0f) {
-            return 1f;
+        private ProjectileConfigurationSO CreateProjectileConfig(float chargeTime) {
+            var config = Instantiate(_projectileConfig);
+            config.Size *= (2 * chargeTime);
+            config.Speed += (2 * chargeTime);
+            config.Damage = Mathf.RoundToInt(config.Damage * chargeTime);
+            return config;
         }
-
-        float chargeTime = GetDuration();
-        return Mathf.Clamp01(chargeTime / _maxChargeTime);
     }
 }
 
-internal enum ChargeState {
-    None,
-    Charging,
-    Paused, //add actual support
-    Full,
-}
+

@@ -102,7 +102,8 @@ MonoBehaviour:
   _maxChargeTime: 1
   _projectile: {fileID: 2344025093709548507, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
   _muzzle: {fileID: 170692320446043841}
-  _projectileConfig: {fileID: 11400000, guid: 2527b61a7a2587342a51f0e8d5383223, type: 2}
+  _projectileConfig: {fileID: 0}
+  _chargeEffect: {fileID: 1761897498836718374, guid: 3c170c5b523dbfb4699a260aab57f246, type: 3}
 --- !u!1 &2619004677376558415
 GameObject:
   m_ObjectHideFlags: 0
