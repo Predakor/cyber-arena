@@ -1,4 +1,4 @@
-using Assets._Scripts.Utils;
+using Assets.Scripts.Utils;
 using System.Collections.Generic;
 using Systems.Guns.HitEffects;
 using Systems.Guns.Interfaces;

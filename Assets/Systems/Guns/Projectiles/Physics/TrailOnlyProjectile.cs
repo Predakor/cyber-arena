@@ -1,4 +1,4 @@
-using Assets._Scripts.Utils;
+using Assets.Scripts.Utils;
 using UnityEngine;
 
 namespace Systems.Guns.Projectiles.Physics

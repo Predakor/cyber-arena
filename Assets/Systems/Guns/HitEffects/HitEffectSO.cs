@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Systems.Guns.HitEffects
 {
+    //example menu config in child
+    //[CreateAssetMenu(menuName = MenuName + nameof(Child_Effect))]
     public abstract class HitEffectSO : ScriptableObject, IHitEffect
     {
         protected const string MenuName = "Weapons/Effects/";
