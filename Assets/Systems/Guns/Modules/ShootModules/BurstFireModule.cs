@@ -3,19 +3,23 @@ using UnityEngine;
 
 namespace Systems.Guns.Modules.ShootModules {
     public sealed class BurstFireModule : ShootModuleBase {
+        [SerializeField]
+        Transform _muzzle;
 
-        [SerializeField] Transform _muzzle;
-        [SerializeField] float _interclipTime;
-        [SerializeField] byte _clipSize;
-        [SerializeField] Projectile _projectile;
+        [SerializeField, Range(0.01f, 5f)]
+        float _interclipTime;
+
+        [SerializeField, Range(1, 255)]
+        byte _clipSize;
+
+        [SerializeField]
+        Projectile _projectile;
 
         public override void Pressed() {
             StartCoroutine(BurstRoutine(_projectile));
         }
 
-        public override void Released() {
-
-        }
+        public override void Released() { }
 
         public void Shoot(Projectile projectile) {
             StartCoroutine(BurstRoutine(projectile));
@@ -23,7 +27,8 @@ namespace Systems.Guns.Modules.ShootModules {
 
         private IEnumerator BurstRoutine(Projectile projectile) {
             for (int i = 0; i < _clipSize; i++) {
-                var bulletInstance = Object.Instantiate(projectile, _muzzle.position, _muzzle.rotation)
+                var bulletInstance = Object
+                    .Instantiate(projectile, _muzzle.position, _muzzle.rotation)
                     .Init(p => Object.Destroy(p.gameObject), 50);
 
                 bulletInstance.OnDamageableHit += d => d.Damage(50);

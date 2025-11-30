@@ -19769,7 +19769,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1648641685}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f75372fd8fa4654f8ef9305075f5dcb, type: 3}
   m_Name: 
@@ -26511,7 +26511,7 @@ PrefabInstance:
     - target: {fileID: 7408599823220854809, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
       propertyPath: _projectileConfig
       value: 
-      objectReference: {fileID: 11400000, guid: 9cbe33374c1a53e4882c575c17eddc6c, type: 2}
+      objectReference: {fileID: 11400000, guid: 2d41586baa480b840ba1eb10717f6961, type: 2}
     - target: {fileID: 9104646342019105089, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.4749633
