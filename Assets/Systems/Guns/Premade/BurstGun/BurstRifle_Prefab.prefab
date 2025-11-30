@@ -101,7 +101,7 @@ MonoBehaviour:
   _muzzle: {fileID: 170692320446043841}
   _interclipTime: 0.1
   _clipSize: 3
-  _projectile: {fileID: 2344025093709548507, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
+  _config: {fileID: 11400000, guid: 2d41586baa480b840ba1eb10717f6961, type: 2}
 --- !u!1 &2619004677376558415
 GameObject:
   m_ObjectHideFlags: 0

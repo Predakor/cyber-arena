@@ -2,23 +2,34 @@ using Systems.Guns.HitEffect;
 using Systems.Guns.HitEffects;
 using UnityEngine;
 
-namespace Systems.Guns.Projectiles {
-    public static class HitHandler {
-        public static void Handle(GameObject target, IProjectileConfig config) {
-            var flags = HitFlag.Impact;
-            var hitInfo = new HitInfo() {
+namespace Systems.Guns.Projectiles
+{
+    public static class HitHandler
+    {
+        public static void Handle(GameObject target, IProjectileConfig config, Transform projectile)
+        {
+            Vector3 hitPoint = target.TryGetComponent<Collider>(out var col)
+                ? col.ClosestPoint(projectile.position)
+                : target.transform.position;
+
+            var hitInfo = new HitInfo()
+            {
                 Target = target,
-                Normal = target.transform.position,
-                Point = target.transform.position,
+                Normal = (target.transform.position - projectile.position).normalized,
+                Point = hitPoint,
             };
 
-            if (target.TryGetComponent<IDamageable>(out var health)) {
+            var flags = HitFlag.Impact;
+            if (target.TryGetComponent<IDamageable>(out var health))
+            {
                 health.Damage(config.Damage);
             }
 
             flags |= health != null ? HitFlag.Damageable : HitFlag.Surface;
-            foreach (IHitEffect effect in config.Effects) {
-                if ((flags & effect.Trigger) != 0) {
+            foreach (IHitEffect effect in config.Effects)
+            {
+                if ((flags & effect.Trigger) != 0)
+                {
                     EffectRunner.Instance.StartEffect(effect, hitInfo);
                 }
             }
@@ -26,7 +37,8 @@ namespace Systems.Guns.Projectiles {
     }
 
     [System.Flags]
-    public enum HitFlag {
+    public enum HitFlag
+    {
         None = 0,
         Impact = 1 << 0,
         Damageable = 1 << 1,

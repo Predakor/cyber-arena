@@ -17,6 +17,7 @@ namespace Systems.Guns.Projectiles
             return config switch
             {
                 TrailProjectileConfiguration c => Instantiate(trailProjectile).Configure(c),
+                null => throw new NullReferenceException("Config was not passed"),
                 _ => throw new NotImplementedException(),
             };
         }

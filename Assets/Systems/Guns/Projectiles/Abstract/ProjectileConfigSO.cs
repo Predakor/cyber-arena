@@ -1,16 +1,23 @@
 using System.Collections.Generic;
 using Systems.Guns.HitEffects;
-using Systems.Guns.Interfaces;
 using UnityEngine;
 
 namespace Systems.Guns.Projectiles.Physics
 {
-    public abstract class ProjectileConfigSO : ScriptableObject, IConfig
+    public abstract class ProjectileConfigSO : ScriptableObject, IProjectileConfig
     {
         protected const string menuPath = "Weapons/Projectiles";
-        public float Size;
-        public int Damage;
-        public float Speed;
-        public List<HitEffectSO> Effects;
+        public float size;
+        public int damage;
+        public float speed;
+        public List<HitEffectSO> effects;
+
+        public float Size => size;
+
+        public int Damage => damage;
+
+        public float Speed => speed;
+
+        public IReadOnlyList<IHitEffect> Effects => effects.AsReadOnly();
     }
 }

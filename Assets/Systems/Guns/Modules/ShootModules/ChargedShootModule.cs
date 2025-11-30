@@ -72,9 +72,9 @@ namespace Systems.Guns.Modules.ShootModules
         private ProjectileConfigSO CreateProjectileConfig(float chargeTime)
         {
             var config = Instantiate(_projectileConfig);
-            config.Size *= (2 * chargeTime);
-            config.Speed += (2 * chargeTime);
-            config.Damage = Mathf.RoundToInt(config.Damage * chargeTime);
+            config.size *= (2 * chargeTime);
+            config.speed += (2 * chargeTime);
+            config.damage = Mathf.RoundToInt(config.damage * chargeTime);
             return config;
         }
     }

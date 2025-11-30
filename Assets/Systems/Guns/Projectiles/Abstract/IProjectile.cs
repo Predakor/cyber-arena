@@ -37,6 +37,5 @@ namespace Systems.Guns.Projectiles
         public abstract void Shoot();
         public abstract void Shoot(Transform origin);
         public abstract TProjectile Configure(TConfig config);
-
     }
 }
