@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MediumExplosion_Effect_Configuration
   m_EditorClassIdentifier: 
   <Duration>k__BackingField: 1
-  trigger: 0
-  explosionRadius: 1
-  damageFallow: 1
-  _explosionVfx: {fileID: 0}
+  trigger: 1
+  explosionRadius: 5
+  damageFallow: 0.5
+  _explosionVfx: {fileID: 1313659593737069298, guid: 6d5a3e65eced4984094f0d7be8803ba5, type: 3}

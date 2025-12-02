@@ -1,7 +1,8 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewWeapon", menuName = "Item/Weapon")]
-public class GunData : ItemData {
+public class GunData : ItemData
+{
     [SerializeField] float fireRate = 1f;
     [SerializeField] int magazineSize = 5;
     [SerializeField] int currentAmmo = 5;
@@ -14,3 +15,4 @@ public class GunData : ItemData {
     public float ReloadSpeed => reloadSpeed;
     public float ProjectileSpeed => projectileSpeed;
 }
+`
