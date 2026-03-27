@@ -1,41 +1,32 @@
-using Systems.Guns.Projectiles;
-using Systems.Guns.Projectiles.Physics;
+using System;
+using Systems.Guns.Modules.Shared;
 using UnityEngine;
 
 namespace Systems.Guns.Modules.ShootModules
 {
-    public class ChargedShootModule : ShootModuleBase
+    public sealed class ChargedShootModule : FireRateModuleBase
     {
-        [SerializeField]
-        private float _minChargeTime;
+        [SerializeField] private float _minChargeTime;
+        [SerializeField] private float _maxChargeTime;
 
-        [SerializeField]
-        private float _maxChargeTime;
+        [SerializeField] private float _maxDamageMultiplier = 3f;
+        [SerializeField] private float _maxSpeedMultiplier = 2f;
 
-        [SerializeField]
-        private Projectile _projectile;
-
-        [SerializeField]
-        private Transform _muzzle;
-
-        [SerializeField]
-        private ProjectileConfigSO _projectileConfig;
-
-        [SerializeField]
-        private ParticleSystem _chargeEffect;
+        [SerializeField] private Transform _muzzle;        // used only for VFX attachment
+        [SerializeField] private ParticleSystem _chargeEffect;
 
         private ChargeTimer _chargeTracker;
-
         private ParticleSystem _particles;
+
         private bool MinChargeTimeExceeded => _chargeTracker.GetDuration() > _minChargeTime;
 
         protected override void Awake()
         {
             base.Awake();
-            _chargeTracker = new ChargeTimer();
+            _chargeTracker = new ChargeTimer(_maxChargeTime);
         }
 
-        public override void Pressed()
+        public override void Pressed(ShootContext context, Action<ShootContext> next)
         {
             if (_chargeTracker.State != ChargeState.None)
             {
@@ -47,7 +38,7 @@ namespace Systems.Guns.Modules.ShootModules
             _particles.Play();
         }
 
-        public override void Released()
+        public override void Released(ShootContext context, Action<ShootContext> next)
         {
             _chargeTracker.Stop();
             _particles.Stop();
@@ -58,24 +49,17 @@ namespace Systems.Guns.Modules.ShootModules
                 return;
             }
 
-            var chargeTime = _chargeTracker.GetDuration();
+            float chargePercent = _chargeTracker.GetMaxChargePercentile();
 
-            var config = CreateProjectileConfig(chargeTime);
 
-            ProjectileFactory.Instance.Create(config).Shoot(_muzzle);
+            context.Damage = Mathf.Lerp(context.Damage, context.Damage * _maxDamageMultiplier, chargePercent);
+            context.Speed = Mathf.Lerp(context.Speed, context.Speed * _maxSpeedMultiplier, chargePercent);
+            context.Size = Mathf.Lerp(context.Size, context.Size * 10f, chargePercent);
+            next(context);
 
             fireRateController.Fired();
-
             _chargeTracker.Reset();
         }
 
-        private ProjectileConfigSO CreateProjectileConfig(float chargeTime)
-        {
-            var config = Instantiate(_projectileConfig);
-            config.size *= (2 * chargeTime);
-            config.speed += (2 * chargeTime);
-            config.damage = Mathf.RoundToInt(config.damage * chargeTime);
-            return config;
-        }
     }
 }

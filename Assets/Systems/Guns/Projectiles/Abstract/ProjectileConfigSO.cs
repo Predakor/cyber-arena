@@ -10,6 +10,7 @@ namespace Systems.Guns.Projectiles.Physics
         public float size;
         public int damage;
         public float speed;
+        public float duration;
         public List<HitEffectSO> effects;
 
         public float Size => size;
@@ -17,6 +18,8 @@ namespace Systems.Guns.Projectiles.Physics
         public int Damage => damage;
 
         public float Speed => speed;
+
+        public float Duration => duration;
 
         public IReadOnlyList<IHitEffect> Effects => effects.AsReadOnly();
     }

@@ -20474,6 +20474,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688187983}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1693136204 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 170692320446043841, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
+  m_PrefabInstance: {fileID: 2209514767872457695}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1702774260 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 796846292019386503, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
@@ -21758,6 +21763,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9104646342019105089, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
   m_PrefabInstance: {fileID: 2209514767872457695}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1825824037 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7408599823220854809, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
+  m_PrefabInstance: {fileID: 2209514767872457695}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825824035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 757c515c58d01bb418ca428ece563374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1830704017 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 905182092263094128, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
@@ -24752,32 +24768,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _channel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
+  _muzzle: {fileID: 0}
   _config:
-    shootModule: {fileID: 2057992504}
+    fireRateModule: {fileID: 0}
     ammoModule: {fileID: 2057992507}
-    projectileModule: {fileID: 2057992505}
---- !u!114 &2057992504 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2015568912095558255, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
-  m_PrefabInstance: {fileID: 849209560}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2057992502}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 449e9ac5037465147b76536cec57d983, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2057992505 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2343372675173229014, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
-  m_PrefabInstance: {fileID: 849209560}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2057992502}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa57f2c3c5d09b243bf2cc4e7db3f759, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+    spreadModule: {fileID: 0}
+    projectileModule: {fileID: 0}
 --- !u!114 &2057992507 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3153459003531328477, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
@@ -26676,6 +26672,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 702543872}
     m_Modifications:
+    - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
+      propertyPath: _muzzle
+      value: 
+      objectReference: {fileID: 1693136204}
+    - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
+      propertyPath: _config.spreadModule
+      value: 
+      objectReference: {fileID: 11400000, guid: e8ffd9d048637f74c9deb1810d99192c, type: 2}
+    - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
+      propertyPath: _config.fireRateModule
+      value: 
+      objectReference: {fileID: 1825824037}
+    - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
+      propertyPath: _config.projectileModule
+      value: 
+      objectReference: {fileID: 11400000, guid: 9104a803c16f4504484a7d745759ad2d, type: 2}
     - target: {fileID: 905182092263094128, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
       propertyPath: m_Name
       value: ChargeGun_Prefab (1)

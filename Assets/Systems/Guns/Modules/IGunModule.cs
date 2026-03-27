@@ -1,7 +1,10 @@
-namespace Systems.Weapons.Guns.Modules {
-    public interface IFireRequest { }
+using System;
+using Systems.Guns.Modules.Shared;
 
-    public interface IGunModule {
-        IGunModule Handle(IFireRequest request);
+namespace Systems.Weapons.Guns.Modules
+{
+    public interface IGunModule
+    {
+        void Handle(ShootContext context, Action<ShootContext> next);
     }
 }

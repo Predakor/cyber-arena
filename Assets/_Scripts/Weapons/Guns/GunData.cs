@@ -15,4 +15,3 @@ public class GunData : ItemData
     public float ReloadSpeed => reloadSpeed;
     public float ProjectileSpeed => projectileSpeed;
 }
-`

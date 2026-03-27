@@ -1,26 +1,27 @@
+using System;
 using System.Collections.Generic;
+using Systems.Guns.Modules.Shared;
 using Systems.Guns.Modules.ShootModules;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
-public class SprayFireModule : ShootModuleBase {
-    [SerializeField]
-    private Projectile _projectile;
+public class SprayFireModule : FireRateModuleBase
+{
+    [SerializeField] private Projectile _projectile;
 
-    [SerializeField]
-    private Transform _bulletOrigin;
+    [SerializeField] private Transform _bulletOrigin;
 
-    [SerializeField]
-    private byte _bulletsPerShoot = 8;
+    [SerializeField] private byte _bulletsPerShoot = 8;
 
-    [SerializeField]
-    private float _spreadAngle = 10f;
+    [SerializeField] private float _spreadAngle = 10f;
 
-    [SerializeField]
-    private float _projectileSpeed = 50f;
+    [SerializeField] private float _projectileSpeed = 50f;
 
     private PelletCollection _pelletCollection;
 
-    protected override void Awake() {
+    protected override void Awake()
+    {
         _pelletCollection = PelletCollection
             .For(_projectile)
             .WithPelletsPerShoot(_bulletsPerShoot)
@@ -29,59 +30,72 @@ public class SprayFireModule : ShootModuleBase {
         base.Awake();
     }
 
-    public void Fire() {
-        if (!fireRateController.IsReadyToFire) {
+    public void Fire()
+    {
+        if (!fireRateController.IsReadyToFire)
+        {
             return;
         }
 
         _pelletCollection
             .Create()
-            .ForEach(p => {
+            .ForEach(p =>
+            {
                 p.Init(p => Destroy(p.gameObject), _projectileSpeed).Fire();
             });
 
         fireRateController.Fired();
     }
 
-    public override void Pressed() {
+    public override void Pressed(ShootContext context, Action<ShootContext> next)
+    {
         Fire();
     }
 
-    public override void Released() {
+    public override void Released(ShootContext context, Action<ShootContext> next)
+    {
     }
+
 }
 
-public sealed class PelletCollection {
+public sealed class PelletCollection
+{
     private float _spreadAngle = 1f;
     private byte _pelletsPerShoot = 4;
     private Transform _origin;
 
     private readonly Projectile _projectile;
 
-    private PelletCollection(Projectile projectile) {
+    private PelletCollection(Projectile projectile)
+    {
         _projectile = projectile;
     }
 
     public static PelletCollection For(Projectile projectile) => new(projectile);
 
-    public PelletCollection WithSpreadAngle(float angle) {
+    public PelletCollection WithSpreadAngle(float angle)
+    {
         _spreadAngle = angle;
         return this;
     }
 
-    public PelletCollection WithPelletsPerShoot(byte count) {
+    public PelletCollection WithPelletsPerShoot(byte count)
+    {
         _pelletsPerShoot = count;
         return this;
     }
 
-    public PelletCollection WithOrigin(Transform origin) {
+    public PelletCollection WithOrigin(Transform origin)
+    {
         _origin = origin;
         return this;
     }
 
-    public List<Projectile> Create() {
+    public List<Projectile> Create()
+    {
         var bullets = new List<Projectile>();
-        for (int i = 0; i < _pelletsPerShoot - 1; i++) {
+        for (int i = 0; i < _pelletsPerShoot - 1; i++)
+        {
             float yaw = Random.Range(-_spreadAngle, _spreadAngle);
             float pitch = Random.Range(-_spreadAngle, _spreadAngle);
 

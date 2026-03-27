@@ -1,36 +1,27 @@
+using System;
 using System.Collections;
-using Systems.Guns.Projectiles;
-using Systems.Guns.Projectiles.Physics;
+using Systems.Guns.Modules.Shared;
 using UnityEngine;
 
 namespace Systems.Guns.Modules.ShootModules
 {
-    public sealed class BurstFireModule : ShootModuleBase
+    public sealed class BurstFireModule : FireRateModuleBase
     {
-        [SerializeField]
-        Transform _muzzle;
+        [SerializeField, Range(0.01f, 5f)] private float _interclipTime;
+        [SerializeField, Range(1, 255)] private byte _clipSize;
 
-        [SerializeField, Range(0.01f, 5f)]
-        float _interclipTime;
-
-        [SerializeField, Range(1, 255)]
-        byte _clipSize;
-
-        [SerializeReference]
-        ProjectileConfigSO _config;
-
-        public override void Pressed()
+        public override void Pressed(ShootContext context, Action<ShootContext> next)
         {
-            StartCoroutine(BurstRoutine(_config));
+            StartCoroutine(BurstRoutine(context, next));
         }
 
-        public override void Released() { }
+        public override void Released(ShootContext context, Action<ShootContext> next) { }
 
-        private IEnumerator BurstRoutine(ProjectileConfigSO config)
+        private IEnumerator BurstRoutine(ShootContext context, Action<ShootContext> next)
         {
             for (int i = 0; i < _clipSize; i++)
             {
-                ProjectileFactory.Instance.Create(config).Shoot(_muzzle);
+                next(context);
                 yield return new WaitForSeconds(_interclipTime);
             }
             fireRateController.Fired();

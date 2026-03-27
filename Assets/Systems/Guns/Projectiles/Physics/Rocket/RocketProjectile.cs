@@ -1,16 +1,17 @@
 using Assets.Scripts.Utils;
+using Systems.Guns.Modules.Shared;
+using Systems.Guns.Projectiles.Utils;
 using UnityEngine;
 
 namespace Systems.Guns.Projectiles.Physics.Rocket
 {
     public sealed class RocketProjectile : ProjectileBase<RocketProjectile, RocketProjectileConfig>
     {
-        [SerializeField] ParticleSystem _trusterVfx;
-        [SerializeField] ParticleSystem _explosionVfx;
+        [SerializeField] private ParticleSystem _trusterVfx;
+        [SerializeField] private ParticleSystem _explosionVfx;
+        [SerializeField] private Rigidbody _rb;
 
-        [SerializeField] Rigidbody _rb;
-        [SerializeField] RocketProjectileConfig _config;
-
+        private float _explosionRadius;
 
         protected override void Awake()
         {
@@ -20,15 +21,24 @@ namespace Systems.Guns.Projectiles.Physics.Rocket
 
         public override RocketProjectile Configure(RocketProjectileConfig config)
         {
-            _config = config;
+            _damage = config.damage;
+            _speed = config.speed;
+            _explosionRadius = config.ExplosionRadius;
+            _effects = config.Effects;
             return this;
+        }
+
+        protected override void ApplyContext(ShootContext context)
+        {
+            _damage = (int)context.Damage;
+            _speed = context.Speed;
+            _explosionRadius = context.EffectRadius;
         }
 
         public override void Shoot()
         {
             _trusterVfx.Play();
-            _rb.velocity = transform.forward * _config.speed;
-
+            _rb.velocity = transform.forward * _speed;
         }
 
         public override void Shoot(Transform origin)
@@ -39,31 +49,23 @@ namespace Systems.Guns.Projectiles.Physics.Rocket
 
         private void OnTriggerEnter(Collider other)
         {
-            //_explosionVfx.Play();
             _trusterVfx.Stop();
             _rb.velocity = Vector3.zero;
-
-            HitHandler.Handle(other.gameObject, _config, transform);
+            HitHandler.Handle(other.gameObject, _damage, _effects, transform);
             Destroy(gameObject, 2f);
         }
 
         private void OnDrawGizmosSelected()
         {
-            if (_config != null)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(transform.position, _config.ExplosionRadius);
-            }
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, _explosionRadius);
         }
     }
 
     [CreateAssetMenu(menuName = menuPath + "/" + nameof(RocketProjectileConfig))]
     public class RocketProjectileConfig : ProjectileConfigSO
     {
-        [SerializeField] float explosionRadius = 1.0f;
-
-        public float ExplosionRadius { get => explosionRadius; }
-
-
+        [SerializeField] private float explosionRadius = 1.0f;
+        public float ExplosionRadius => explosionRadius;
     }
 }

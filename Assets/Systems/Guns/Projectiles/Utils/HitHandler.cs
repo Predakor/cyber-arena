@@ -1,14 +1,20 @@
+using System.Collections.Generic;
 using Systems.Guns.HitEffect;
 using Systems.Guns.HitEffects;
 using UnityEngine;
 
-namespace Systems.Guns.Projectiles
+namespace Systems.Guns.Projectiles.Utils
 {
     public static class HitHandler
     {
         public static void Handle(GameObject target, IProjectileConfig config, Transform projectile)
         {
-            Vector3 hitPoint = target.TryGetComponent<Collider>(out var col)
+            Handle(target, config.Damage, config.Effects, projectile);
+        }
+
+        public static void Handle(GameObject target, float damage, IReadOnlyList<IHitEffect> effects, Transform projectile)
+        {
+            var hitPoint = target.TryGetComponent<Collider>(out var col)
                 ? col.ClosestPoint(projectile.position)
                 : target.transform.position;
 
@@ -22,11 +28,15 @@ namespace Systems.Guns.Projectiles
             var flags = HitFlag.Impact;
             if (target.TryGetComponent<IDamageable>(out var health))
             {
-                health.Damage(config.Damage);
+                health.Damage((int)damage);
+                flags |= HitFlag.Damageable;
+            }
+            else
+            {
+                flags |= HitFlag.Surface;
             }
 
-            flags |= health != null ? HitFlag.Damageable : HitFlag.Surface;
-            foreach (IHitEffect effect in config.Effects)
+            foreach (var effect in effects)
             {
                 if ((flags & effect.Trigger) != 0)
                 {
