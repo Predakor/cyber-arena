@@ -2,21 +2,25 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class PhysicProjectileModule : ProjectileModule {
+public class PhysicProjectileModule : ProjectileModule
+{
 
-    [SerializeField] Projectile _projectilePrefab;
+    [SerializeField] private Projectile _projectilePrefab;
 
-    [SerializeField] float _speed;
-    ObjectPool<Projectile> _pool;
+    [SerializeField] private float _speed;
+    private ObjectPool<Projectile> _pool;
 
-    public override Projectile Get() {
+    public override Projectile Get()
+    {
         return _pool.Get();
     }
 
-    public override void AddImpactEffect() {
+    public override void AddImpactEffect()
+    {
     }
 
-    public override void Init(GunData data) {
+    public override void Init(GunData data)
+    {
         _speed = data.ProjectileSpeed;
         _poolSize = data.MagazineSize;
         _poolMaxSize = 2 * _poolSize;
@@ -32,28 +36,33 @@ public class PhysicProjectileModule : ProjectileModule {
         );
     }
 
-    Action<IDamageable> HandleImpact() {
+    private Action<IDamageable> HandleImpact()
+    {
         return damagable => damagable.Damage(10);
     }
 
-    Projectile CreateProjectile() {
+    private Projectile CreateProjectile()
+    {
         Projectile projectile = Instantiate(_projectilePrefab);
         projectile.Init((p) =>
         _pool.Release(p), _speed);
         return projectile;
     }
 
-    void OnGetProjectile(Projectile projectile) {
+    private void OnGetProjectile(Projectile projectile)
+    {
         projectile.gameObject.SetActive(true);
         projectile.OnDamageableHit += HandleImpact();
     }
 
-    void OnReleaseProjectile(Projectile projectile) {
+    private void OnReleaseProjectile(Projectile projectile)
+    {
         projectile.gameObject.SetActive(false);
         projectile.OnDamageableHit -= HandleImpact();
     }
 
-    void DestroyProjectile(Projectile projectile) {
+    private void DestroyProjectile(Projectile projectile)
+    {
         Destroy(projectile.gameObject);
     }
 }

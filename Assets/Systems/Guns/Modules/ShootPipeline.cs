@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using Systems.Guns.Modules.Shared;
 using Systems.Weapons.Guns.Modules;
@@ -7,24 +7,23 @@ namespace Systems.Guns.Modules
 {
     public sealed class ShootPipeline
     {
-        private readonly IReadOnlyList<IGunModule> _modules;
+        private readonly Action<ShootContext> _chain;
 
         public ShootPipeline(params IGunModule[] modules)
         {
-            _modules = modules.Where(m => m != null).ToArray();
+            _chain = Build(modules.Where(m => m != null).ToArray(), 0);
         }
 
-        public void Execute(ShootContext context)
+        public void Execute(ShootContext context) => _chain(context);
+
+        private static Action<ShootContext> Build(IGunModule[] modules, int index)
         {
-            int index = 0;
-            void Next(ShootContext ctx)
+            if (index >= modules.Length)
             {
-                if (index < _modules.Count)
-                {
-                    _modules[index++].Handle(ctx, Next);
-                }
+                return _ => { };
             }
-            Next(context);
+            var downstream = Build(modules, index + 1);
+            return ctx => modules[index].Handle(ctx, downstream);
         }
     }
 }

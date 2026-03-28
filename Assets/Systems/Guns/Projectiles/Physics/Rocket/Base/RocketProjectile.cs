@@ -30,9 +30,8 @@ namespace Systems.Guns.Projectiles.Physics.Rocket
 
         protected override void ApplyContext(ShootContext context)
         {
-            _damage = (int)context.Damage;
-            _speed = context.Speed;
-            _explosionRadius = context.EffectRadius;
+            base.ApplyContext(context);
+            _explosionRadius += context.EffectRadius;
         }
 
         public override void Shoot()
@@ -60,12 +59,5 @@ namespace Systems.Guns.Projectiles.Physics.Rocket
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, _explosionRadius);
         }
-    }
-
-    [CreateAssetMenu(menuName = menuPath + "/" + nameof(RocketProjectileConfig))]
-    public class RocketProjectileConfig : ProjectileConfigSO
-    {
-        [SerializeField] private float explosionRadius = 1.0f;
-        public float ExplosionRadius => explosionRadius;
     }
 }

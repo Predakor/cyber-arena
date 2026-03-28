@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: ConeSpreadModule
-  m_EditorClassIdentifier: Assembly-CSharp:Systems.Guns.Modules.SpreadModule:RandomConeSpread
-  pelletCount: 1
-  spreadAngle: 0
-  damageMultiplier: 1
+  m_Script: {fileID: 11500000, guid: bec7faaa15922144580ed9a662fd883f, type: 3}
+  m_Name: Projectile_Rokcet_Config_Base
+  m_EditorClassIdentifier: 
+  size: 0
+  damage: 0
+  speed: 0
+  duration: 0
+  effects: []
+  explosionRadius: 1

@@ -8,7 +8,7 @@ namespace Systems.Guns.Modules.ShootModules
     public sealed class BurstFireModule : FireRateModuleBase
     {
         [SerializeField, Range(0.01f, 5f)] private float _interclipTime;
-        [SerializeField, Range(1, 255)] private byte _clipSize;
+        [SerializeField, Range(1, 32)] private byte _clipSize;
 
         public override void Pressed(ShootContext context, Action<ShootContext> next)
         {
@@ -21,7 +21,7 @@ namespace Systems.Guns.Modules.ShootModules
         {
             for (int i = 0; i < _clipSize; i++)
             {
-                next(context);
+                next(context.Clone());
                 yield return new WaitForSeconds(_interclipTime);
             }
             fireRateController.Fired();

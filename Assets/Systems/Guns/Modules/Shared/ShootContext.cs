@@ -58,5 +58,22 @@ namespace Systems.Guns.Modules.Shared
             get => (Flags & ShootIgnoreFlag.IgnoreResistances) != 0;
             set => Flags = value ? Flags | ShootIgnoreFlag.IgnoreResistances : Flags & ~ShootIgnoreFlag.IgnoreResistances;
         }
+
+        public ShootContext Clone() => new()
+        {
+            ProjectileConfig = ProjectileConfig,
+            Muzzle = Muzzle,
+            ShotPoints = ShotPoints,
+            State = State,
+            Damage = Damage,
+            Speed = Speed,
+            Duration = Duration,
+            Size = Size,
+            CritChance = CritChance,
+            CritDamage = CritDamage,
+            EffectRadius = EffectRadius,
+            EffectStrength = EffectStrength,
+            EffectDuration = EffectDuration,
+        };
     }
 }

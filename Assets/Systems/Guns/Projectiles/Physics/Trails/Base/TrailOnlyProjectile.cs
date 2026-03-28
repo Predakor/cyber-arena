@@ -23,9 +23,11 @@ namespace Systems.Guns.Projectiles.Physics
             _damage = config.damage;
             _speed = config.speed;
             _effects = config.Effects;
-            _trail.startWidth = config.size;
-            _trail.endWidth = config.size / 2;
-            _trail.time = config.size / 2;
+
+            _trail.time = config.trailTime;
+            _trail.startWidth = config.startWidth;
+            _trail.endWidth = config.endWidth;
+            _trail.colorGradient = config.colorGradient;
             return this;
         }
 
@@ -54,11 +56,5 @@ namespace Systems.Guns.Projectiles.Physics
             HitHandler.Handle(other.gameObject, (int)_damage, _effects, transform);
             Destroy(gameObject);
         }
-    }
-
-    [CreateAssetMenu(menuName = menuPath + "/" + nameof(TrailProjectileConfiguration))]
-    public sealed class TrailProjectileConfiguration : ProjectileConfigSO
-    {
-        public TrailRenderer Trail;
     }
 }

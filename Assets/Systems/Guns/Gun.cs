@@ -11,13 +11,25 @@ using UnityEngine;
 
 namespace Systems.Guns
 {
+    public sealed class SOSelectorAttribute : PropertyAttribute
+    {
+        public readonly Type BaseType;
+        public SOSelectorAttribute(Type baseType)
+        {
+            BaseType = baseType;
+        }
+    }
+    public sealed class TypedSOSelectorAttribute : PropertyAttribute { };
+
+
     [Serializable]
     public sealed class Configuration : IConfig<Gun>
     {
         public FireRateModuleBase fireRateModule;
         public AmmoModule ammoModule;
-        public SpreadModuleBase spreadModule;
         public ProjectileModuleBase projectileModule;
+
+        [SOSelector(typeof(SpreadModuleBase))] public SpreadModuleBase spreadModule;
     }
 
     public sealed class Gun : MonoBehaviour, IGun

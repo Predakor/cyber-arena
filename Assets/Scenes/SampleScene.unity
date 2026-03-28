@@ -26679,7 +26679,7 @@ PrefabInstance:
     - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
       propertyPath: _config.spreadModule
       value: 
-      objectReference: {fileID: 11400000, guid: e8ffd9d048637f74c9deb1810d99192c, type: 2}
+      objectReference: {fileID: 11400000, guid: 095b8712669838f4dab318d383c1cd0c, type: 2}
     - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
       propertyPath: _config.fireRateModule
       value: 
@@ -26687,7 +26687,7 @@ PrefabInstance:
     - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
       propertyPath: _config.projectileModule
       value: 
-      objectReference: {fileID: 11400000, guid: 9104a803c16f4504484a7d745759ad2d, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 905182092263094128, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
       propertyPath: m_Name
       value: ChargeGun_Prefab (1)
@@ -26818,6 +26818,10 @@ PrefabInstance:
       propertyPath: _config
       value: 
       objectReference: {fileID: 11400000, guid: cfb7735453a678f4192940755e2c4e4d, type: 2}
+    - target: {fileID: 591589417983975139, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
+      propertyPath: _config.projectileModule
+      value: 
+      objectReference: {fileID: 11400000, guid: 9104a803c16f4504484a7d745759ad2d, type: 2}
     - target: {fileID: 905182092263094128, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
       propertyPath: m_Name
       value: BurstRifle_Prefab
