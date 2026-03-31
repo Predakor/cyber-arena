@@ -5,12 +5,12 @@ using Systems.Guns;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(SOSelectorAttribute))]
+[CustomPropertyDrawer(typeof(DerivedSoSelectorAttribute))]
 public sealed class SOSelectorDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        SOSelectorGUI.DrawPicker(position, property, label, ((SOSelectorAttribute)attribute).BaseType);
+        SOSelectorGUI.DrawPicker(position, property, label, ((DerivedSoSelectorAttribute)attribute).BaseType);
     }
 }
 

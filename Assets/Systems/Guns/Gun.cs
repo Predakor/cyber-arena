@@ -1,8 +1,10 @@
 using System;
 using Systems.Channels;
 using Systems.Channels.Inputs;
+using Systems.Channels.Weapons;
 using Systems.Guns.Interfaces;
 using Systems.Guns.Modules;
+using Systems.Guns.Modules.AmmoModule.Base;
 using Systems.Guns.Modules.ProjectileModule;
 using Systems.Guns.Modules.Shared;
 using Systems.Guns.Modules.ShootModules;
@@ -11,10 +13,10 @@ using UnityEngine;
 
 namespace Systems.Guns
 {
-    public sealed class SOSelectorAttribute : PropertyAttribute
+    public sealed class DerivedSoSelectorAttribute : PropertyAttribute
     {
         public readonly Type BaseType;
-        public SOSelectorAttribute(Type baseType)
+        public DerivedSoSelectorAttribute(Type baseType)
         {
             BaseType = baseType;
         }
@@ -26,10 +28,10 @@ namespace Systems.Guns
     public sealed class Configuration : IConfig<Gun>
     {
         public FireRateModuleBase fireRateModule;
-        public AmmoModule ammoModule;
+        public AmmoModuleBase ammoModule;
         public ProjectileModuleBase projectileModule;
 
-        [SOSelector(typeof(SpreadModuleBase))] public SpreadModuleBase spreadModule;
+        [DerivedSoSelector(typeof(SpreadModuleBase))] public SpreadModuleBase spreadModule;
     }
 
     public sealed class Gun : MonoBehaviour, IGun
@@ -37,15 +39,17 @@ namespace Systems.Guns
         [SerializeField] private InputsChannel _channel;
         [SerializeField] private Transform _muzzle;
         [SerializeField] private Configuration _config;
+        [SerializeField] private WeaponChannel _weaponChannel;
 
         private ShootPipeline _pipeline;
 
+        [Obsolete]
         private void Awake()
         {
             _pipeline = new ShootPipeline(
                 _config.fireRateModule,
-                _config.ammoModule,
                 _config.spreadModule,
+                _config.ammoModule,
                 new ProjectileSpawnModule()
             );
         }
@@ -65,14 +69,22 @@ namespace Systems.Guns
             ShootHandler(state);
         }
 
+        [Obsolete]
         private void OnEnable()
         {
             _channel.Subscribe<InputEvents.Shoot>(InputHandler);
+            _config.ammoModule.OnAmmoChange += _weaponChannel.RaiseAmmoChanged;
+            _config.ammoModule.OnReloadStart += _weaponChannel.RaiseReloadStarted;
+            _config.ammoModule.OnReloadEnd += _weaponChannel.RaiseReloadFinished;
         }
 
+        [Obsolete]
         private void OnDisable()
         {
             _channel.Unsubscribe<InputEvents.Shoot>(InputHandler);
+            _config.ammoModule.OnAmmoChange -= _weaponChannel.RaiseAmmoChanged;
+            _config.ammoModule.OnReloadStart -= _weaponChannel.RaiseReloadStarted;
+            _config.ammoModule.OnReloadEnd -= _weaponChannel.RaiseReloadFinished;
         }
 
         public TWeapon Configure<TWeapon>(IConfig<TWeapon> config) where TWeapon : IWeapon

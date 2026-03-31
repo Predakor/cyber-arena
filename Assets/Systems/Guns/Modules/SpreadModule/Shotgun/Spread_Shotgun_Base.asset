@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d454a45276f72f4888b6f740c208257, type: 3}
   m_Name: Spread_Shotgun_Base
   m_EditorClassIdentifier: 
-  pelletCount: 1
-  spreadAngle: 0
-  damageMultiplier: 1
+  pelletCount: 12
+  spreadAngle: 10
+  damageMultiplier: 0.3

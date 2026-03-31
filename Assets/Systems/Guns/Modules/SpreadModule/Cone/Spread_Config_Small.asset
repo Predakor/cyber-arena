@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Spread_Config_Small
   m_EditorClassIdentifier: 
   pelletCount: 1
-  spreadAngle: 15
+  spreadAngle: 5
   damageMultiplier: 1

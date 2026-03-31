@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d128ee8dfaa0934488365605f400a5d0, type: 3}
   m_Name: Projectile_Trail_Configuration_Base
   m_EditorClassIdentifier: 
-  size: 0
-  damage: 0
-  speed: 0
-  duration: 0
-  effects: []
+  size: 0.1
+  damage: 1
+  speed: 50
+  duration: 1
+  effects:
+  - {fileID: 11400000, guid: 95ca9dc2808daba4d9ad2443c8a4e515, type: 2}
   trailTime: 0.3
   startWidth: 0.1
   endWidth: 0.02
   colorGradient:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 0, g: 0.21671724, b: 1, a: 1}
     key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
@@ -50,4 +51,4 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  material: {fileID: 0}
+  material: {fileID: 2100000, guid: 657e1b13a00c16e43a80f2f0795c2af7, type: 2}

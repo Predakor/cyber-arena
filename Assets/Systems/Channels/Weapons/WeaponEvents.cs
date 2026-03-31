@@ -6,6 +6,6 @@ namespace Systems.Channels.Weapons
         public sealed record Fired;
         public sealed record AmmoChanged(int Current, int? Reserve = null);
         public sealed record ReloadStarted(float Duration);
-        public sealed record ReloadFinished;
+        public sealed record ReloadFinished(float Duration, bool Interupted = false);
     }
 }

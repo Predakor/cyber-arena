@@ -1,52 +1,63 @@
+using Systems.Channels.Weapons;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class AmmoTracker : MonoBehaviour {
-    UIDocument _uIDocument;
-    IntegerField _ammoField;
+[RequireComponent(typeof(UIDocument))]
+public class AmmoTracker : MonoBehaviour
+{
+    [SerializeField] private WeaponChannel _weaponChannel;
 
-    int _ammo = 0;
-    public int Ammo {
-        get => _ammo; private set {
-            _ammo = value;
-            _ammoField.value = _ammo;
-        }
+    private UIDocument _uiDocument;
+    private Label _ammoLabel;
+    private VisualElement _reloadIndicator;
+
+    private void Awake()
+    {
+        _uiDocument = GetComponent<UIDocument>();
     }
 
+    private void OnEnable()
+    {
+        var root = _uiDocument.rootVisualElement;
+        _ammoLabel = root.Q<Label>("ammo-label");
+        _reloadIndicator = root.Q<VisualElement>("reload-indicator");
 
-    void OnWeaponChanged(Weapon weapon, Weapon oldWeapon) {
-        if (weapon is Gun rangeWeapon) {
-            Ammo = rangeWeapon.CurrentAmmo;
-            rangeWeapon.onAmmoChange.AddListener(OnAmmunitionChange);
-        }
-        if (oldWeapon && oldWeapon is Gun oldRangeWeapon) {
-            oldRangeWeapon.onAmmoChange.RemoveListener(OnAmmunitionChange);
-        }
+        _weaponChannel.Subscribe<WeaponEvents.AmmoChanged>(HandleAmmoChanged);
+        _weaponChannel.Subscribe<WeaponEvents.ReloadStarted>(HandleReloadStarted);
+        _weaponChannel.Subscribe<WeaponEvents.ReloadFinished>(HandleReloadFinished);
     }
 
-    void OnAmmunitionChange(int ammo) { Ammo = ammo; }
-
-
-    void Awake() {
-        _uIDocument = FindObjectOfType<UIDocument>();
+    private void OnDisable()
+    {
+        _weaponChannel.Unsubscribe<WeaponEvents.AmmoChanged>(HandleAmmoChanged);
+        _weaponChannel.Unsubscribe<WeaponEvents.ReloadStarted>(HandleReloadStarted);
+        _weaponChannel.Unsubscribe<WeaponEvents.ReloadFinished>(HandleReloadFinished);
     }
 
-    void Start() {
-        WeaponManager _weaponManager = WeaponManager.Instance;
-        _weaponManager.OnWeaponChange.AddListener(OnWeaponChanged);
-
-        Weapon currentWeapon = _weaponManager.CurrentWeapon;
-        if (currentWeapon != null) {
-            if (currentWeapon is Gun rangeWeapon) {
-                Ammo = rangeWeapon.CurrentAmmo;
-                return;
-            }
+    private void HandleAmmoChanged(WeaponEvents.AmmoChanged e)
+    {
+        if (_ammoLabel == null)
+        {
+            return;
         }
-        Ammo = 0;
+        _ammoLabel.text = e.Reserve.HasValue ? $"{e.Current} / {e.Reserve}" : $"{e.Current}";
     }
 
-    void OnEnable() {
-        var root = _uIDocument.rootVisualElement;
-        _ammoField = root.Q<IntegerField>("ammo-field");
+    private void HandleReloadStarted(WeaponEvents.ReloadStarted e)
+    {
+        if (_reloadIndicator == null)
+        {
+            return;
+        }
+        _reloadIndicator.style.display = DisplayStyle.Flex;
+    }
+
+    private void HandleReloadFinished(WeaponEvents.ReloadFinished e)
+    {
+        if (_reloadIndicator == null)
+        {
+            return;
+        }
+        _reloadIndicator.style.display = DisplayStyle.None;
     }
 }

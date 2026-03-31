@@ -7,8 +7,10 @@ namespace Systems.Channels.Weapons
     {
         public void RaiseSelected(byte slot, byte? prevSlot = null) => Raise(new WeaponEvents.Selected(slot, prevSlot));
         public void RaiseFired() => Raise(new WeaponEvents.Fired());
-        public void RaiseAmmoChanged(int current, int? reserve = null) => Raise(new WeaponEvents.AmmoChanged(current, reserve));
+        public void RaiseAmmoChanged(int current) => Raise(new WeaponEvents.AmmoChanged(current));
+        public void RaiseAmmoChanged(int current, int reserve) => Raise(new WeaponEvents.AmmoChanged(current, reserve));
+
         public void RaiseReloadStarted(float duration) => Raise(new WeaponEvents.ReloadStarted(duration));
-        public void RaiseReloadFinished() => Raise(new WeaponEvents.ReloadFinished());
+        public void RaiseReloadFinished(float duration, bool hasBeenInterupted = false) => Raise(new WeaponEvents.ReloadFinished(duration, hasBeenInterupted));
     }
 }
