@@ -1,4 +1,5 @@
 using Assets.Scripts.Utils;
+using System;
 using System.Collections.Generic;
 using Systems.Guns.HitEffects;
 using Systems.Guns.Interfaces;
@@ -11,6 +12,7 @@ namespace Systems.Guns.Projectiles
     public interface IProjectile : IShootable
     {
         IProjectile Apply(ShootContext context);
+        event Action<HitInfo> OnHit;
     }
 
     public interface IShootable
@@ -32,17 +34,30 @@ namespace Systems.Guns.Projectiles
         where TProjectile : ProjectileBase<TProjectile, TConfig>
         where TConfig : ProjectileConfigSO
     {
+
         [SerializeField] protected Collider colider;
 
         protected float _damage;
         protected float _speed;
         protected float _size;
-
         protected IReadOnlyList<IHitEffect> _effects;
+
+        public event Action<HitInfo> OnHit;
 
         protected virtual void Awake()
         {
             gameObject.EnsureComponent(out colider);
+        }
+
+        protected virtual void OnTriggerEnter(Collider other)
+        {
+            var hitPoint = other.ClosestPoint(transform.position);
+            OnHit?.Invoke(new HitInfo
+            {
+                Target = other.gameObject,
+                Point = hitPoint,
+                Normal = (other.transform.position - transform.position).normalized,
+            });
         }
 
         public IProjectile Apply(ShootContext context)

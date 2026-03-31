@@ -1,6 +1,5 @@
 using Assets.Scripts.Utils;
 using Systems.Guns.Modules.Shared;
-using Systems.Guns.Projectiles.Utils;
 using UnityEngine;
 
 namespace Systems.Guns.Projectiles.Physics
@@ -14,7 +13,9 @@ namespace Systems.Guns.Projectiles.Physics
         protected override void Awake()
         {
             base.Awake();
-            gameObject.EnsureComponent(out _trail).EnsureComponent(out _rigidbody);
+            gameObject
+                .EnsureComponent(out _trail)
+                .EnsureComponent(out _rigidbody);
         }
 
         public override TrailOnlyProjectile Configure(TrailProjectileConfiguration config)

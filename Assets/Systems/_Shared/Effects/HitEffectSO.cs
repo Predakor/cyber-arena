@@ -1,5 +1,4 @@
-﻿using Systems.Guns.Projectiles;
-using Systems.Guns.Projectiles.Utils;
+﻿
 using UnityEngine;
 
 namespace Systems.Guns.HitEffects
@@ -20,4 +19,5 @@ namespace Systems.Guns.HitEffects
         public abstract void Apply(HitInfo hit);
         public abstract void Clear(HitInfo hit);
     }
+
 }

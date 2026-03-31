@@ -1,0 +1,8 @@
+{
+    "name": "Systems.Channels",
+    "rootNamespace": "Systems.Channels",
+    "references": [
+        "Systems.Shared"
+    ],
+    "autoReferenced": true
+}

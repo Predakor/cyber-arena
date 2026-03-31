@@ -14,7 +14,7 @@ public sealed class SOSelectorDrawer : PropertyDrawer
     }
 }
 
-[CustomPropertyDrawer(typeof(TypedSOSelectorAttribute))]
+[CustomPropertyDrawer(typeof(TypedDerivedSOSelectorAttribute))]
 public sealed class TypedSOSelectorDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

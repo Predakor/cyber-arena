@@ -1,13 +1,19 @@
 ﻿using Systems.Guns.Interfaces;
+using Systems.Weapons.Guns.Modules;
 
-namespace Systems.Guns {
-    public interface IWeapon {
+namespace Systems.Guns
+{
+    public interface IWeapon
+    {
         TWeapon Configure<TWeapon>(IConfig<TWeapon> config)
             where TWeapon : IWeapon;
-        void Use();
+        void Use(bool isPressed);
     };
 
-    public interface IGun : IWeapon { }
+    public interface IGun : IWeapon
+    {
+        IAmmoEvents AmmoEvents { get; }
+    }
 
     public interface IMelee : IWeapon { }
 

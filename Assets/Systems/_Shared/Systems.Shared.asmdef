@@ -1,0 +1,6 @@
+{
+    "name": "Systems.Shared",
+    "rootNamespace": "Systems.Shared",
+    "references": [],
+    "autoReferenced": true
+}

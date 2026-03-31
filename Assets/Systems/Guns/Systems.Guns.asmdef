@@ -1,0 +1,8 @@
+{
+    "name": "Systems.Guns",
+    "rootNamespace": "Systems.Guns",
+    "references": [
+        "Systems.Shared"
+    ],
+    "autoReferenced": true
+}

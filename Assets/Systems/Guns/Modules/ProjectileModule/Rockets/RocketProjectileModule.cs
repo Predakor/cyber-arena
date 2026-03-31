@@ -6,7 +6,7 @@ namespace Systems.Guns.Modules.ProjectileModule
 {
     public sealed class RocketProjectileModule : ProjectileModuleBase
     {
-        [SerializeField][TypedSOSelector] private RocketProjectileConfig _config;
+        [SerializeField][TypedDerivedSOSelector] private RocketProjectileConfig _config;
 
         public override ShootContext GetShootContext() => ContextFrom(_config);
     }

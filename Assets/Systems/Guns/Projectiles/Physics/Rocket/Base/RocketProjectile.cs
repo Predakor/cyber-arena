@@ -1,6 +1,6 @@
 using Assets.Scripts.Utils;
 using Systems.Guns.Modules.Shared;
-using Systems.Guns.Projectiles.Utils;
+
 using UnityEngine;
 
 namespace Systems.Guns.Projectiles.Physics.Rocket
@@ -50,7 +50,7 @@ namespace Systems.Guns.Projectiles.Physics.Rocket
         {
             _trusterVfx.Stop();
             _rb.velocity = Vector3.zero;
-            HitHandler.Handle(other.gameObject, _damage, _effects, transform);
+            //HitHandler.Handle(other.gameObject, _damage, _effects, transform);
             Destroy(gameObject, 2f);
         }
 
