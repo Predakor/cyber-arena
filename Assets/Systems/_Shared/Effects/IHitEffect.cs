@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Systems.Guns.HitEffects
@@ -14,11 +15,13 @@ namespace Systems.Guns.HitEffects
     }
 
 
-    public readonly struct HitInfo
+    public sealed record HitInfo
     {
         public GameObject Target { get; init; }
         public Vector3 Point { get; init; }
         public Vector3 Normal { get; init; }
+        public float Damage { get; init; }
+        public IReadOnlyList<IHitEffect> Effects { get; init; }
     };
 
 

@@ -39,6 +39,12 @@ namespace Systems.Guns.Projectiles.Physics
             _trail.time = Mathf.Max(01f, _trail.time - context.Speed);
         }
 
+        protected override void OnTriggerEnter(Collider other)
+        {
+            base.OnTriggerEnter(other);
+            Destroy(gameObject);
+        }
+
         public override void Shoot()
         {
             Debug.Log($"[TrailProjectile] Shoot | damage={_damage} speed={_speed} size={_size}");
@@ -52,10 +58,6 @@ namespace Systems.Guns.Projectiles.Physics
             _rigidbody.velocity = origin.forward * _speed;
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            HitHandler.Handle(other.gameObject, (int)_damage, _effects, transform);
-            Destroy(gameObject);
-        }
+
     }
 }

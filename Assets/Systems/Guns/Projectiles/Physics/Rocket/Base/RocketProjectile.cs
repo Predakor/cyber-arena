@@ -34,6 +34,14 @@ namespace Systems.Guns.Projectiles.Physics.Rocket
             _explosionRadius += context.EffectRadius;
         }
 
+        protected override void OnTriggerEnter(Collider other)
+        {
+            base.OnTriggerEnter(other);
+            _trusterVfx.Stop();
+            _rb.velocity = Vector3.zero;
+            Destroy(gameObject, 2f);
+        }
+
         public override void Shoot()
         {
             _trusterVfx.Play();
@@ -44,14 +52,6 @@ namespace Systems.Guns.Projectiles.Physics.Rocket
         {
             transform.SetPositionAndRotation(origin.position, origin.rotation);
             Shoot();
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            _trusterVfx.Stop();
-            _rb.velocity = Vector3.zero;
-            //HitHandler.Handle(other.gameObject, _damage, _effects, transform);
-            Destroy(gameObject, 2f);
         }
 
         private void OnDrawGizmosSelected()

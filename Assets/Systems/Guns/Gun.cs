@@ -1,3 +1,4 @@
+using System;
 using Systems.Guns.Interfaces;
 using Systems.Guns.Modules;
 using Systems.Guns.Modules.AmmoModule.Base;
@@ -10,14 +11,14 @@ using UnityEngine;
 
 namespace Systems.Guns
 {
-    [System.Serializable]
+    [Serializable]
     public sealed class Configuration : IConfig<Gun>
     {
         public FireRateModuleBase fireRateModule;
         public AmmoModuleBase ammoModule;
         public ProjectileModuleBase projectileModule;
 
-        [DerivedSoSelector(typeof(SpreadModuleBase))] public SpreadModuleBase spreadModule;
+        [TypedDerivedSOSelector] public SpreadModuleBase spreadModule;
     }
 
     public sealed class Gun : MonoBehaviour, IGun

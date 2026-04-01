@@ -12,7 +12,7 @@ namespace Systems.Guns.Modules.AmmoModule.Base
         [SerializeField][Range(0, 1000)] private int _currentAmmo;
         [SerializeField][Range(0, 32)] private float _reloadSpeed;
 
-        private bool _isReloading = false;
+        protected bool _isReloading = false;
 
         public event Action<int, int> OnAmmoChange;
         public event Action<float> OnReloadStart;
@@ -57,10 +57,15 @@ namespace Systems.Guns.Modules.AmmoModule.Base
             OnReloadStart?.Invoke(_reloadSpeed);
         }
 
+        protected virtual void RefillAmmo()
+        {
+            CurrentAmmo = MagazineSize;
+        }
+
         protected virtual void FinishReload()
         {
             _isReloading = false;
-            CurrentAmmo = MagazineSize;
+            RefillAmmo();
             OnReloadEnd?.Invoke(_reloadSpeed, false);
         }
 

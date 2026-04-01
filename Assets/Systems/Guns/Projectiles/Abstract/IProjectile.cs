@@ -12,7 +12,7 @@ namespace Systems.Guns.Projectiles
     public interface IProjectile : IShootable
     {
         IProjectile Apply(ShootContext context);
-        event Action<HitInfo> OnHit;
+        IProjectile OnHit(Action<HitInfo> handler);
     }
 
     public interface IShootable
@@ -42,7 +42,13 @@ namespace Systems.Guns.Projectiles
         protected float _size;
         protected IReadOnlyList<IHitEffect> _effects;
 
-        public event Action<HitInfo> OnHit;
+        protected event Action<HitInfo> _onHit;
+
+        public IProjectile OnHit(Action<HitInfo> handler)
+        {
+            _onHit += handler;
+            return this;
+        }
 
         protected virtual void Awake()
         {
@@ -52,11 +58,13 @@ namespace Systems.Guns.Projectiles
         protected virtual void OnTriggerEnter(Collider other)
         {
             var hitPoint = other.ClosestPoint(transform.position);
-            OnHit?.Invoke(new HitInfo
+            _onHit?.Invoke(new HitInfo
             {
                 Target = other.gameObject,
                 Point = hitPoint,
                 Normal = (other.transform.position - transform.position).normalized,
+                Damage = _damage,
+                Effects = _effects
             });
         }
 
