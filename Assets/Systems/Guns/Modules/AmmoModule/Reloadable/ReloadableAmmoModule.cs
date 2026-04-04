@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Systems.Guns.Modules.AmmoModule
 {
+    [CreateAssetMenu(menuName = MenuPath + nameof(ReloadableAmmoModule))]
     public sealed class ReloadableAmmoModule : AmmoModuleBase
     {
         [SerializeField][Range(0, 1000)] private int _reserveAmmo;
@@ -38,6 +39,7 @@ namespace Systems.Guns.Modules.AmmoModule
         public override void DecreaseAmmo(int amount = 1)
         {
             CurrentAmmo -= amount;
+
         }
 
         public override void IncreaseAmmo(int amount = 1)

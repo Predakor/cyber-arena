@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using Systems.Guns.Modules.Shared;
+using Systems.Shared;
 using Systems.Weapons.Guns.Modules;
 using UnityEngine;
 
 namespace Systems.Guns.Modules.AmmoModule.Base
 {
-    public abstract class AmmoModuleBase : MonoBehaviour, IGunModule, IAmmoEvents
+    public abstract class AmmoModuleBase : ScriptableObject, IGunModule, IAmmoEvents
     {
+        protected const string MenuPath = "Weapons/Ammo/";
+
         [SerializeField][Range(0, 1000)] private int _magazineSize;
         [SerializeField][Range(0, 1000)] private int _currentAmmo;
         [SerializeField][Range(0, 32)] private float _reloadSpeed;
@@ -43,6 +46,9 @@ namespace Systems.Guns.Modules.AmmoModule.Base
             protected set { _reloadSpeed = value; }
         }
 
+        protected Coroutine StartCoroutine(IEnumerator routine) => CoroutineRunner.Run(routine);
+        protected void StopCoroutine(Coroutine coroutine) => CoroutineRunner.Stop(coroutine);
+
         public abstract IEnumerator Reload();
         public abstract void DecreaseAmmo(int amount = 1);
         public abstract void IncreaseAmmo(int amount = 1);
@@ -67,6 +73,11 @@ namespace Systems.Guns.Modules.AmmoModule.Base
             _isReloading = false;
             RefillAmmo();
             OnReloadEnd?.Invoke(_reloadSpeed, false);
+        }
+
+        protected virtual void OnEnable()
+        {
+            _isReloading = false;
         }
 
         public void Handle(ShootContext context, Action<ShootContext> next)

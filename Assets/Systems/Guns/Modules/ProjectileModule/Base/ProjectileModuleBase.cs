@@ -17,6 +17,7 @@ namespace Systems.Guns.Modules.ProjectileModule
             Size = config.Size,
             Damage = config.Damage,
             Speed = config.Speed,
+            AmmoCost = config.AmmoCost,
             Duration = config.Duration,
             ProjectileConfig = config,
         };

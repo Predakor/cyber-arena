@@ -30,7 +30,7 @@ public sealed class WeaponPresenter : MonoBehaviour
 
     private void OnShoot(InputEvents.Shoot e)
     {
-        //_weaponManager.CurrentWeapon.Use(e.IsPressed);
+        _weaponManager.CurrentWeapon.Use(e.IsPressed);
     }
 
     private void OnSelectWeapon(InputEvents.SelectWeapon e)
@@ -45,9 +45,9 @@ public sealed class WeaponPresenter : MonoBehaviour
         UnsubscribeAmmoEvents(_currentAmmoEvents);
         _currentAmmoEvents = null;
 
-        if (weapon is MonoBehaviour mb)
+        if (weapon is IGun gun)
         {
-            _currentAmmoEvents = mb.GetComponentInChildren<IAmmoEvents>();
+            _currentAmmoEvents = gun.AmmoEvents;
             SubscribeAmmoEvents(_currentAmmoEvents);
         }
     }
@@ -55,7 +55,10 @@ public sealed class WeaponPresenter : MonoBehaviour
     private void SubscribeAmmoEvents(IAmmoEvents ammoEvents)
     {
         if (ammoEvents == null)
-        { return; }
+        {
+            return;
+        }
+
         ammoEvents.OnAmmoChange += _weaponChannel.RaiseAmmoChanged;
         ammoEvents.OnReloadStart += _weaponChannel.RaiseReloadStarted;
         ammoEvents.OnReloadEnd += _weaponChannel.RaiseReloadFinished;
@@ -64,11 +67,13 @@ public sealed class WeaponPresenter : MonoBehaviour
     private void UnsubscribeAmmoEvents(IAmmoEvents ammoEvents)
     {
         if (ammoEvents == null)
-        { return; }
+        {
+            return;
+        }
+
         ammoEvents.OnAmmoChange -= _weaponChannel.RaiseAmmoChanged;
         ammoEvents.OnReloadStart -= _weaponChannel.RaiseReloadStarted;
         ammoEvents.OnReloadEnd -= _weaponChannel.RaiseReloadFinished;
     }
-
 }
 

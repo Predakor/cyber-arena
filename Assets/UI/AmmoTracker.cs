@@ -6,10 +6,9 @@ using UnityEngine.UIElements;
 public class AmmoTracker : MonoBehaviour
 {
     [SerializeField] private WeaponChannel _weaponChannel;
-
-    private UIDocument _uiDocument;
-    private Label _ammoLabel;
-    private VisualElement _reloadIndicator;
+    [SerializeField] private UIDocument _uiDocument;
+    [SerializeField] private Label _ammoLabel;
+    [SerializeField] private VisualElement _reloadIndicator;
 
     private void Awake()
     {
@@ -19,8 +18,13 @@ public class AmmoTracker : MonoBehaviour
     private void OnEnable()
     {
         var root = _uiDocument.rootVisualElement;
-        _ammoLabel = root.Q<Label>("ammo-label");
+        _ammoLabel = root.Q<Label>("ammo-field");
         _reloadIndicator = root.Q<VisualElement>("reload-indicator");
+
+        if (_ammoLabel is null)
+        {
+            Debug.LogError("MIssing ammoLabel in UI Document");
+        }
 
         _weaponChannel.Subscribe<WeaponEvents.AmmoChanged>(HandleAmmoChanged);
         _weaponChannel.Subscribe<WeaponEvents.ReloadStarted>(HandleReloadStarted);

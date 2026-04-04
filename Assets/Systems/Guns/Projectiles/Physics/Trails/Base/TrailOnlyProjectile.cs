@@ -21,8 +21,8 @@ namespace Systems.Guns.Projectiles.Physics
         public override TrailOnlyProjectile Configure(TrailProjectileConfiguration config)
         {
             _size = config.Size;
-            _damage = config.damage;
-            _speed = config.speed;
+            _damage = config.Damage;
+            _speed = config.Speed;
             _effects = config.Effects;
 
             _trail.time = config.trailTime;

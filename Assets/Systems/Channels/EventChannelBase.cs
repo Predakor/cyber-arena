@@ -6,7 +6,6 @@ namespace Systems.Channels
 {
     public interface IEventChannel
     {
-        void Raise<TEvent>(TEvent evt);
         void Subscribe<TEvent>(Action<TEvent> handler);
         void Unsubscribe<TEvent>(Action<TEvent> handler);
     }
@@ -16,6 +15,8 @@ namespace Systems.Channels
         private readonly Dictionary<Type, Delegate> _handlers = new();
 
         protected const string MenuName = "Channels/";
+
+        [SerializeField] private bool _debugMode = false;
 
         public void Subscribe<TEvent>(Action<TEvent> handler)
         {
@@ -27,6 +28,8 @@ namespace Systems.Channels
             {
                 _handlers[typeof(TEvent)] = handler;
             }
+
+            Log($"+ {typeof(TEvent).Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
         }
 
         public void Unsubscribe<TEvent>(Action<TEvent> handler)
@@ -43,13 +46,26 @@ namespace Systems.Channels
                     _handlers[typeof(TEvent)] = current;
                 }
             }
+
+            Log($"- {typeof(TEvent).Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
         }
 
         public void Raise<TEvent>(TEvent evt)
         {
+            Log($"▶ {typeof(TEvent).Name}: {evt}");
+
             if (_handlers.TryGetValue(typeof(TEvent), out var del) && del is Action<TEvent> action)
             {
                 action.Invoke(evt);
+            }
+        }
+
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        private void Log(string message)
+        {
+            if (_debugMode)
+            {
+                Debug.Log($"[{name}] {message}");
             }
         }
     }

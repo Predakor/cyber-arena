@@ -27,18 +27,21 @@ namespace Systems.Guns
         [SerializeField] private Configuration _config;
 
         private ShootPipeline _pipeline;
+        private AmmoModuleBase _ammoModule;
 
         private void Awake()
         {
+            _ammoModule = Instantiate(_config.ammoModule);
+
             _pipeline = new ShootPipeline(
                 _config.fireRateModule,
                 _config.spreadModule,
-                _config.ammoModule,
+                _ammoModule,
                 new ProjectileSpawnModule()
             );
         }
 
-        public IAmmoEvents AmmoEvents => _config.ammoModule;
+        public IAmmoEvents AmmoEvents => _ammoModule;
 
         public void Use(bool isPressed) => ShootHandler(isPressed ? ShootState.Shoot : ShootState.Stop);
 
@@ -54,6 +57,5 @@ namespace Systems.Guns
             context.Muzzle = _muzzle;
             _pipeline.Execute(context);
         }
-
     }
 }

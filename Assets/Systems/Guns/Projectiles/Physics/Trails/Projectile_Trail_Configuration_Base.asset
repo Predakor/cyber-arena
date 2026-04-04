@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d128ee8dfaa0934488365605f400a5d0, type: 3}
   m_Name: Projectile_Trail_Configuration_Base
   m_EditorClassIdentifier: 
-  size: 1
-  damage: 1
-  speed: 10
-  duration: 0
-  effects: []
-  trailTime: 0.3
-  startWidth: 0.3
+  <Size>k__BackingField: 0.1
+  <Damage>k__BackingField: 5
+  <Speed>k__BackingField: 25
+  <Duration>k__BackingField: 50
+  <AmmoCost>k__BackingField: 1
+  _effects: []
+  trailTime: 0.1
+  startWidth: 0.05
   endWidth: 0.01
   colorGradient:
     serializedVersion: 2

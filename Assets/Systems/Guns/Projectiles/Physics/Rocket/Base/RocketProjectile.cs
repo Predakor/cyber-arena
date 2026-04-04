@@ -21,8 +21,8 @@ namespace Systems.Guns.Projectiles.Physics.Rocket
 
         public override RocketProjectile Configure(RocketProjectileConfig config)
         {
-            _damage = config.damage;
-            _speed = config.speed;
+            _damage = config.Damage;
+            _speed = config.Speed;
             _explosionRadius = config.ExplosionRadius;
             _effects = config.Effects;
             return this;

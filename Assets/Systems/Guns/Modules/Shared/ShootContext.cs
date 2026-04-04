@@ -41,7 +41,7 @@ namespace Systems.Guns.Modules.Shared
 
         /// <summary>Number of enemies a single projectile can pierce through.</summary>
         public byte Piercing { get; set; }
-        public byte AmmoCost { get; set; }
+        public int AmmoCost { get; set; } = 1;
 
         public bool IgnoreArmor
         {
@@ -69,6 +69,7 @@ namespace Systems.Guns.Modules.Shared
             Speed = Speed,
             Duration = Duration,
             Size = Size,
+            AmmoCost = AmmoCost,
             CritChance = CritChance,
             CritDamage = CritDamage,
             EffectRadius = EffectRadius,

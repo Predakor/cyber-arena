@@ -27,6 +27,8 @@ namespace Systems.Guns.Projectiles
         float Size { get; }
         int Damage { get; }
         float Speed { get; }
+        float Duration { get; }
+        int AmmoCost { get; }
         IReadOnlyList<IHitEffect> Effects { get; }
     }
 
