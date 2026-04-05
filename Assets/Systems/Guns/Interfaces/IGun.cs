@@ -1,4 +1,5 @@
-﻿using Systems.Guns.Interfaces;
+﻿using System;
+using Systems.Guns.Interfaces;
 using Systems.Weapons.Guns.Modules;
 
 namespace Systems.Guns
@@ -13,7 +14,10 @@ namespace Systems.Guns
     public interface IGun : IWeapon
     {
         IAmmoEvents AmmoEvents { get; }
+        IWeaponStats Stats { get; }
+        event Action<IWeaponStats> StatsChanged;
     }
+
 
     public interface IMelee : IWeapon { }
 

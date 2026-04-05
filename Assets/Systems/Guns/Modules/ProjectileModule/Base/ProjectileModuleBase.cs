@@ -12,6 +12,16 @@ namespace Systems.Guns.Modules.ProjectileModule
 
         public abstract ShootContext GetShootContext();
 
+        public void Apply(WeaponStatsBuilder stats)
+        {
+            var context = GetShootContext();
+            stats.Damage = context.Damage;
+            stats.Speed = context.Speed;
+            stats.Size = context.Size;
+            stats.Duration = context.Duration;
+            stats.AmmoCost = context.AmmoCost;
+        }
+
         protected static ShootContext ContextFrom(ProjectileConfigSO config) => new()
         {
             Size = config.Size,

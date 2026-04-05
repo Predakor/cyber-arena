@@ -5149,10 +5149,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 371572743}
-  - component: {fileID: 371572744}
-  - component: {fileID: 371572745}
-  - component: {fileID: 371572746}
-  - component: {fileID: 371572747}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -5172,69 +5168,11 @@ Transform:
   m_LocalPosition: {x: 960, y: 540, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 988841948}
+  - {fileID: 2012212752}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &371572744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371572739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d061b5fd056f124f9c9147a44143dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _weaponChannel: {fileID: 11400000, guid: 72bda95107f522c4dbee47386cb1e367, type: 2}
-  _uiDocument: {fileID: 0}
---- !u!114 &371572745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371572739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 815e7587a84a85e45a9c92897d52b9ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthTarget: {fileID: 0}
-  healthBarName: health-bar
-  shieldBarName: shield-bar
---- !u!114 &371572746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371572739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 815e7587a84a85e45a9c92897d52b9ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthTarget: {fileID: 0}
-  healthBarName: BossHealthBar
-  shieldBarName: 
---- !u!114 &371572747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371572739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 0bcffc6f21d20ff43b466867d3e05f09, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 9c31fc6c6abbc6d4b913b8f1faa3414e, type: 3}
-  m_SortingOrder: 0
 --- !u!1 &372798853
 GameObject:
   m_ObjectHideFlags: 0
@@ -9967,7 +9905,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 371572746}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VitalBars, Assembly-CSharp
         m_MethodName: SetHealthTarget
         m_Mode: 2
@@ -9979,7 +9917,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 371572746}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VitalBars, Assembly-CSharp
         m_MethodName: ShowVitals
         m_Mode: 6
@@ -12479,6 +12417,69 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 4.5, z: 4.1}
   m_Center: {x: 0, y: 2.25, z: 0}
+--- !u!1 &988841947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 988841948}
+  - component: {fileID: 988841950}
+  - component: {fileID: 988841949}
+  m_Layer: 5
+  m_Name: WeaponConfigurationMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &988841948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988841947}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 371572743}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &988841949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988841947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 0bcffc6f21d20ff43b466867d3e05f09, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 3562b4b64c1b3bf4180b00f19ba50096, type: 3}
+  m_SortingOrder: 0
+--- !u!114 &988841950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988841947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a29980b2774d714458954b99dd18c58a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponChannel: {fileID: 11400000, guid: 72bda95107f522c4dbee47386cb1e367, type: 2}
+  _rowStatTemplate: {fileID: 9197481963319205126, guid: 515b1fe7a5a434c43b86601987316a2b, type: 3}
 --- !u!4 &999051170 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6449683968442843755, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
@@ -24183,6 +24184,101 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5568063878322146645, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
   m_PrefabInstance: {fileID: 2082780207291574141}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2012212751
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2012212752}
+  - component: {fileID: 2012212756}
+  - component: {fileID: 2012212755}
+  - component: {fileID: 2012212754}
+  - component: {fileID: 2012212753}
+  m_Layer: 5
+  m_Name: GUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2012212752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012212751}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 371572743}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2012212753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012212751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d061b5fd056f124f9c9147a44143dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponChannel: {fileID: 11400000, guid: 72bda95107f522c4dbee47386cb1e367, type: 2}
+  _uiDocument: {fileID: 0}
+--- !u!114 &2012212754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012212751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815e7587a84a85e45a9c92897d52b9ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthTarget: {fileID: 0}
+  healthBarName: health-bar
+  shieldBarName: shield-bar
+--- !u!114 &2012212755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012212751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 0bcffc6f21d20ff43b466867d3e05f09, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 9c31fc6c6abbc6d4b913b8f1faa3414e, type: 3}
+  m_SortingOrder: 0
+--- !u!114 &2012212756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012212751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815e7587a84a85e45a9c92897d52b9ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthTarget: {fileID: 0}
+  healthBarName: BossHealthBar
+  shieldBarName: 
 --- !u!4 &2021569554 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6234012306726041314, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}

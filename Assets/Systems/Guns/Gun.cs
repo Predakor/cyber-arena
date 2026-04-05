@@ -17,19 +17,53 @@ namespace Systems.Guns
         public FireRateModuleBase fireRateModule;
         public AmmoModuleBase ammoModule;
         public ProjectileModuleBase projectileModule;
-
-        [TypedDerivedSOSelector] public SpreadModuleBase spreadModule;
+        public SpreadModuleBase spreadModule;
     }
 
     public sealed class Gun : MonoBehaviour, IGun
     {
         [SerializeField] private Transform _muzzle;
         [SerializeField] private Configuration _config;
+        [SerializeField] private WeaponStats _stats;
 
         private ShootPipeline _pipeline;
         private AmmoModuleBase _ammoModule;
 
+        public event Action<IWeaponStats> StatsChanged;
+
+        public IAmmoEvents AmmoEvents => _ammoModule;
+        public IWeaponStats Stats
+        {
+            private set
+            {
+                _stats = value as WeaponStats;
+                StatsChanged?.Invoke(_stats);
+            }
+            get => _stats;
+        }
+
         private void Awake()
+        {
+            Configure();
+        }
+
+        public void Use(bool isPressed) => ShootHandler(isPressed ? ShootState.Shoot : ShootState.Stop);
+
+        public TWeapon Configure<TWeapon>(IConfig<TWeapon> config) where TWeapon : IWeapon
+        {
+            if (config is not Configuration)
+            {
+                Debug.LogError($"Incorrect configuration type passed Expected: {typeof(Configuration)} but got: {config.GetType()}");
+            }
+
+            _config = config as Configuration;
+
+            Configure();
+
+            return (TWeapon)(IWeapon)this;
+        }
+
+        private void Configure()
         {
             _ammoModule = Instantiate(_config.ammoModule);
 
@@ -39,15 +73,16 @@ namespace Systems.Guns
                 _ammoModule,
                 new ProjectileSpawnModule()
             );
-        }
 
-        public IAmmoEvents AmmoEvents => _ammoModule;
+            var stats = WeaponStatsBuilder
+                .FromProjectileBase(_config.projectileModule)
+                .ApplyModuleModifiers(_config.fireRateModule)
+                .ApplyModuleModifiers(_config.spreadModule)
+                .ApplyModuleModifiers(_ammoModule)
+                .Build();
 
-        public void Use(bool isPressed) => ShootHandler(isPressed ? ShootState.Shoot : ShootState.Stop);
+            Stats = stats;
 
-        public TWeapon Configure<TWeapon>(IConfig<TWeapon> config) where TWeapon : IWeapon
-        {
-            throw new System.NotImplementedException();
         }
 
         private void ShootHandler(ShootState state)

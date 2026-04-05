@@ -1,4 +1,4 @@
-namespace Systems.Channels.Weapons
+namespace Systems.Guns
 {
     public static class WeaponEvents
     {
@@ -7,5 +7,6 @@ namespace Systems.Channels.Weapons
         public sealed record AmmoChanged(int Current, int? Reserve = null);
         public sealed record ReloadStarted(float Duration);
         public sealed record ReloadFinished(float Duration, bool Interupted = false);
+        public sealed record StatsChanged(IWeaponStats Stats);
     }
 }

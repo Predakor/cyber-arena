@@ -96,5 +96,11 @@ namespace Systems.Guns.Modules.AmmoModule.Base
             DecreaseAmmo(context.AmmoCost);
             next(context);
         }
+
+        public virtual void Apply(WeaponStatsBuilder stats)
+        {
+            stats.AddExtra("Magazine", MagazineSize);
+            stats.AddExtra("Reload", ReloadSpeed);
+        }
     }
 }

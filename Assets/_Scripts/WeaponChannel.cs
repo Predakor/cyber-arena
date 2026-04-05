@@ -1,3 +1,4 @@
+using Systems.Guns;
 using UnityEngine;
 
 namespace Systems.Channels.Weapons
@@ -12,5 +13,7 @@ namespace Systems.Channels.Weapons
 
         public void RaiseReloadStarted(float duration) => Raise(new WeaponEvents.ReloadStarted(duration));
         public void RaiseReloadFinished(float duration, bool hasBeenInterupted = false) => Raise(new WeaponEvents.ReloadFinished(duration, hasBeenInterupted));
+
+        public void RaiseStatsChanged(IWeaponStats stats) => Raise(new WeaponEvents.StatsChanged(stats));
     }
 }

@@ -12,12 +12,13 @@ public sealed class WeaponPresenter : MonoBehaviour
     [SerializeField] private WeaponManager _weaponManager;
 
     private IAmmoEvents _currentAmmoEvents;
+    private IGun _currentGun;
 
     private void OnEnable()
     {
         _inputChannel.Subscribe<InputEvents.Shoot>(OnShoot);
         _inputChannel.Subscribe<InputEvents.SelectWeapon>(OnSelectWeapon);
-        RewireAmmoEvents(_weaponManager.CurrentWeapon);
+        RewireGun(_weaponManager.CurrentWeapon);
     }
 
     private void OnDisable()
@@ -25,7 +26,9 @@ public sealed class WeaponPresenter : MonoBehaviour
         _inputChannel.Unsubscribe<InputEvents.Shoot>(OnShoot);
         _inputChannel.Unsubscribe<InputEvents.SelectWeapon>(OnSelectWeapon);
         UnsubscribeAmmoEvents(_currentAmmoEvents);
+        UnsubscribeStatsEvents(_currentGun);
         _currentAmmoEvents = null;
+        _currentGun = null;
     }
 
     private void OnShoot(InputEvents.Shoot e)
@@ -37,19 +40,55 @@ public sealed class WeaponPresenter : MonoBehaviour
     {
         _weaponManager.Equip(e.WeaponNumber);
         _weaponChannel.RaiseSelected(e.WeaponNumber);
-        RewireAmmoEvents(_weaponManager.CurrentWeapon);
+        RewireGun(_weaponManager.CurrentWeapon);
     }
 
-    private void RewireAmmoEvents(IWeapon weapon)
+    private void RewireGun(IWeapon weapon)
     {
         UnsubscribeAmmoEvents(_currentAmmoEvents);
+        UnsubscribeStatsEvents(_currentGun);
         _currentAmmoEvents = null;
+        _currentGun = null;
 
-        if (weapon is IGun gun)
+        if (weapon is not IGun gun)
         {
-            _currentAmmoEvents = gun.AmmoEvents;
-            SubscribeAmmoEvents(_currentAmmoEvents);
+            Debug.LogError("expected weapon type but got " + weapon.GetType(), this);
+            return;
         }
+
+        _currentGun = gun;
+        _currentAmmoEvents = gun.AmmoEvents;
+
+        SubscribeAmmoEvents(_currentAmmoEvents);
+        SubscribeStatsEvents(_currentGun);
+
+        // Push current state immediately on connect
+        _weaponChannel.RaiseStatsChanged(gun.Stats);
+    }
+
+    private void SubscribeStatsEvents(IGun gun)
+    {
+        if (gun == null)
+        {
+            return;
+        }
+
+        gun.StatsChanged += OnStatsChanged;
+    }
+
+    private void UnsubscribeStatsEvents(IGun gun)
+    {
+        if (gun == null)
+        {
+            return;
+        }
+
+        gun.StatsChanged -= OnStatsChanged;
+    }
+
+    private void OnStatsChanged(IWeaponStats stats)
+    {
+        _weaponChannel.Raise(new WeaponEvents.StatsChanged(stats));
     }
 
     private void SubscribeAmmoEvents(IAmmoEvents ammoEvents)

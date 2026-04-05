@@ -10,6 +10,13 @@ namespace Systems.Guns.Modules.ShootModules
         [SerializeField, Range(0.01f, 5f)] private float _interclipTime;
         [SerializeField, Range(1, 32)] private byte _clipSize;
 
+        public override void Apply(WeaponStatsBuilder stats)
+        {
+            base.Apply(stats);
+            stats.AddExtra("Burst Size", _clipSize);
+            stats.AddExtra("Burst Delay", _interclipTime);
+        }
+
         public override void Pressed(ShootContext context, Action<ShootContext> next)
         {
             StartCoroutine(BurstRoutine(context, next));

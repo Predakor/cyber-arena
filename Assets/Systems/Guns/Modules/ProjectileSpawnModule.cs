@@ -23,5 +23,10 @@ namespace Systems.Guns.Modules
                     .Shoot(shot.Origin, shot.Direction);
             }
         }
+
+        public void Apply(WeaponStatsBuilder stats)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

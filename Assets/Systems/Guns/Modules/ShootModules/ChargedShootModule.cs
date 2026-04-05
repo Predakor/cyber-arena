@@ -61,5 +61,19 @@ namespace Systems.Guns.Modules.ShootModules
             _chargeTracker.Reset();
         }
 
+        public override void Apply(WeaponStatsBuilder stats)
+        {
+            float minPercent = _minChargeTime / _maxChargeTime;
+            float minDamage = Mathf.Lerp(stats.Damage, stats.Damage * _maxDamageMultiplier, minPercent);
+            float maxDamage = stats.Damage * _maxDamageMultiplier;
+
+            stats.Damage = minDamage;
+
+            stats.AddExtra("Max Charge Damage", maxDamage);
+            stats.AddExtra("Min Charge Damage", minDamage);
+
+            stats.AddExtra("Max Charge Time", _maxChargeTime);
+            stats.AddExtra("Min Charge Time", _minChargeTime);
+        }
     }
 }

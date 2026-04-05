@@ -46,5 +46,11 @@ namespace Systems.Guns.Modules.AmmoModule
         {
             _reserveAmmo = Mathf.Min(_reserveAmmo + amount, _maxReserve);
         }
+
+        public override void Apply(WeaponStatsBuilder stats)
+        {
+            base.Apply(stats);
+            stats.AddExtra("Reserve", _maxReserve);
+        }
     }
 }

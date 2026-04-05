@@ -6,13 +6,11 @@ using UnityEngine;
 
 namespace Systems.Guns.Modules.ShootModules
 {
-
     public abstract class FireRateModuleBase : MonoBehaviour, IGunModule
     {
         protected FireRateController fireRateController;
 
         [SerializeField] protected short roundPerMinute;
-
 
         protected virtual void Awake()
         {
@@ -34,8 +32,12 @@ namespace Systems.Guns.Modules.ShootModules
             }
         }
 
+        public virtual void Apply(WeaponStatsBuilder stats)
+        {
+            stats.AddExtra("Fire Rate", roundPerMinute);
+        }
+
         public abstract void Pressed(ShootContext context, Action<ShootContext> next);
         public abstract void Released(ShootContext context, Action<ShootContext> next);
-
     }
 }
