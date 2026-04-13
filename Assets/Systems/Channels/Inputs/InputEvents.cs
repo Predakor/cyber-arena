@@ -9,6 +9,7 @@ namespace Systems.Channels.Inputs
         public sealed record Shoot(bool IsPressed);
         public sealed record RaiseAbility(bool IsPressed);
         public sealed record SelectWeapon(byte WeaponNumber);
+        public sealed record ConfigureWeapon();
     }
 
 }

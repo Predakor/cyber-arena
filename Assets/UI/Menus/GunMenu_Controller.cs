@@ -1,4 +1,6 @@
 using Assets.Scripts.Utils;
+using Systems.Channels;
+using Systems.Channels.Inputs;
 using Systems.Channels.Weapons;
 using Systems.Guns;
 using UI.Components;
@@ -11,25 +13,36 @@ namespace UI.Menus
     public sealed class GunMenu_Controller : MonoBehaviour
     {
         [SerializeField] private WeaponChannel _weaponChannel;
+        [SerializeField] private InputsChannel _inputsChannel;
         [SerializeField] private UIDocument _uiDocument;
         [SerializeField] private VisualTreeAsset _rowStatTemplate;
 
         private VisualElement _statsContainer;
+        private VisualElement _root;
+        private bool _menuOpen = false;
 
         private void Awake()
         {
             gameObject.EnsureComponent(out _uiDocument);
+            Debug.Assert(_weaponChannel != null, "Weapon Channel is missing", this);
+            Debug.Assert(_inputsChannel != null, "Input channel is missing", this);
         }
 
         private void OnEnable()
         {
             _statsContainer = _uiDocument.rootVisualElement.Q<VisualElement>("stats-container");
+            _root = _uiDocument.rootVisualElement.Q<VisualElement>("Container");
+
+            _root.EnableInClassList("open", false);
+
             _weaponChannel.Subscribe<WeaponEvents.StatsChanged>(StatsChangeHandler);
+            _inputsChannel.Subscribe<InputEvents.ConfigureWeapon>(ConfigureWeaponHandler);
         }
 
         private void OnDisable()
         {
             _weaponChannel.Unsubscribe<WeaponEvents.StatsChanged>(StatsChangeHandler);
+            _inputsChannel.Unsubscribe<InputEvents.ConfigureWeapon>(ConfigureWeaponHandler);
         }
 
         private void StatsChangeHandler(WeaponEvents.StatsChanged e)
@@ -52,6 +65,12 @@ namespace UI.Menus
             {
                 AddRow(customStat.Name, customStat.Value);
             }
+        }
+
+        private void ConfigureWeaponHandler(InputEvents.ConfigureWeapon e)
+        {
+            _menuOpen = !_menuOpen;
+            _root.EnableInClassList("open", _menuOpen);
         }
 
         private void AddRow(string label, float value)

@@ -4,40 +4,36 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-namespace Systems.Inputs {
-    public sealed class InputsHandler : Singleton<InputsHandler> {
-        [SerializeField]
-        private InputActionAsset playerControls;
+namespace Systems.Inputs
+{
+    public sealed class InputsHandler : Singleton<InputsHandler>
+    {
+        [SerializeField] private InputActionAsset playerControls;
 
-        [SerializeField]
-        private InputsChannel _channel;
+        [SerializeField] private InputsChannel _channel;
 
-        [SerializeField]
-        private string actionMapName = "Player";
+        [SerializeField] private string actionMapName = "Player";
 
         [Header("Action Name References")]
-        [SerializeField]
-        private string move = "Move";
+        [SerializeField] private string move = "Move";
+        [SerializeField] private string look = "Look";
+        [SerializeField] private string shoot = "Shoot";
+        [SerializeField] private string dash = "Dash";
+        [SerializeField] private string configureWeapon = "ConfigureWeapon";
+
 
         [SerializeField]
-        private string look = "Look";
-
-        [SerializeField]
-        private string shoot = "Shoot";
-
-        [SerializeField]
-        private string dash = "Dash";
-
-        [SerializeField]
-        string selectWeapon = "SelectWeapon";
+        private string selectWeapon = "SelectWeapon";
 
         private InputAction moveAction;
         private InputAction lookAction;
         private InputAction shootAction;
         private InputAction dashAction;
         private InputAction selectWeaponAction;
+        private InputAction configureWeaponAction;
 
-        private void Start() {
+        private void Start()
+        {
             var actionMap = playerControls.FindActionMap(actionMapName);
 
             moveAction = actionMap.FindAction(move);
@@ -45,12 +41,14 @@ namespace Systems.Inputs {
             shootAction = actionMap.FindAction(shoot);
             dashAction = actionMap.FindAction(dash);
             selectWeaponAction = actionMap.FindAction(selectWeapon);
+            configureWeaponAction = actionMap.FindAction(configureWeapon);
 
             RegisterInputActions();
             gameObject.SetActive(true);
         }
 
-        void RegisterInputActions() {
+        private void RegisterInputActions()
+        {
             moveAction.performed += ct => _channel.RaiseMove(ct.ReadValue<Vector2>());
             moveAction.canceled += _ => _channel.RaiseMove(Vector2.zero);
 
@@ -64,9 +62,11 @@ namespace Systems.Inputs {
             dashAction.canceled += _ => _channel.RaiseAbility(false);
 
             selectWeaponAction.performed += ct => _channel.RaiseSelectWeapon(ct.ToNumber());
+            configureWeaponAction.performed += _ => _channel.RaiseConfigureWeapon();
         }
 
-        void SetActionMapEnabled(bool enabled) {
+        private void SetActionMapEnabled(bool enabled)
+        {
             var actions = new[]
             {
                 moveAction,
@@ -76,23 +76,28 @@ namespace Systems.Inputs {
                 selectWeaponAction,
             };
 
-            foreach (var action in actions) {
-                if (enabled) {
+            foreach (var action in actions)
+            {
+                if (enabled)
+                {
                     action.Enable();
                 }
-                else {
+                else
+                {
                     action.Disable();
                 }
             }
         }
 
-        void OnEnable() => SetActionMapEnabled(true);
+        private void OnEnable() => SetActionMapEnabled(true);
 
-        void OnDisable() => SetActionMapEnabled(false);
+        private void OnDisable() => SetActionMapEnabled(false);
     }
 
-    internal static class InputCallbacExtentions {
-        public static byte ToNumber(this InputAction.CallbackContext ct) {
+    internal static class InputCallbacExtentions
+    {
+        public static byte ToNumber(this InputAction.CallbackContext ct)
+        {
             var keyControll = ct.control as KeyControl;
             return (byte)(keyControll.keyCode - Key.Digit1);
         }

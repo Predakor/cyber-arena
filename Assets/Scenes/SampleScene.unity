@@ -12479,6 +12479,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponChannel: {fileID: 11400000, guid: 72bda95107f522c4dbee47386cb1e367, type: 2}
+  _inputsChannel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
+  _uiDocument: {fileID: 0}
   _rowStatTemplate: {fileID: 9197481963319205126, guid: 515b1fe7a5a434c43b86601987316a2b, type: 3}
 --- !u!4 &999051170 stripped
 Transform:
@@ -17448,6 +17450,7 @@ MonoBehaviour:
   look: Look
   shoot: Shoot
   dash: Dash
+  configureWeapon: ConfigureWeapon
   selectWeapon: SelectWeapon
 --- !u!1 &1373766225
 GameObject:

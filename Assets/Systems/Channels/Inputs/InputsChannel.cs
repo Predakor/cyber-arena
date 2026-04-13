@@ -11,5 +11,6 @@ namespace Systems.Channels
         public void RaiseShoot(float value) => Raise(new InputEvents.Shoot(value > 0.9f));
         public void RaiseAbility(bool isPressed) => Raise(new InputEvents.RaiseAbility(isPressed));
         public void RaiseSelectWeapon(byte number) => Raise(new InputEvents.SelectWeapon(number));
+        public void RaiseConfigureWeapon() => Raise(new InputEvents.ConfigureWeapon());
     }
 }
