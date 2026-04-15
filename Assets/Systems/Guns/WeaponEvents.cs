@@ -1,3 +1,5 @@
+using Systems.Guns.Assets.Systems.Guns.Interfaces;
+
 namespace Systems.Guns
 {
     public static class WeaponEvents
@@ -8,5 +10,6 @@ namespace Systems.Guns
         public sealed record ReloadStarted(float Duration);
         public sealed record ReloadFinished(float Duration, bool Interupted = false);
         public sealed record StatsChanged(IWeaponStats Stats);
+        public sealed record ModulesChanged(IWeaponModules Modules);
     }
 }

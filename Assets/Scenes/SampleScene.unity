@@ -12482,6 +12482,7 @@ MonoBehaviour:
   _inputsChannel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
   _uiDocument: {fileID: 0}
   _rowStatTemplate: {fileID: 9197481963319205126, guid: 515b1fe7a5a434c43b86601987316a2b, type: 3}
+  _moduleTemplate: {fileID: 9197481963319205126, guid: 3ce161cab4c230c4d99643933cf5ad8f, type: 3}
 --- !u!4 &999051170 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6449683968442843755, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
@@ -24950,9 +24951,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _muzzle: {fileID: 0}
   _config:
+    projectileModule: {fileID: 0}
     fireRateModule: {fileID: 0}
     ammoModule: {fileID: 0}
-    projectileModule: {fileID: 0}
     spreadModule: {fileID: 0}
 --- !u!1 &2059140239
 GameObject:

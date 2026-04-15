@@ -1,4 +1,5 @@
 ﻿using System;
+using Systems.Guns.Assets.Systems.Guns.Interfaces;
 using Systems.Guns.Interfaces;
 using Systems.Weapons.Guns.Modules;
 
@@ -15,7 +16,10 @@ namespace Systems.Guns
     {
         IAmmoEvents AmmoEvents { get; }
         IWeaponStats Stats { get; }
+        IWeaponModules Modules { get; }
+
         event Action<IWeaponStats> StatsChanged;
+        event Action<IWeaponModules> ModulesChanged;
     }
 
 

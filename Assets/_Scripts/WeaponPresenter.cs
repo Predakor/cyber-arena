@@ -64,6 +64,8 @@ public sealed class WeaponPresenter : MonoBehaviour
 
         // Push current state immediately on connect
         _weaponChannel.RaiseStatsChanged(gun.Stats);
+        _weaponChannel.RaiseModulesChanged(gun.Modules);
+
     }
 
     private void SubscribeStatsEvents(IGun gun)

@@ -13,6 +13,8 @@ namespace Systems.Guns.Modules.SpreadModule
         [SerializeField, Range(0f, 90f)] protected float spreadAngle = 0f;
         [SerializeField, Range(0.01f, 1f)] protected float damageMultiplier = 1f;
 
+        public virtual string Name { get; protected set; } = "Base Spread Module";
+
         public byte PelletCount => pelletCount;
         public float DamageMultiplier => damageMultiplier;
 

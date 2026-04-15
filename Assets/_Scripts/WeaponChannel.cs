@@ -1,4 +1,5 @@
 using Systems.Guns;
+using Systems.Guns.Assets.Systems.Guns.Interfaces;
 using UnityEngine;
 
 namespace Systems.Channels.Weapons
@@ -15,5 +16,6 @@ namespace Systems.Channels.Weapons
         public void RaiseReloadFinished(float duration, bool hasBeenInterupted = false) => Raise(new WeaponEvents.ReloadFinished(duration, hasBeenInterupted));
 
         public void RaiseStatsChanged(IWeaponStats stats) => Raise(new WeaponEvents.StatsChanged(stats));
+        public void RaiseModulesChanged(IWeaponModules modules) => Raise(new WeaponEvents.ModulesChanged(modules));
     }
 }

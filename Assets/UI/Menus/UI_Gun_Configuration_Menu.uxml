@@ -9,7 +9,7 @@
                 </ui:GroupBox>
                 <ui:GroupBox name="Weapon-Effects" style="height: 30%; background-color: rgb(255, 255, 255); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
             </ui:GroupBox>
-            <ui:GroupBox name="Modules-Panel" style="height: 30%; width: 70%; position: absolute; bottom: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; background-color: rgb(255, 255, 255);" />
+            <ui:GroupBox name="modules-container" class="modules-contanier" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

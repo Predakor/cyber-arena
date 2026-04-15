@@ -7,6 +7,8 @@ namespace Systems.Guns.Modules
 {
     public sealed class ProjectileSpawnModule : IGunModule
     {
+        public string Name { get; set; } = "Projectile Spawner";
+
         public void Handle(ShootContext context, Action<ShootContext> next)
         {
             var shots = context.ShotPoints;

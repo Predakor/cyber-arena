@@ -1,9 +1,12 @@
 using Assets.Scripts.Utils;
+using System.Collections.Generic;
 using Systems.Channels;
 using Systems.Channels.Inputs;
 using Systems.Channels.Weapons;
 using Systems.Guns;
+using Systems.Weapons.Guns.Modules;
 using UI.Components;
+using UI.Components.GunModule;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,11 +17,15 @@ namespace UI.Menus
     {
         [SerializeField] private WeaponChannel _weaponChannel;
         [SerializeField] private InputsChannel _inputsChannel;
+
+        [Header("UI References")]
         [SerializeField] private UIDocument _uiDocument;
         [SerializeField] private VisualTreeAsset _rowStatTemplate;
+        [SerializeField] private VisualTreeAsset _moduleTemplate;
 
         private VisualElement _statsContainer;
         private VisualElement _root;
+        private VisualElement _modulesContainer;
         private bool _menuOpen = false;
 
         private void Awake()
@@ -31,17 +38,21 @@ namespace UI.Menus
         private void OnEnable()
         {
             _statsContainer = _uiDocument.rootVisualElement.Q<VisualElement>("stats-container");
+            _modulesContainer = _uiDocument.rootVisualElement.Q<VisualElement>("modules-container");
             _root = _uiDocument.rootVisualElement.Q<VisualElement>("Container");
 
             _root.EnableInClassList("open", false);
 
             _weaponChannel.Subscribe<WeaponEvents.StatsChanged>(StatsChangeHandler);
+            _weaponChannel.Subscribe<WeaponEvents.ModulesChanged>(ModulsChangedHandler);
             _inputsChannel.Subscribe<InputEvents.ConfigureWeapon>(ConfigureWeaponHandler);
         }
 
         private void OnDisable()
         {
             _weaponChannel.Unsubscribe<WeaponEvents.StatsChanged>(StatsChangeHandler);
+            _weaponChannel.Unsubscribe<WeaponEvents.ModulesChanged>(ModulsChangedHandler);
+
             _inputsChannel.Unsubscribe<InputEvents.ConfigureWeapon>(ConfigureWeaponHandler);
         }
 
@@ -67,8 +78,17 @@ namespace UI.Menus
             }
         }
 
+        private void ModulsChangedHandler(WeaponEvents.ModulesChanged e)
+        {
+            _modulesContainer.Clear();
+            AddModule(e.Modules.FireRateModule);
+            AddModule(e.Modules.AmmoModule);
+            AddModule(e.Modules.SpreadModule);
+        }
+
         private void ConfigureWeaponHandler(InputEvents.ConfigureWeapon e)
         {
+            Debug.Log(e.ToString());
             _menuOpen = !_menuOpen;
             _root.EnableInClassList("open", _menuOpen);
         }
@@ -78,5 +98,21 @@ namespace UI.Menus
             _statsContainer.Add(new StatRowElement(_rowStatTemplate, label, $"{value:F1}"));
         }
 
+        private void AddModule(IGunModule module)
+        {
+            var moduleDropdown = new GunModuleComponent(_moduleTemplate, module.Name);
+
+            var choices = new List<string> { "Option 1", "Option 2" };
+            moduleDropdown.SetItems(choices);
+
+            moduleDropdown.OnItemSelected += (selectedItem) =>
+            {
+                Debug.Log($"Module changed to {selectedItem}");
+            };
+
+            _modulesContainer.Add(moduleDropdown);
+        }
     }
+
+
 }

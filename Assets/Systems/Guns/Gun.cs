@@ -1,4 +1,5 @@
 using System;
+using Systems.Guns.Assets.Systems.Guns.Interfaces;
 using Systems.Guns.Interfaces;
 using Systems.Guns.Modules;
 using Systems.Guns.Modules.AmmoModule.Base;
@@ -14,9 +15,9 @@ namespace Systems.Guns
     [Serializable]
     public sealed class Configuration : IConfig<Gun>
     {
+        public ProjectileModuleBase projectileModule;
         public FireRateModuleBase fireRateModule;
         public AmmoModuleBase ammoModule;
-        public ProjectileModuleBase projectileModule;
         public SpreadModuleBase spreadModule;
     }
 
@@ -27,11 +28,13 @@ namespace Systems.Guns
         [SerializeField] private WeaponStats _stats;
 
         private ShootPipeline _pipeline;
-        private AmmoModuleBase _ammoModule;
+        private ModuleContainer _modules;
+
 
         public event Action<IWeaponStats> StatsChanged;
+        public event Action<IWeaponModules> ModulesChanged;
 
-        public IAmmoEvents AmmoEvents => _ammoModule;
+        public IAmmoEvents AmmoEvents => _modules.AmmoModule;
         public IWeaponStats Stats
         {
             private set
@@ -41,6 +44,8 @@ namespace Systems.Guns
             }
             get => _stats;
         }
+
+        public IWeaponModules Modules => _modules;
 
         private void Awake()
         {
@@ -65,12 +70,17 @@ namespace Systems.Guns
 
         private void Configure()
         {
-            _ammoModule = Instantiate(_config.ammoModule);
+            _modules = new ModuleContainer
+            {
+                FireRateModule = _config.fireRateModule,
+                SpreadModule = Instantiate(_config.spreadModule),
+                AmmoModule = Instantiate(_config.ammoModule)
+            };
 
             _pipeline = new ShootPipeline(
                 _config.fireRateModule,
                 _config.spreadModule,
-                _ammoModule,
+                _modules.AmmoModule,
                 new ProjectileSpawnModule()
             );
 
@@ -78,11 +88,10 @@ namespace Systems.Guns
                 .FromProjectileBase(_config.projectileModule)
                 .ApplyModuleModifiers(_config.fireRateModule)
                 .ApplyModuleModifiers(_config.spreadModule)
-                .ApplyModuleModifiers(_ammoModule)
+                .ApplyModuleModifiers(_modules.AmmoModule)
                 .Build();
 
             Stats = stats;
-
         }
 
         private void ShootHandler(ShootState state)
@@ -92,5 +101,18 @@ namespace Systems.Guns
             context.Muzzle = _muzzle;
             _pipeline.Execute(context);
         }
+    }
+
+    internal sealed class ModuleContainer : IWeaponModules
+    {
+        public AmmoModuleBase AmmoModule { get; internal set; }
+        public FireRateModuleBase FireRateModule { get; internal set; }
+        public SpreadModuleBase SpreadModule { get; internal set; }
+
+        IGunModule IWeaponModules.FireRateModule => FireRateModule;
+
+        IGunModule IWeaponModules.AmmoModule => AmmoModule;
+
+        IGunModule IWeaponModules.SpreadModule => SpreadModule;
     }
 }

@@ -12,6 +12,8 @@ namespace Systems.Guns.Modules.ShootModules
 
         [SerializeField] protected short roundPerMinute;
 
+        public virtual string Name { get; protected set; } = "Base Fire Rate Module";
+
         protected virtual void Awake()
         {
             fireRateController = FireRateController.FromRPM(roundPerMinute);

@@ -3,7 +3,12 @@ guid: a29980b2774d714458954b99dd18c58a
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _weaponChannel: {fileID: 11400000, guid: 72bda95107f522c4dbee47386cb1e367, type: 2}
+  - _inputsChannel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
+  - _uiDocument: {instanceID: 0}
+  - _rowStatTemplate: {instanceID: 0}
+  - _moduleTemplate: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
