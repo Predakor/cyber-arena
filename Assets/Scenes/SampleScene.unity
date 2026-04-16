@@ -5169,8 +5169,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 988841948}
   - {fileID: 2012212752}
+  - {fileID: 988841948}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &372798853
@@ -12465,7 +12465,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 0bcffc6f21d20ff43b466867d3e05f09, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 3562b4b64c1b3bf4180b00f19ba50096, type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: 999
 --- !u!114 &988841950
 MonoBehaviour:
   m_ObjectHideFlags: 0

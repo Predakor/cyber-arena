@@ -102,7 +102,7 @@ namespace UI.Menus
         {
             var moduleDropdown = new GunModuleComponent(_moduleTemplate, module.Name);
 
-            var choices = new List<string> { "Option 1", "Option 2" };
+            var choices = new List<string> { "Option 1", "Option 2", "Option 3", "Option 4", "Option 5" };
             moduleDropdown.SetItems(choices);
 
             moduleDropdown.OnItemSelected += (selectedItem) =>

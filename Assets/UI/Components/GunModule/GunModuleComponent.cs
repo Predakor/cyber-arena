@@ -9,8 +9,23 @@ namespace UI.Components.GunModule
         public event Action<string> OnItemSelected;
 
         private readonly Button _mainButton;
-        private readonly ScrollView _dropdownListContainer;
+        private readonly VisualElement _dropdownListContainer;
         private bool _isOpen = false;
+
+        public bool IsOpen
+        {
+            get => _isOpen;
+            set
+            {
+                _isOpen = value;
+                if (_dropdownListContainer != null)
+                {
+                    _dropdownListContainer.style.display = value
+                        ? DisplayStyle.Flex
+                        : DisplayStyle.None;
+                }
+            }
+        }
 
         public GunModuleComponent(VisualTreeAsset template, string defaultLabel)
         {
@@ -19,22 +34,21 @@ namespace UI.Components.GunModule
             template.CloneTree(this);
 
             _mainButton = this.Q<Button>("main-button");
-            _dropdownListContainer = this.Q<ScrollView>("dropdown-list-container");
+            _dropdownListContainer = this.Q<VisualElement>("dropdown-container");
 
             if (_mainButton != null)
             {
                 _mainButton.text = defaultLabel;
                 _mainButton.clicked += ToggleDropdown;
             }
+
+            if (_dropdownListContainer != null)
+            {
+                IsOpen = false;
+            }
         }
 
-        private void ToggleDropdown()
-        {
-            _isOpen = !_isOpen;
-            _dropdownListContainer.style.display = _isOpen
-                ? DisplayStyle.Flex
-                : DisplayStyle.None;
-        }
+        private void ToggleDropdown() => IsOpen = !IsOpen;
 
 
         //should accept IGunModule and show its name and possible options, for now just a list of strings
