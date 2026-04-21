@@ -73,8 +73,9 @@ namespace Systems.Guns
             _modules = new ModuleContainer
             {
                 FireRateModule = _config.fireRateModule,
+                ProjectileModule = _config.projectileModule,
                 SpreadModule = Instantiate(_config.spreadModule),
-                AmmoModule = Instantiate(_config.ammoModule)
+                AmmoModule = Instantiate(_config.ammoModule),
             };
 
             _pipeline = new ShootPipeline(
@@ -108,11 +109,12 @@ namespace Systems.Guns
         public AmmoModuleBase AmmoModule { get; internal set; }
         public FireRateModuleBase FireRateModule { get; internal set; }
         public SpreadModuleBase SpreadModule { get; internal set; }
+        public ProjectileModuleBase ProjectileModule { get; internal set; }
+
 
         IGunModule IWeaponModules.FireRateModule => FireRateModule;
-
         IGunModule IWeaponModules.AmmoModule => AmmoModule;
-
         IGunModule IWeaponModules.SpreadModule => SpreadModule;
+        IGunModule IWeaponModules.ProjectileModule => ProjectileModule;
     }
 }

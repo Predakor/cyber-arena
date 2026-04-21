@@ -12480,6 +12480,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponChannel: {fileID: 11400000, guid: 72bda95107f522c4dbee47386cb1e367, type: 2}
   _inputsChannel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
+  _spreadModules:
+  - {fileID: 11400000, guid: efb7df827726ccd4d8711c91f9bdd2f7, type: 2}
+  - {fileID: 11400000, guid: 095b8712669838f4dab318d383c1cd0c, type: 2}
+  - {fileID: 11400000, guid: 6d02639a06823994c86e67aefceaf39c, type: 2}
+  _fireRateModules:
+  - {fileID: 1830704019}
+  _ammoModules:
+  - {fileID: 11400000, guid: adfef520a692b544ea3705beed6f59e8, type: 2}
+  _projectileModules: []
   _uiDocument: {fileID: 0}
   _rowStatTemplate: {fileID: 9197481963319205126, guid: 515b1fe7a5a434c43b86601987316a2b, type: 3}
   _moduleTemplate: {fileID: 9197481963319205126, guid: 3ce161cab4c230c4d99643933cf5ad8f, type: 3}

@@ -7,5 +7,6 @@ namespace Systems.Guns.Assets.Systems.Guns.Interfaces
         IGunModule FireRateModule { get; }
         IGunModule AmmoModule { get; }
         IGunModule SpreadModule { get; }
+        IGunModule ProjectileModule { get; }
     }
 }

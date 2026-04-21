@@ -1,9 +1,14 @@
 using Assets.Scripts.Utils;
+using System;
 using System.Collections.Generic;
 using Systems.Channels;
 using Systems.Channels.Inputs;
 using Systems.Channels.Weapons;
 using Systems.Guns;
+using Systems.Guns.Modules.AmmoModule.Base;
+using Systems.Guns.Modules.ProjectileModule;
+using Systems.Guns.Modules.ShootModules;
+using Systems.Guns.Modules.SpreadModule;
 using Systems.Weapons.Guns.Modules;
 using UI.Components;
 using UI.Components.GunModule;
@@ -18,6 +23,13 @@ namespace UI.Menus
         [SerializeField] private WeaponChannel _weaponChannel;
         [SerializeField] private InputsChannel _inputsChannel;
 
+        [Header("Module Lists")]
+        [SerializeField] private List<SpreadModuleBase> _spreadModules;
+        [SerializeField] private List<FireRateModuleBase> _fireRateModules;
+        [SerializeField] private List<AmmoModuleBase> _ammoModules;
+        [SerializeField] private List<ProjectileModuleBase> _projectileModules;
+
+
         [Header("UI References")]
         [SerializeField] private UIDocument _uiDocument;
         [SerializeField] private VisualTreeAsset _rowStatTemplate;
@@ -28,21 +40,33 @@ namespace UI.Menus
         private VisualElement _modulesContainer;
         private bool _menuOpen = false;
 
+
+        private Dictionary<Type, List<IGunModule>> _modulesMap;
+        private Configuration _gunConfig;
+
         private void Awake()
         {
             gameObject.EnsureComponent(out _uiDocument);
             Debug.Assert(_weaponChannel != null, "Weapon Channel is missing", this);
             Debug.Assert(_inputsChannel != null, "Input channel is missing", this);
-        }
 
-        private void OnEnable()
+            _modulesMap = new Dictionary<Type, List<IGunModule>>()
+            {
+                { typeof(AmmoModuleBase), _ammoModules?.ConvertAll<IGunModule>(m => m) ?? new List<IGunModule>() },
+                { typeof(SpreadModuleBase), _spreadModules?.ConvertAll<IGunModule>(m => m) ?? new List<IGunModule>() },
+                { typeof(FireRateModuleBase), _fireRateModules?.ConvertAll<IGunModule>(m => m) ?? new List<IGunModule>() }
+            };
+        }
+        private void Start()
         {
             _statsContainer = _uiDocument.rootVisualElement.Q<VisualElement>("stats-container");
             _modulesContainer = _uiDocument.rootVisualElement.Q<VisualElement>("modules-container");
             _root = _uiDocument.rootVisualElement.Q<VisualElement>("Container");
-
             _root.EnableInClassList("open", false);
+        }
 
+        private void OnEnable()
+        {
             _weaponChannel.Subscribe<WeaponEvents.StatsChanged>(StatsChangeHandler);
             _weaponChannel.Subscribe<WeaponEvents.ModulesChanged>(ModulsChangedHandler);
             _inputsChannel.Subscribe<InputEvents.ConfigureWeapon>(ConfigureWeaponHandler);
@@ -81,9 +105,16 @@ namespace UI.Menus
         private void ModulsChangedHandler(WeaponEvents.ModulesChanged e)
         {
             _modulesContainer.Clear();
-            AddModule(e.Modules.FireRateModule);
-            AddModule(e.Modules.AmmoModule);
-            AddModule(e.Modules.SpreadModule);
+            _gunConfig = new Configuration
+            {
+                fireRateModule = (FireRateModuleBase)e.Modules.FireRateModule,
+                ammoModule = (AmmoModuleBase)e.Modules.AmmoModule,
+                spreadModule = (SpreadModuleBase)e.Modules.SpreadModule,
+                projectileModule = (ProjectileModuleBase)e.Modules.ProjectileModule,
+            };
+            AddModule(e.Modules.FireRateModule, typeof(FireRateModuleBase));
+            AddModule(e.Modules.AmmoModule, typeof(AmmoModuleBase));
+            AddModule(e.Modules.SpreadModule, typeof(SpreadModuleBase));
         }
 
         private void ConfigureWeaponHandler(InputEvents.ConfigureWeapon e)
@@ -98,19 +129,46 @@ namespace UI.Menus
             _statsContainer.Add(new StatRowElement(_rowStatTemplate, label, $"{value:F1}"));
         }
 
-        private void AddModule(IGunModule module)
+        private void AddModule(IGunModule module, Type moduleType)
         {
+            if (module == null)
+            {
+                return;
+            }
+
             var moduleDropdown = new GunModuleComponent(_moduleTemplate, module.Name);
 
-            var choices = new List<string> { "Option 1", "Option 2", "Option 3", "Option 4", "Option 5" };
-            moduleDropdown.SetItems(choices);
 
-            moduleDropdown.OnItemSelected += (selectedItem) =>
+            if (_modulesMap.TryGetValue(moduleType, out var availableModules))
             {
-                Debug.Log($"Module changed to {selectedItem}");
-            };
+                moduleDropdown.SetModules(availableModules);
+            }
+
+            moduleDropdown.OnModuleSelected += HandleModuleSelection;
 
             _modulesContainer.Add(moduleDropdown);
+        }
+
+        private void HandleModuleSelection(IGunModule selectedModule)
+        {
+            switch (selectedModule)
+            {
+                case FireRateModuleBase fireRate:
+                    _gunConfig.fireRateModule = fireRate;
+                    break;
+                case AmmoModuleBase ammo:
+                    _gunConfig.ammoModule = ammo;
+                    break;
+                case SpreadModuleBase spread:
+                    _gunConfig.spreadModule = spread;
+                    break;
+                case ProjectileModuleBase projectile:
+                    _gunConfig.projectileModule = projectile;
+                    break;
+            }
+
+            _weaponChannel.RaiseReconfigured(_gunConfig);
+
         }
     }
 

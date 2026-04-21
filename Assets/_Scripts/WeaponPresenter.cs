@@ -18,6 +18,7 @@ public sealed class WeaponPresenter : MonoBehaviour
     {
         _inputChannel.Subscribe<InputEvents.Shoot>(OnShoot);
         _inputChannel.Subscribe<InputEvents.SelectWeapon>(OnSelectWeapon);
+        _weaponChannel.Subscribe<WeaponEvents.Reconfigured>(ReconfigureWeaponHandler);
         RewireGun(_weaponManager.CurrentWeapon);
     }
 
@@ -25,6 +26,7 @@ public sealed class WeaponPresenter : MonoBehaviour
     {
         _inputChannel.Unsubscribe<InputEvents.Shoot>(OnShoot);
         _inputChannel.Unsubscribe<InputEvents.SelectWeapon>(OnSelectWeapon);
+        _weaponChannel.Unsubscribe<WeaponEvents.Reconfigured>(ReconfigureWeaponHandler);
         UnsubscribeAmmoEvents(_currentAmmoEvents);
         UnsubscribeStatsEvents(_currentGun);
         _currentAmmoEvents = null;
@@ -65,7 +67,11 @@ public sealed class WeaponPresenter : MonoBehaviour
         // Push current state immediately on connect
         _weaponChannel.RaiseStatsChanged(gun.Stats);
         _weaponChannel.RaiseModulesChanged(gun.Modules);
+    }
 
+    private void ReconfigureWeaponHandler(WeaponEvents.Reconfigured x)
+    {
+        _weaponManager.CurrentWeapon.Configure(x.Config);
     }
 
     private void SubscribeStatsEvents(IGun gun)

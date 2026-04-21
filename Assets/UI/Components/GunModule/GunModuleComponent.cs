@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Systems.Weapons.Guns.Modules;
 using UnityEngine.UIElements;
 
 namespace UI.Components.GunModule
 {
     public sealed class GunModuleComponent : VisualElement
     {
-        public event Action<string> OnItemSelected;
+        public event Action<IGunModule> OnModuleSelected;
 
         private readonly Button _mainButton;
         private readonly VisualElement _dropdownListContainer;
@@ -52,23 +53,27 @@ namespace UI.Components.GunModule
 
 
         //should accept IGunModule and show its name and possible options, for now just a list of strings
-        public void SetItems(List<string> items)
+        public void SetModules(List<IGunModule> items)
         {
             _dropdownListContainer?.Clear();
 
             foreach (var item in items)
             {
-                var itemButton = new Button(() => SelectItem(item)) { text = item };
+                var itemButton = new Button(() => SelectModule(item))
+                {
+                    text = item.Name
+                };
+                itemButton.style.fontSize = 24;
                 _dropdownListContainer.Add(itemButton);
             }
         }
 
-        private void SelectItem(string item)
+        private void SelectModule(IGunModule module)
         {
-            _mainButton.text = item;
+            _mainButton.text = module.Name;
             ToggleDropdown();
 
-            OnItemSelected?.Invoke(item);
+            OnModuleSelected?.Invoke(module);
         }
     }
 }

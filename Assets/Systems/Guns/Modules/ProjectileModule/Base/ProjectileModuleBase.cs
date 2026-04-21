@@ -1,14 +1,18 @@
+using System;
 using Systems.Guns.Modules.Shared;
 using Systems.Guns.Projectiles.Physics;
+using Systems.Weapons.Guns.Modules;
 using UnityEngine;
 
 namespace Systems.Guns.Modules.ProjectileModule
 {
-    public abstract class ProjectileModuleBase : MonoBehaviour
+    public abstract class ProjectileModuleBase : MonoBehaviour, IGunModule
     {
         [Header("Pool")]
         [SerializeField] protected ushort _poolSize = 10;
         [SerializeField] protected ushort _poolMaxSize = 200;
+
+        public virtual string Name { get; protected set; } = "Projectile Module";
 
         public abstract ShootContext GetShootContext();
 
@@ -31,5 +35,10 @@ namespace Systems.Guns.Modules.ProjectileModule
             Duration = config.Duration,
             ProjectileConfig = config,
         };
+
+        public void Handle(ShootContext context, Action<ShootContext> next)
+        {
+            next(context);
+        }
     }
 }

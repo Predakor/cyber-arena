@@ -11,5 +11,6 @@ namespace Systems.Guns
         public sealed record ReloadFinished(float Duration, bool Interupted = false);
         public sealed record StatsChanged(IWeaponStats Stats);
         public sealed record ModulesChanged(IWeaponModules Modules);
+        public sealed record Reconfigured(Configuration Config);
     }
 }

@@ -17,5 +17,7 @@ namespace Systems.Channels.Weapons
 
         public void RaiseStatsChanged(IWeaponStats stats) => Raise(new WeaponEvents.StatsChanged(stats));
         public void RaiseModulesChanged(IWeaponModules modules) => Raise(new WeaponEvents.ModulesChanged(modules));
+
+        public void RaiseReconfigured(Configuration config) => Raise(new WeaponEvents.Reconfigured(config));
     }
 }
