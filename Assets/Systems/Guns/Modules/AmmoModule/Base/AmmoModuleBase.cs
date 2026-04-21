@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Systems.Guns.Modules.Shared;
+using Systems.Guns.Stats;
 using Systems.Shared;
 using Systems.Weapons.Guns.Modules;
 using UnityEngine;
@@ -11,11 +13,15 @@ namespace Systems.Guns.Modules.AmmoModule.Base
     {
         protected const string MenuPath = "Weapons/Ammo/";
 
-        [SerializeField][Range(0, 1000)] private int _magazineSize;
-        [SerializeField][Range(0, 1000)] private int _currentAmmo;
-        [SerializeField][Range(0, 32)] private float _reloadSpeed;
+        [SerializeField]
+        protected List<StatModifier> statModifiers = new()
+        {
+            StatModifier.Flat(StatType.MagazineSize, 30),
+            StatModifier.Flat(StatType.ReloadSpeed, 1.5f)
+        };
 
         protected bool _isReloading = false;
+        private int _currentAmmo;
 
         public event Action<int, int> OnAmmoChange;
         public event Action<float> OnReloadStart;
@@ -36,17 +42,9 @@ namespace Systems.Guns.Modules.AmmoModule.Base
             }
         }
 
-        public virtual int MagazineSize
-        {
-            get => _magazineSize;
-            protected set { _magazineSize = value; }
-        }
-
-        public virtual float ReloadSpeed
-        {
-            get => _reloadSpeed;
-            protected set { _reloadSpeed = value; }
-        }
+        // Pull from modifiers instead of standalone fields
+        public virtual int MagazineSize => (int)statModifiers.Find(m => m.Stat == StatType.MagazineSize).Value;
+        public virtual float ReloadSpeed => statModifiers.Find(m => m.Stat == StatType.ReloadSpeed).Value;
 
         protected Coroutine StartCoroutine(IEnumerator routine) => CoroutineRunner.Run(routine);
         protected void StopCoroutine(Coroutine coroutine) => CoroutineRunner.Stop(coroutine);
@@ -61,8 +59,9 @@ namespace Systems.Guns.Modules.AmmoModule.Base
             {
                 return;
             }
+
             _isReloading = true;
-            OnReloadStart?.Invoke(_reloadSpeed);
+            OnReloadStart?.Invoke(ReloadSpeed);
         }
 
         protected virtual void RefillAmmo()
@@ -74,7 +73,7 @@ namespace Systems.Guns.Modules.AmmoModule.Base
         {
             _isReloading = false;
             RefillAmmo();
-            OnReloadEnd?.Invoke(_reloadSpeed, false);
+            OnReloadEnd?.Invoke(ReloadSpeed, false);
         }
 
         protected virtual void OnEnable()
@@ -101,8 +100,7 @@ namespace Systems.Guns.Modules.AmmoModule.Base
 
         public virtual void Apply(WeaponStatsBuilder stats)
         {
-            stats.AddExtra("Magazine", MagazineSize);
-            stats.AddExtra("Reload", ReloadSpeed);
+            stats.AddModifierList(statModifiers);
         }
     }
 }

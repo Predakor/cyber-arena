@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Systems.Guns.Modules.Shared;
+using Systems.Guns.Stats;
 using Systems.Guns.Utils;
 using Systems.Weapons.Guns.Modules;
 using UnityEngine;
@@ -10,13 +12,17 @@ namespace Systems.Guns.Modules.ShootModules
     {
         protected FireRateController fireRateController;
 
-        [SerializeField] protected short roundPerMinute;
+        [SerializeField]
+        protected List<StatModifier> statModifiers = new()
+        {
+            StatModifier.Flat(StatType.FireRate, 120)
+        };
 
         public virtual string Name { get; protected set; } = "Base Fire Rate Module";
 
         protected virtual void Awake()
         {
-            fireRateController = FireRateController.FromRPM(roundPerMinute);
+            fireRateController = FireRateController.FromRPM(statModifiers[0].Value);
         }
 
         public virtual void Handle(ShootContext context, Action<ShootContext> next)
@@ -36,7 +42,7 @@ namespace Systems.Guns.Modules.ShootModules
 
         public virtual void Apply(WeaponStatsBuilder stats)
         {
-            stats.AddExtra("Fire Rate", roundPerMinute);
+            stats.AddModifierList(statModifiers);
         }
 
         public abstract void Pressed(ShootContext context, Action<ShootContext> next);
