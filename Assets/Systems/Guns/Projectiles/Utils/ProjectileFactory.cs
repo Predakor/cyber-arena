@@ -16,6 +16,11 @@ namespace Systems.Guns.Projectiles
 
         public static void Configure(Action<HitInfo> hitHandler)
         {
+            if (hitHandler is null)
+            {
+                return;
+            }
+
             Instance._hitHandler = hitHandler;
         }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Systems.Guns.Modules.ShootModules
 {
+    [CreateAssetMenu(menuName = MenuPath + "Burst Fire")]
     public sealed class BurstFireModule : FireRateModuleBase
     {
         [SerializeField, Range(0.01f, 5f)] private float _interclipTime;

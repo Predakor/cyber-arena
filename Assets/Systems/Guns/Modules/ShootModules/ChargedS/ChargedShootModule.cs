@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace Systems.Guns.Modules.ShootModules
 {
+    [CreateAssetMenu(menuName = MenuPath + "Charged")]
     public sealed class ChargedShootModule : FireRateModuleBase
     {
-        [SerializeField] private float _minChargeTime;
-        [SerializeField] private float _maxChargeTime;
+        [SerializeField][Range(0.01f, 5f)] private float _minChargeTime;
+        [SerializeField][Range(0.01f, 5f)] private float _maxChargeTime;
 
         [SerializeField] private float _maxDamageMultiplier = 3f;
         [SerializeField] private float _maxSpeedMultiplier = 2f;
 
-        [SerializeField] private Transform _muzzle;        // used only for VFX attachment
         [SerializeField] private ParticleSystem _chargeEffect;
 
         private ChargeTimer _chargeTracker;
@@ -20,10 +20,11 @@ namespace Systems.Guns.Modules.ShootModules
 
         private bool MinChargeTimeExceeded => _chargeTracker.GetDuration() > _minChargeTime;
 
-        protected override void Awake()
+        public override FireRateModuleBase Initialize()
         {
-            base.Awake();
+            base.Initialize();
             _chargeTracker = new ChargeTimer(_maxChargeTime);
+            return this;
         }
 
         public override void Pressed(ShootContext context, Action<ShootContext> next)
@@ -34,13 +35,16 @@ namespace Systems.Guns.Modules.ShootModules
             }
 
             _chargeTracker.Start();
-            _particles = Instantiate(_chargeEffect, _muzzle);
+            _particles = Instantiate(_chargeEffect, context.Muzzle);
+            var main = _particles.main;
+            main.duration = _maxChargeTime / 2;
             _particles.Play();
         }
 
         public override void Released(ShootContext context, Action<ShootContext> next)
         {
             _chargeTracker.Stop();
+            _particles.Clear();
             _particles.Stop();
 
             if (!MinChargeTimeExceeded)

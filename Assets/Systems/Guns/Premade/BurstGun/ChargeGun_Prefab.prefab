@@ -10,15 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 9104646342019105089}
   - component: {fileID: 591589417983975139}
-  - component: {fileID: 7870448290166945322}
-  - component: {fileID: 7408599823220854809}
+  - component: {fileID: 8694807402816748209}
   m_Layer: 0
   m_Name: ChargeGun_Prefab
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9104646342019105089
 Transform:
   m_ObjectHideFlags: 0
@@ -48,47 +47,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e27721a61780c54db54f0ee2a3b2d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _channel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
-  _muzzle: {fileID: 0}
-  _config:
-    fireRateModule: {fileID: 0}
-    ammoModule: {fileID: 7870448290166945322}
-    projectileModule: {fileID: 0}
-    spreadModule: {fileID: 0}
---- !u!114 &7870448290166945322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 905182092263094128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b8f9dd93c773a44ea3accecfb4a4bb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _magazineSize: 60
-  _currentAmmo: 60
-  _reloadSpeed: 1
---- !u!114 &7408599823220854809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 905182092263094128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 757c515c58d01bb418ca428ece563374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roundPerMinute: 6
-  _minChargeTime: 0.1
-  _maxChargeTime: 1
-  _maxDamageMultiplier: 3
-  _maxSpeedMultiplier: 2
   _muzzle: {fileID: 170692320446043841}
-  _chargeEffect: {fileID: 1761897498836718374, guid: 3c170c5b523dbfb4699a260aab57f246, type: 3}
+  _config:
+    projectileModule: {fileID: 8694807402816748209}
+    fireRateModule: {fileID: 11400000, guid: 3956a9146446efd498c134cdb2cffd2c, type: 2}
+    ammoModule: {fileID: 11400000, guid: adfef520a692b544ea3705beed6f59e8, type: 2}
+    spreadModule: {fileID: 11400000, guid: 095b8712669838f4dab318d383c1cd0c, type: 2}
+--- !u!114 &8694807402816748209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905182092263094128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0300d8f762384849958d4541e8936ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poolSize: 10
+  _poolMaxSize: 200
+  statModifiers: []
+  _config: {fileID: 11400000, guid: c1862f31748ea7a4c9009b6b26c35a9e, type: 2}
 --- !u!1 &2619004677376558415
 GameObject:
   m_ObjectHideFlags: 0

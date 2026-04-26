@@ -70,26 +70,30 @@ namespace Systems.Guns
 
         private void Configure()
         {
+            var fireRateModule = Instantiate(_config.fireRateModule).Initialize();
+            var spreadModule = Instantiate(_config.spreadModule);
+            var ammoModule = Instantiate(_config.ammoModule);
+
             _modules = new ModuleContainer
             {
-                FireRateModule = _config.fireRateModule,
                 ProjectileModule = _config.projectileModule,
-                SpreadModule = Instantiate(_config.spreadModule),
-                AmmoModule = Instantiate(_config.ammoModule),
+                FireRateModule = fireRateModule,
+                SpreadModule = spreadModule,
+                AmmoModule = ammoModule,
             };
 
             _pipeline = new ShootPipeline(
-                _config.fireRateModule,
-                _config.spreadModule,
-                _modules.AmmoModule,
+                fireRateModule,
+                spreadModule,
+                ammoModule,
                 new ProjectileSpawnModule()
             );
 
             var stats = WeaponStatsBuilder
                 .FromProjectileBase(_config.projectileModule)
-                .ApplyModuleModifiers(_config.fireRateModule)
-                .ApplyModuleModifiers(_config.spreadModule)
-                .ApplyModuleModifiers(_modules.AmmoModule)
+                .ApplyModuleModifiers(fireRateModule)
+                .ApplyModuleModifiers(spreadModule)
+                .ApplyModuleModifiers(ammoModule)
                 .Build();
 
             Stats = stats;

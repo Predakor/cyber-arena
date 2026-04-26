@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9104646342019105089}
   - component: {fileID: 591589417983975139}
-  - component: {fileID: 7870448290166945322}
-  - component: {fileID: 4241228248038674}
   m_Layer: 0
   m_Name: BurstRifle_Prefab
   m_TagString: Weapon
@@ -48,43 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e27721a61780c54db54f0ee2a3b2d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _channel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
   _muzzle: {fileID: 0}
   _config:
-    fireRateModule: {fileID: 0}
-    ammoModule: {fileID: 7870448290166945322}
     projectileModule: {fileID: 0}
+    fireRateModule: {fileID: 0}
+    ammoModule: {fileID: 0}
     spreadModule: {fileID: 0}
---- !u!114 &7870448290166945322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 905182092263094128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b8f9dd93c773a44ea3accecfb4a4bb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _magazineSize: 60
-  _currentAmmo: 60
-  _reloadSpeed: 1
---- !u!114 &4241228248038674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 905182092263094128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ae19f1c274afe44685f8358bd0b6fec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roundPerMinute: 30
-  _interclipTime: 0.1
-  _clipSize: 3
 --- !u!1 &2619004677376558415
 GameObject:
   m_ObjectHideFlags: 0

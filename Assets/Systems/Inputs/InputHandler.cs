@@ -80,11 +80,11 @@ namespace Systems.Inputs
             {
                 if (enabled)
                 {
-                    action.Enable();
+                    action?.Enable();
                 }
                 else
                 {
-                    action.Disable();
+                    action?.Disable();
                 }
             }
         }

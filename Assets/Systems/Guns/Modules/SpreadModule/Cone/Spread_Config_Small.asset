@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 085927917a1796a43b0c9068ebe3f20b, type: 3}
   m_Name: Spread_Config_Small
   m_EditorClassIdentifier: 
+  statModifiers:
+  - Stat: 14
+    Type: 0
+    Value: 0.15
   pelletCount: 1
   spreadAngle: 5
   damageMultiplier: 1
+  <Name>k__BackingField: Cone Spread Module

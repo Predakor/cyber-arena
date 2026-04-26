@@ -5115,26 +5115,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _poolSize: 10
   _poolMaxSize: 200
-  _config: {fileID: 11400000, guid: e8deb988e3eb4b74ebf2ac2c85a1ab96, type: 2}
---- !u!114 &365326264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365326257}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 757c515c58d01bb418ca428ece563374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roundPerMinute: 30
-  _minChargeTime: 0.3
-  _maxChargeTime: 1
-  _maxDamageMultiplier: 3
-  _maxSpeedMultiplier: 2
-  _muzzle: {fileID: 776393103}
-  _chargeEffect: {fileID: 224668271}
+  statModifiers: []
+  _config: {fileID: 11400000, guid: c1862f31748ea7a4c9009b6b26c35a9e, type: 2}
 --- !u!4 &370426950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8914459410678634143, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
@@ -12485,7 +12467,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 095b8712669838f4dab318d383c1cd0c, type: 2}
   - {fileID: 11400000, guid: 6d02639a06823994c86e67aefceaf39c, type: 2}
   _fireRateModules:
-  - {fileID: 1830704019}
+  - {fileID: 0}
   _ammoModules:
   - {fileID: 11400000, guid: adfef520a692b544ea3705beed6f59e8, type: 2}
   _projectileModules: []
@@ -20530,11 +20512,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688187983}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1693136204 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 170692320446043841, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
-  m_PrefabInstance: {fileID: 2209514767872457695}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1702774260 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 796846292019386503, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
@@ -21819,32 +21796,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9104646342019105089, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
   m_PrefabInstance: {fileID: 2209514767872457695}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1825824041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1825824035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0300d8f762384849958d4541e8936ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _poolSize: 10
-  _poolMaxSize: 200
-  _config: {fileID: 11400000, guid: c1862f31748ea7a4c9009b6b26c35a9e, type: 2}
---- !u!114 &1825824042 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7408599823220854809, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
-  m_PrefabInstance: {fileID: 2209514767872457695}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1825824035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 757c515c58d01bb418ca428ece563374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1830704017 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 905182092263094128, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
@@ -21855,17 +21806,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9104646342019105089, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
   m_PrefabInstance: {fileID: 8276606986173060470}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1830704019 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4241228248038674, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
-  m_PrefabInstance: {fileID: 8276606986173060470}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1830704017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ae19f1c274afe44685f8358bd0b6fec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1830704023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21880,6 +21820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _poolSize: 10
   _poolMaxSize: 50
+  statModifiers: []
   _config: {fileID: 11400000, guid: a1f1a0efe270d8c4496eb41c50a84eb2, type: 2}
 --- !u!1 &1832182929
 GameObject:
@@ -26589,13 +26530,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 776393103}
     - target: {fileID: 4233339957980026790, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
+      propertyPath: _config.ammoModule
+      value: 
+      objectReference: {fileID: 11400000, guid: adfef520a692b544ea3705beed6f59e8, type: 2}
+    - target: {fileID: 4233339957980026790, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
       propertyPath: _config.spreadModule
       value: 
       objectReference: {fileID: 11400000, guid: 6d02639a06823994c86e67aefceaf39c, type: 2}
     - target: {fileID: 4233339957980026790, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
       propertyPath: _config.fireRateModule
       value: 
-      objectReference: {fileID: 365326264}
+      objectReference: {fileID: 11400000, guid: b7f31debc73630949ae68e54e5dfa8f1, type: 2}
     - target: {fileID: 4233339957980026790, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
       propertyPath: _config.projectileModule
       value: 
@@ -26611,15 +26556,13 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2343372675173229014, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
     - {fileID: 2015568912095558255, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
+    - {fileID: 3153459003531328477, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4883880556467886209, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
       insertIndex: -1
       addedObject: {fileID: 365326263}
-    - targetCorrespondingSourceObject: {fileID: 4883880556467886209, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 365326264}
   m_SourcePrefab: {fileID: 100100000, guid: f3df91a84d285b84eb8c40d82db18962, type: 3}
 --- !u!1001 &1091228769174058387
 PrefabInstance:
@@ -26875,38 +26818,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 702543872}
     m_Modifications:
-    - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
-      propertyPath: _muzzle
-      value: 
-      objectReference: {fileID: 1693136204}
-    - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
-      propertyPath: _config.ammoModule
-      value: 
-      objectReference: {fileID: 11400000, guid: adfef520a692b544ea3705beed6f59e8, type: 2}
-    - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
-      propertyPath: _config.spreadModule
-      value: 
-      objectReference: {fileID: 11400000, guid: 095b8712669838f4dab318d383c1cd0c, type: 2}
-    - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
-      propertyPath: _config.fireRateModule
-      value: 
-      objectReference: {fileID: 1825824042}
-    - target: {fileID: 591589417983975139, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
-      propertyPath: _config.projectileModule
-      value: 
-      objectReference: {fileID: 1825824041}
     - target: {fileID: 905182092263094128, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
       propertyPath: m_Name
       value: ChargeGun_Prefab (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 905182092263094128, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7408599823220854809, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
-      propertyPath: _projectileConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: 2d41586baa480b840ba1eb10717f6961, type: 2}
     - target: {fileID: 9104646342019105089, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.4749633
@@ -26947,14 +26862,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7870448290166945322, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 905182092263094128, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1825824041}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 025cdd44e236b324e833fed13a4d3445, type: 3}
 --- !u!1001 &6611450485394358693
 PrefabInstance:
@@ -27025,14 +26936,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 702543872}
     m_Modifications:
-    - target: {fileID: 4241228248038674, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
-      propertyPath: _config
-      value: 
-      objectReference: {fileID: 11400000, guid: cfb7735453a678f4192940755e2c4e4d, type: 2}
-    - target: {fileID: 4241228248038674, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
-      propertyPath: _interclipTime
-      value: 0.15
-      objectReference: {fileID: 0}
     - target: {fileID: 591589417983975139, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
       propertyPath: _muzzle
       value: 
@@ -27048,7 +26951,7 @@ PrefabInstance:
     - target: {fileID: 591589417983975139, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
       propertyPath: _config.fireRateModule
       value: 
-      objectReference: {fileID: 1830704019}
+      objectReference: {fileID: 11400000, guid: 664d2da114ddc484daa3018b525eafb3, type: 2}
     - target: {fileID: 591589417983975139, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
       propertyPath: _config.projectileModule
       value: 
@@ -27102,7 +27005,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 7870448290166945322, guid: 2dfbdac3f7e982d4d9108c53fed7bc12, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

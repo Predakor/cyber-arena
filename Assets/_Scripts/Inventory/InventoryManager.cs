@@ -8,10 +8,12 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
+        if (_inventory == null)
+        {
+            Debug.LogError("Inventory is null", this);
+            return;
+        }
         invList = _inventory.GetItems();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-    }
 }

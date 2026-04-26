@@ -27,7 +27,7 @@ namespace Systems.Guns.Modules.AmmoModule.Base
         public event Action<float> OnReloadStart;
         public event Action<float, bool> OnReloadEnd;
 
-        public virtual string Name => "Base Ammo Module";
+        [field: SerializeField] public virtual string Name { get; protected set; } = "Base Ammo Module";
 
         public virtual int CurrentAmmo
         {

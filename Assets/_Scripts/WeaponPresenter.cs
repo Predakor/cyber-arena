@@ -52,6 +52,12 @@ public sealed class WeaponPresenter : MonoBehaviour
         _currentAmmoEvents = null;
         _currentGun = null;
 
+        if (weapon is null)
+        {
+            Debug.LogError("expected weapon type but got null", this);
+            return;
+        }
+
         if (weapon is not IGun gun)
         {
             Debug.LogError("expected weapon type but got " + weapon.GetType(), this);
