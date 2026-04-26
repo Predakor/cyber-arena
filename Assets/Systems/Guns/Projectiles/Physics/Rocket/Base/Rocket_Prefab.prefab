@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6388754956085411335}
   - component: {fileID: 7918889058070464018}
   m_Layer: 10
-  m_Name: Particle System
+  m_Name: VFX_Thruster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1316,8 +1316,8 @@ ParticleSystem:
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
-        ctime0: 231
-        ctime1: 65535
+        ctime0: 5615
+        ctime1: 17461
         ctime2: 0
         ctime3: 0
         ctime4: 0
@@ -5013,10 +5013,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colider: {fileID: 582058892553635302}
-  _trusterVfx: {fileID: 1468088162615894500, guid: f8ed0a941bc8d5e4694eacac8d22dfcd, type: 3}
+  _trusterVfx: {fileID: 6388754956085411335}
   _explosionVfx: {fileID: 626610677603597390}
   _rb: {fileID: 3659118991777698875}
-  _config: {fileID: 0}
 --- !u!1001 &1912100643850165948
 PrefabInstance:
   m_ObjectHideFlags: 0

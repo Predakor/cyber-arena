@@ -38,8 +38,9 @@ namespace Systems.Guns.Projectiles.Physics.Rocket
         {
             base.OnTriggerEnter(other);
             _trusterVfx.Stop();
+            _trusterVfx.Clear();
             _rb.velocity = Vector3.zero;
-            Destroy(gameObject, 2f);
+            Destroy(gameObject);
         }
 
         public override void Shoot()

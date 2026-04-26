@@ -1,4 +1,3 @@
-using Systems.Guns.Projectiles;
 using UnityEngine;
 
 namespace Systems.Guns.HitEffects.Damage.Explosion
@@ -8,19 +7,21 @@ namespace Systems.Guns.HitEffects.Damage.Explosion
     public sealed class ExplosionEffectSo : HitEffectSO
     {
 
-        [SerializeField] float explosionRadius = 1.0f;
-        [SerializeField] float damageFallow = 1.0f;
-        [SerializeField] ParticleSystem _explosionVfx;
+        [SerializeField] private float explosionRadius = 1.0f;
+        [SerializeField] private float damageFallow = 1.0f;
+        [SerializeField] private ParticleSystem _explosionVfx;
 
 
         public override void Apply(HitInfo hit)
         {
-            Instantiate(_explosionVfx, hit.Target.transform).Play();
+            var instance = Instantiate(_explosionVfx, hit.Target.transform);
+            var main = instance.main;
+            main.stopAction = ParticleSystemStopAction.Destroy;
+            instance.Play();
         }
 
         public override void Clear(HitInfo hit)
         {
-
             //kill self or return to pool
         }
 

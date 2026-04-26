@@ -11,7 +11,8 @@ namespace Systems.Guns.Projectiles
     {
         [SerializeField] private TrailOnlyProjectile trailProjectile;
         [SerializeField] private RocketProjectile _rocketProjectile;
-        private Action<HitInfo> _hitHandler;
+
+        private static Action<HitInfo> _hitHandler;
         //TODO Add pooling
 
         public static void Configure(Action<HitInfo> hitHandler)
@@ -21,7 +22,7 @@ namespace Systems.Guns.Projectiles
                 return;
             }
 
-            Instance._hitHandler = hitHandler;
+            _hitHandler = hitHandler;
         }
 
         public IProjectile Create(ProjectileConfigSO config)
