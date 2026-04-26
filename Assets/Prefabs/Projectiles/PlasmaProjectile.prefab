@@ -96,19 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e817c8622ead5454ea0fde5ac27a87b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 5
-  damage: 50
-  vfx: {fileID: 749631931216172601, guid: 4f5726d0cc59e444296a7130cfde3c59, type: 3}
-  onFire:
-    m_PersistentCalls:
-      m_Calls: []
-  onDamage:
-    m_PersistentCalls:
-      m_Calls: []
+  _duration: 5
+  _vfx: {fileID: 7314771928619754224, guid: 3c968176d3489b8488d2064207e85390, type: 3}
+  _trail: {fileID: 0}
   onHit:
-    m_PersistentCalls:
-      m_Calls: []
-  onDestroy:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1001 &5377820753621637667

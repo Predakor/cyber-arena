@@ -1,0 +1,23 @@
+﻿
+using UnityEngine;
+
+namespace Systems.Guns.HitEffects
+{
+    //example menu config in child
+    //[CreateAssetMenu(menuName = MenuName + nameof(Child_Effect))]
+    public abstract class HitEffectSO : ScriptableObject, IHitEffect
+    {
+        protected const string MenuName = "Weapons/Effects/";
+        [field: SerializeField]
+        public float Duration { get; protected set; } = 1f;
+
+        [SerializeField]
+        protected HitFlag trigger = HitFlag.None;
+
+        public HitFlag Trigger => trigger;
+
+        public abstract void Apply(HitInfo hit);
+        public abstract void Clear(HitInfo hit);
+    }
+
+}

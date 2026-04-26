@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement" picking-mode="Ignore" style="flex-grow: 1; background-color: rgb(255, 255, 255); width: 400px; height: 100%;">
+        <ui:Button text="Name" parse-escape-sequences="true" display-tooltip-when-elided="true" name="main-button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px; font-size: 48px; height: 100%; -unity-text-align: lower-center;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="dropdown-container" style="flex-grow: 1; position: absolute; width: 100%; height: 50px; top: -49px; flex-direction: column-reverse;" />
+</ui:UXML>

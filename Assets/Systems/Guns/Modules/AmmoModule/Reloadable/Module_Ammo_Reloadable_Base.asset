@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac1d3ebea7b77ca4d84c7df9e8f87c7e, type: 3}
+  m_Name: Module_Ammo_Reloadable_Base
+  m_EditorClassIdentifier: 
+  _magazineSize: 30
+  _currentAmmo: 30
+  _reloadSpeed: 2
+  _reserveAmmo: 90
+  _maxReserve: 480

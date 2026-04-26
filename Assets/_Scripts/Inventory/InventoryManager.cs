@@ -1,24 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour {
-    [SerializeField] Inventory _inventory;
-    [SerializeField] WeaponInventory _weaponInventory;
+public class InventoryManager : MonoBehaviour
+{
+    [SerializeField] private Inventory _inventory;
+    [SerializeField] private List<ItemData> invList;
 
-    [SerializeField] List<ItemData> invList;
-
-
-    void Start() {
+    private void Start()
+    {
+        if (_inventory == null)
+        {
+            Debug.LogError("Inventory is null", this);
+            return;
+        }
         invList = _inventory.GetItems();
     }
 
-    void OnTriggerEnter(Collider other) {
-        if (other.TryGetComponent(out ItemContainer itemContainer)) {
-            ItemData pickedItem = itemContainer.Pickup();
-            if (pickedItem is GunData pickedGunData) {
-                _weaponInventory.Pickup(pickedGunData);
-            }
-            //invList.Add(pickedItem);
-        }
-    }
 }

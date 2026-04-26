@@ -41,6 +41,7 @@ public class EnemyModule : RoomModule {
 
     void SpawnEnemies() {
         GameObject player = GetPlayer();
+        Transform parent = transform.parent;
         Vector3 roomCenter = transform.position;
         Vector3 offset = Vector3.zero;
 
@@ -53,7 +54,7 @@ public class EnemyModule : RoomModule {
             offset.Set(offsetX, 1, offsetZ);
             Vector3 position = roomCenter + offset;
 
-            Enemy enemy = Instantiate(randomEnemy.gameObject, position, Quaternion.identity, transform.parent).GetComponent<Enemy>();
+            Enemy enemy = Instantiate(randomEnemy, position, Quaternion.identity, parent);
 
             enemy.OnDeath += HandleEnemyDeath;
             enemy.AI.SetTarget(player);

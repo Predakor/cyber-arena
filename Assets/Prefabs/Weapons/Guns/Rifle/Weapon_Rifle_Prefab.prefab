@@ -112,17 +112,23 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 74808181bbfef124587f1d393114e56f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7729178446740531232}
+      addedObject: {fileID: 8288990337707788824}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 74808181bbfef124587f1d393114e56f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2982722331780221592}
+      addedObject: {fileID: 9029912127436443241}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 74808181bbfef124587f1d393114e56f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8406294197969214351}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 74808181bbfef124587f1d393114e56f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2540109966129950345}
   m_SourcePrefab: {fileID: 100100000, guid: 74808181bbfef124587f1d393114e56f, type: 3}
 --- !u!1 &1263010016473339890 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 74808181bbfef124587f1d393114e56f, type: 3}
   m_PrefabInstance: {fileID: 2109502371593349795}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7729178446740531232
+--- !u!114 &8288990337707788824
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,66 +137,77 @@ MonoBehaviour:
   m_GameObject: {fileID: 1263010016473339890}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a498e14525de4004da6ecfa7aba4d52f, type: 3}
+  m_Script: {fileID: 11500000, guid: c2cc6854034fb42448685c76c82ecd2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   handTransform: {fileID: 0}
-  gunData: {fileID: 11400000, guid: c23a1e5f2804f71468273a2109b731c9, type: 2}
-  fireRate: 240
-  magazineSize: 30
-  currentAmmo: 60
-  reloadSpeed: 1
+  _gunData: {fileID: 11400000, guid: f0961d44c61b7db49939c416bd5d6d40, type: 2}
+  _ammoModule: {fileID: 8406294197969214351}
+  _shootModule: {fileID: 9029912127436443241}
+  _projectileModule: {fileID: 2540109966129950345}
+  _fireRate: 4
+  _magazineSize: 30
+  _currentAmmo: 30
+  _reloadSpeed: 1
+  _state: 2
   onFire:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2982722331780221592}
-        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-        m_MethodName: SetTrigger
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Fire
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onReloadStart:
     m_PersistentCalls:
       m_Calls: []
   onReloadEnd:
     m_PersistentCalls:
       m_Calls: []
-  onEmptyMagazine:
-    m_PersistentCalls:
-      m_Calls: []
   onAmmoChange:
     m_PersistentCalls:
       m_Calls: []
-  projectilePrefab: {fileID: 4081963984601000776, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
-  projectileSpawnPoint: {fileID: 4481915334571154433}
-  projectileSpeed: 50
---- !u!95 &2982722331780221592
-Animator:
-  serializedVersion: 5
+  _spread: {x: 0.3, y: 0.3, z: 0.3}
+--- !u!114 &9029912127436443241
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263010016473339890}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: de99db168931dd14e81d1ec2909779c0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099ef1807a7a2204b9258c56c9de899e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectile: {fileID: 0}
+  _bulletStart: {fileID: 4481915334571154433}
+--- !u!114 &8406294197969214351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263010016473339890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b8f9dd93c773a44ea3accecfb4a4bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _magazineSize: 30
+  _currentAmmo: 30
+  _reloadSpeed: 1
+--- !u!114 &2540109966129950345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263010016473339890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa57f2c3c5d09b243bf2cc4e7db3f759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poolSize: 100
+  _poolMaxSize: 200
+  _projectilePrefab: {fileID: 2344025093709548507, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
+  _projectile: {fileID: 0}
 --- !u!4 &1931142947849833800 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 74808181bbfef124587f1d393114e56f, type: 3}
