@@ -1,5 +1,6 @@
 using System;
 using Systems.Guns.Modules.Shared;
+using Systems.Shared.Runners;
 using UnityEngine;
 
 namespace Systems.Guns.Modules.ShootModules
@@ -14,9 +15,13 @@ namespace Systems.Guns.Modules.ShootModules
         [SerializeField] private float _maxSpeedMultiplier = 2f;
 
         [SerializeField] private ParticleSystem _chargeEffect;
+        [SerializeField] private ParticleSystem _releaseEffect;
+
 
         private ChargeTimer _chargeTracker;
-        private ParticleSystem _particles;
+        private VfxEntity _chargeParticles;
+
+        private readonly VfxEffectOptions effectOptions = new() { StickToParent = true };
 
         private bool MinChargeTimeExceeded => _chargeTracker.GetDuration() > _minChargeTime;
 
@@ -35,17 +40,13 @@ namespace Systems.Guns.Modules.ShootModules
             }
 
             _chargeTracker.Start();
-            _particles = Instantiate(_chargeEffect, context.Muzzle);
-            var main = _particles.main;
-            main.duration = _maxChargeTime / 2;
-            _particles.Play();
+            _chargeParticles = VfxRunner.CreateEffect(_chargeEffect, context.Muzzle, effectOptions);
         }
 
         public override void Released(ShootContext context, Action<ShootContext> next)
         {
             _chargeTracker.Stop();
-            _particles.Clear();
-            _particles.Stop();
+            _chargeEffect.Stop();
 
             if (!MinChargeTimeExceeded)
             {
@@ -62,7 +63,9 @@ namespace Systems.Guns.Modules.ShootModules
             next(context);
 
             fireRateController.Fired();
-            _chargeTracker.Reset();
+            _chargeParticles.Stop();
+            VfxRunner.CreateEffect(_releaseEffect, context.Muzzle, effectOptions);
+            _chargeTracker?.Reset();
         }
 
         public override void Apply(WeaponStatsBuilder stats)

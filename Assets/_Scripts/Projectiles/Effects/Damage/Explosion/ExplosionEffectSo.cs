@@ -1,3 +1,4 @@
+using Systems.Shared.Runners;
 using UnityEngine;
 
 namespace Systems.Guns.HitEffects.Damage.Explosion
@@ -11,13 +12,14 @@ namespace Systems.Guns.HitEffects.Damage.Explosion
         [SerializeField] private float damageFallow = 1.0f;
         [SerializeField] private ParticleSystem _explosionVfx;
 
-
         public override void Apply(HitInfo hit)
         {
-            var instance = Instantiate(_explosionVfx, hit.Target.transform);
-            var main = instance.main;
-            main.stopAction = ParticleSystemStopAction.Destroy;
-            instance.Play();
+            VfxRunner.CreateEffect(
+                _explosionVfx,
+                hit.Point,
+                Quaternion.LookRotation(hit.Normal)
+            );
+
         }
 
         public override void Clear(HitInfo hit)
