@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Systems.Guns;
 using Systems.Guns.Interfaces;
 using Systems.Guns.Utils;
+using Systems.Inventories;
 using UnityEngine;
 
 public interface IWeaponManager

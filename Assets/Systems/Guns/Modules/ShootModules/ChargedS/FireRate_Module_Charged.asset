@@ -22,3 +22,4 @@ MonoBehaviour:
   _maxDamageMultiplier: 3
   _maxSpeedMultiplier: 2
   _chargeEffect: {fileID: 691447726712890747, guid: 4130f3a3ab55aa048ab99ecfdb711a5a, type: 3}
+  _releaseEffect: {fileID: 7593821435681849202, guid: f872b2e2760661f418d43a1aec9308de, type: 3}

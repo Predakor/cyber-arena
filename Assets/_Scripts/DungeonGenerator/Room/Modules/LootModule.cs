@@ -1,10 +1,10 @@
 using UnityEngine;
 
 public class LootModule : RoomModule {
-    [SerializeField] Loot _lootPedestal;
+    [SerializeField] LookedItemContainer _lootPedestal;
 
     public void PlaceLoot() {
-        Loot loot = Instantiate(_lootPedestal, transform);
+        LookedItemContainer loot = Instantiate(_lootPedestal, transform);
         loot.SetItem(LootManager.RequestLoot());
     }
 
