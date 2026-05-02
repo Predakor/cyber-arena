@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Inventory_Base
   m_EditorClassIdentifier: 
   EnableLog: 0
-  items: []
+  items:
+  - {fileID: 0}

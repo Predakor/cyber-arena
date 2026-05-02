@@ -18,14 +18,18 @@ namespace Systems.Inventories.Items
 
             _collider.isTrigger = true;
         }
-        protected virtual void Pickup()
+        public virtual InventoryItemBase Pickup()
         {
-            Destroy(gameObject);
+            var item = _item;
+            _item = null;
+            Destroy(gameObject, 0.2f);
+            return item;
         }
 
         public virtual void SetItem(InventoryItemBase item)
         {
             _item = item;
         }
+
     }
 }

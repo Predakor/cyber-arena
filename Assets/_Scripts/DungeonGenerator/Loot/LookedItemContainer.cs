@@ -7,7 +7,8 @@ public class LookedItemContainer : ItemContainerBase
 
     public bool IsLocked
     {
-        get => _isLocked; private set
+        get => _isLocked;
+        private set
         {
             _isLocked = value;
         }
@@ -17,13 +18,13 @@ public class LookedItemContainer : ItemContainerBase
     public bool Lock() => IsLocked = true;
     public bool Unlock() => IsLocked = false;
 
-    protected override void Pickup()
+    public override InventoryItemBase Pickup()
     {
         if (IsLocked)
         {
-            return;
+            return null;
         }
 
-        base.Pickup();
+        return base.Pickup();
     }
 }
