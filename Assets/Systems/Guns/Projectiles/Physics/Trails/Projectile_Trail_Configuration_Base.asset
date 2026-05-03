@@ -23,7 +23,7 @@ MonoBehaviour:
   endWidth: 0.01
   colorGradient:
     serializedVersion: 2
-    key0: {r: 0, g: 0.28574347, b: 1, a: 1}
+    key0: {r: 1, g: 1, b: 1, a: 1}
     key1: {r: 1, g: 1, b: 1, a: 0.33333334}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
@@ -51,4 +51,4 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  material: {fileID: 2100000, guid: 657e1b13a00c16e43a80f2f0795c2af7, type: 2}
+  material: {fileID: 2100000, guid: 74ce75cc4097c7e44b17d9569b3f0e8a, type: 2}

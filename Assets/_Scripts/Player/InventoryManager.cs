@@ -1,6 +1,5 @@
 using Assets.Scripts.Utils;
-using System.Collections.Generic;
-using System.Linq;
+using Scripts.Inventories;
 using Systems.Inventories;
 using Systems.Inventories.Items;
 using UnityEngine;
@@ -12,9 +11,8 @@ namespace Scripts.Player
     public sealed class InventoryManager : MonoBehaviour
     {
         [SerializeField] private Collider _pickupCollider;
-        [SerializeField] private Inventory inventory;
-
-        [SerializeField] private List<InventoryItemBase> _items = new();
+        [SerializeField] private Inventory _inventory;
+        [SerializeField] private InventoryChannel _channel;
 
         private void Awake()
         {
@@ -24,9 +22,6 @@ namespace Scripts.Player
         private void Start()
         {
             _pickupCollider.isTrigger = true;
-            _items = inventory
-                .GetItems()
-                .ToList();
         }
 
 
@@ -36,7 +31,8 @@ namespace Scripts.Player
             if (other.TryGetComponent(out ItemContainerBase itemContainer))
             {
                 var item = itemContainer.Pickup();
-                _items.Add(item);
+                _inventory.AddItem(item);
+                _channel.RaiseItemAdded(item);
             }
         }
     }

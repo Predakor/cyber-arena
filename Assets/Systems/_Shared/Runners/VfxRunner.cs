@@ -106,7 +106,7 @@ namespace Systems.Shared.Runners
             Instance.Clear();
             Instance.transform.SetParent(null);
             //TODO Add Object pooling
-            Destroy(gameObject);
+            Destroy(gameObject, 0.01f);
         }
 
         private void OnParticleSystemStopped()

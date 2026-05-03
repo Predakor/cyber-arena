@@ -14,4 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnableLog: 0
   items:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: b8688f893e9863649b1a3792d4d0165e, type: 2}
+  - {fileID: 11400000, guid: d2b266e825113ba43830a7448204f2d0, type: 2}
+  - {fileID: 11400000, guid: 5d5bfa5f0f1e13a408217f9b07a76531, type: 2}
+  initialItems:
+  - {fileID: 11400000, guid: b8688f893e9863649b1a3792d4d0165e, type: 2}
+  - {fileID: 11400000, guid: d2b266e825113ba43830a7448204f2d0, type: 2}
+  - {fileID: 11400000, guid: 5d5bfa5f0f1e13a408217f9b07a76531, type: 2}

@@ -56,7 +56,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 657e1b13a00c16e43a80f2f0795c2af7, type: 2}
+  - {fileID: 2100000, guid: ccfa8df044a4cb041abfa75cfc58dd33, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,7 +109,7 @@ TrailRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 0, g: 0.18165016, b: 1, a: 1}
-      key1: {r: 0, g: 0.10411056, b: 0.9245283, a: 1}
+      key1: {r: 0, g: 0.10411056, b: 0.9245283, a: 0.627451}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -124,8 +124,8 @@ TrailRenderer:
       ctime5: 0
       ctime6: 0
       ctime7: 0
-      atime0: 23447
-      atime1: 47085
+      atime0: 15307
+      atime1: 36229
       atime2: 0
       atime3: 0
       atime4: 0
@@ -209,6 +209,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colider: {fileID: 3787102385615486150}
-  _config: {fileID: 0}
   _trail: {fileID: 2995447306262505095}
   _rigidbody: {fileID: 8266008824566121213}

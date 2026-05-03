@@ -7,6 +7,8 @@ namespace UI.Components.GunModule
 {
     public sealed class GunModuleComponent : VisualElement
     {
+        public IGunModule Selected { get; private set; }
+
         public event Action<IGunModule> OnModuleSelected;
 
         private readonly Button _mainButton;
@@ -51,9 +53,7 @@ namespace UI.Components.GunModule
 
         private void ToggleDropdown() => IsOpen = !IsOpen;
 
-
-        //should accept IGunModule and show its name and possible options, for now just a list of strings
-        public void SetModules(List<IGunModule> items)
+        public void SetModules(List<IGunModule> items, IGunModule selected = null)
         {
             _dropdownListContainer?.Clear();
 
@@ -65,6 +65,12 @@ namespace UI.Components.GunModule
                 };
                 itemButton.style.fontSize = 24;
                 _dropdownListContainer.Add(itemButton);
+
+                if (selected is not null && item == selected)
+                {
+                    Selected = selected;
+                    _mainButton.text = Selected.Name;
+                }
             }
         }
 
