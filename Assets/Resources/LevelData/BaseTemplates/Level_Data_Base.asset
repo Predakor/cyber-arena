@@ -25,7 +25,7 @@ MonoBehaviour:
     lootModifier: 1
     guardModifier: 1
   _lootRoomSettings:
-    lootRoomChance: 0
+    lootRoomChance: 50
     guaranteedLootRooms: 1
     maxLootRooms: 1
   _guardedRoomSettings:

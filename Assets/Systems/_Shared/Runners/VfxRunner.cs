@@ -103,6 +103,11 @@ namespace Systems.Shared.Runners
 
         public void Stop()
         {
+            if (!Instance)
+            {
+                return;
+            }
+
             Instance.Clear();
             Instance.transform.SetParent(null);
             //TODO Add Object pooling

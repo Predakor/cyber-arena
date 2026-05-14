@@ -7,6 +7,7 @@ namespace Systems.Guns.Modules.AmmoModule
     [CreateAssetMenu(menuName = MenuPath + nameof(ReloadableAmmoModule))]
     public sealed class ReloadableAmmoModule : AmmoModuleBase
     {
+        [SerializeField] private bool _unlimitedAmmo = true;
         [SerializeField][Range(0, 1000)] private int _reserveAmmo;
         [SerializeField][Range(0, 1000)] private int _maxReserve;
 
@@ -14,10 +15,17 @@ namespace Systems.Guns.Modules.AmmoModule
 
         protected override void StartReload()
         {
-            if (_isReloading || _reserveAmmo <= 0)
+            if (_isReloading)
             {
                 return;
             }
+
+            if (!_unlimitedAmmo && _reserveAmmo <= 0)
+            {
+                Debug.Log("Ammo reserve is empty", this);
+                return;
+            }
+
             base.StartReload();
             StartCoroutine(Reload());
         }
@@ -25,7 +33,9 @@ namespace Systems.Guns.Modules.AmmoModule
         protected override void RefillAmmo()
         {
             var needed = MagazineSize - CurrentAmmo;
-            var refill = Mathf.Min(needed, _reserveAmmo);
+            var refill = !_unlimitedAmmo
+                ? Mathf.Min(needed, _reserveAmmo)
+                : needed;
             _reserveAmmo -= refill;
             CurrentAmmo += refill;
         }

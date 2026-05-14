@@ -50,7 +50,7 @@ namespace Systems.Guns
             builder.Duration = context.Duration;
             builder.AmmoCost = context.AmmoCost;
 
-            return builder.ApplyModuleModifiers(@base as IGunModule);
+            return builder.ApplyModuleModifiers(@base);
         }
 
         public WeaponStatsBuilder ApplyModuleModifiers(IGunModule module)

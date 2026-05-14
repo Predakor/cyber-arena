@@ -6,61 +6,68 @@ using UnityEngine;
 
 [RequireComponent(typeof(RoomPlacer), typeof(CorridorPlacer))]
 [RequireComponent(typeof(RoomGenerator))]
-public class LevelGenerator : MonoBehaviour {
+public class LevelGenerator : MonoBehaviour
+{
 
     #region variables
     [Header("Dependencies")]
-    [SerializeField] RoomPlacer _roomPlacer;
-    [SerializeField] BossPlacer _bossPlacer;
-    [SerializeField] CorridorPlacer _corridorPlacer;
-    [SerializeField] RoomGenerator _roomGenerator;
+    [SerializeField] private RoomPlacer _roomPlacer;
+    [SerializeField] private BossPlacer _bossPlacer;
+    [SerializeField] private CorridorPlacer _corridorPlacer;
+    [SerializeField] private RoomGenerator _roomGenerator;
 
     [Header("Prefabs/templates")]
-    [SerializeField] FloorData _levelDataTemplate;
-    [SerializeField] TemplatesHolderData _levelDataTemplateHolder;
-    [SerializeField] GameObject _collisionChecker;
+    [SerializeField] private FloorData _levelDataTemplate;
+    [SerializeField] private TemplatesHolderData _levelDataTemplateHolder;
+    [SerializeField] private GameObject _collisionChecker;
 
-    [SerializeField] GameObject _roomTemplate;
-    [SerializeField] GameObject _corridorTemplate;
-    [SerializeField] RoomRestrictionsSO _roomRestrictions;
+    [SerializeField] private GameObject _roomTemplate;
+    [SerializeField] private GameObject _corridorTemplate;
+    [SerializeField] private RoomRestrictionsSO _roomRestrictions;
 
     [Header("Override base template")]
-    [SerializeField] BaseFloorStats _baseStats;
-    [SerializeField] FloorModifiers _levelModifiers;
-    [SerializeField] LootRoomSettings _lootRoomSettings;
-    [SerializeField] GuardedRoomSettings _guardedRoomSettings;
-    [SerializeField] PrefabPool _levelPool;
-    [SerializeField] PlacerData _roomPlacerData;
+    [SerializeField] private BaseFloorStats _baseStats;
+    [SerializeField] private FloorModifiers _levelModifiers;
+    [SerializeField] private LootRoomSettings _lootRoomSettings;
+    [SerializeField] private GuardedRoomSettings _guardedRoomSettings;
+    [SerializeField] private PrefabPool _levelPool;
+    [SerializeField] private PlacerData _roomPlacerData;
 
     [Header("Generated structures")]
-    [SerializeField] List<RoomNode> _generatedNodes;
-    [SerializeField] List<RoomGenerator> _generatedRooms;
-    [SerializeField] List<CorridorGenerator> _generatedCorridors;
+    [SerializeField] private List<RoomNode> _generatedNodes;
+    [SerializeField] private List<RoomGenerator> _generatedRooms;
+    [SerializeField] private List<CorridorGenerator> _generatedCorridors;
 
     #endregion
 
 #if UNITY_EDITOR
 
     [ContextMenu("Generate Floor")]
-    public void CreateFloor() {
+    public void CreateFloor()
+    {
         KillAllChildren();
         ApplyModifiers();
         GenerateFloor();
     }
 
     [ContextMenu("Spawn Generated Level")]
-    public void GenerateSpawnedRooms() {
-        foreach (var corridor in _generatedCorridors) {
+    public void GenerateSpawnedRooms()
+    {
+        foreach (var corridor in _generatedCorridors)
+        {
             corridor.GenerateCorridor();
         }
-        foreach (RoomNode roomNode in _generatedNodes) {
+        foreach (RoomNode roomNode in _generatedNodes)
+        {
             _roomGenerator.GenerateRoom(roomNode);
         }
     }
 
     [ContextMenu("KillAllCHildren")]
-    public void KillAllChildren() {
-        for (int i = transform.childCount - 1; i >= 0; i--) {
+    public void KillAllChildren()
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
             DestroyImmediate(transform.GetChild(i).gameObject);
         }
         CleanLists();
@@ -70,7 +77,8 @@ public class LevelGenerator : MonoBehaviour {
     public void LoadData() => LoadData(_levelDataTemplate);
 
     [ContextMenu("Setup Generator")]
-    void LoadDependencies() {
+    private void LoadDependencies()
+    {
         Init();
         ApplyModifiers();
         InitDependencies();
@@ -78,11 +86,13 @@ public class LevelGenerator : MonoBehaviour {
 
 #endif
 
-    public void Init(Level level = Level.Neon_City) {
+    public void Init(Level level = Level.Neon_City)
+    {
         string templatePath = "LevelData/BaseTemplates/Level_Template_Holder";
         var templates = Resources.Load<TemplatesHolderData>(templatePath);
 
-        if (templates == null) {
+        if (templates == null)
+        {
             string templatesName = templatePath.Split('/').Last();
             Debug.LogError($"templates not found {templatesName}");
         }
@@ -95,14 +105,17 @@ public class LevelGenerator : MonoBehaviour {
 
         string levelPath = $"LevelData/{level}";
         var levelData = Resources.Load(levelPath);
-        if (levelData == null) {
+        if (levelData == null)
+        {
             Debug.Log($"No data found for {level} level");
         }
         Resources.UnloadAsset(levelData);
     }
 
-    public void InitDependencies() {
-        InitData roomPlacerData = new() {
+    public void InitDependencies()
+    {
+        InitData roomPlacerData = new()
+        {
             roomPrefab = _roomTemplate,
             roomRestrictions = _roomRestrictions
         };
@@ -119,7 +132,8 @@ public class LevelGenerator : MonoBehaviour {
         _corridorPlacer.OnCorridorCreated += HandleCorridorCreation;
     }
 
-    public void LoadData(FloorData data) {
+    public void LoadData(FloorData data)
+    {
         FloorGenerationData floorData = data.GetFloorData();
         _baseStats = floorData.baseStats;
         _levelPool = floorData.floorPool;
@@ -128,7 +142,8 @@ public class LevelGenerator : MonoBehaviour {
         _guardedRoomSettings = floorData.guardedRoomSettings;
         _roomPlacerData = floorData.roomPlacerData;
     }
-    public void ApplyModifiers() {
+    public void ApplyModifiers()
+    {
         _baseStats.difficulty = Mathf.FloorToInt(_baseStats.difficulty * _levelModifiers.difficultyModifier);
         _lootRoomSettings.lootRoomChance *= _levelModifiers.lootModifier;
         _guardedRoomSettings.guardedRoomChance *= _levelModifiers.guardModifier;
@@ -137,7 +152,8 @@ public class LevelGenerator : MonoBehaviour {
         _guardedRoomSettings.Validate();
     }
 
-    public void GenerateFloor() {
+    public void GenerateFloor()
+    {
         CleanLists();
 
         _roomPlacer.GenerateRooms(_roomPlacerData.numberOfRooms);
@@ -149,79 +165,96 @@ public class LevelGenerator : MonoBehaviour {
 
     }
 
-    void GenerateBossRoom() {
+    private void GenerateBossRoom()
+    {
         RoomNode bossNode = _bossPlacer.GetBossLocation(_generatedNodes);
         bossNode.Data.SetType(RoomType.Boss);
     }
 
-    void FirstRoomNodeHandler(RoomNode roomNode) {
+    private void FirstRoomNodeHandler(RoomNode roomNode)
+    {
         _generatedNodes.Add(roomNode);
     }
 
-    void HandleRoomNodeCreation(RoomNode newRoom, RoomNode currentRoom, Vector3 direction) {
+    private void HandleRoomNodeCreation(RoomNode newRoom, RoomNode currentRoom, Vector3 direction)
+    {
         LinkManager.LinkRoomsAndNodes(currentRoom, newRoom, direction);
         _generatedNodes.Add(newRoom);
     }
 
-    void HandleCorridorCreation(CorridorGenerator corridor, CorridorData corridorData) {
+    private void HandleCorridorCreation(CorridorGenerator corridor, CorridorData corridorData)
+    {
         corridor.LoadData(corridorData);
         _generatedCorridors.Add(corridor);
     }
 
-    void GenerateLootRooms() {
+    private void GenerateLootRooms()
+    {
         int maxLootRoms = _lootRoomSettings.maxLootRooms;
         int gurantedLootRooms = _lootRoomSettings.guaranteedLootRooms;
         int generatedLootRooms = 0;
 
-        for (int i = 0; i < gurantedLootRooms; i++) {
+        for (int i = 0; i < gurantedLootRooms; i++)
+        {
             RoomNode lootRoom = CollectionUtils.RandomElement(_generatedNodes, 1);
             CreateLootRoom(lootRoom);
         }
 
         bool lootRoomLimitSurpased = generatedLootRooms >= _lootRoomSettings.maxLootRooms;
-        if (lootRoomLimitSurpased) {
+        if (lootRoomLimitSurpased)
+        {
             return;
         }
 
         float lootRoomChance = _lootRoomSettings.lootRoomChance;
-        for (int i = _generatedNodes.Count - 1; i > 0; i--) {
-            if (generatedLootRooms >= maxLootRoms) {
+        for (int i = _generatedNodes.Count - 1; i > 0; i--)
+        {
+            if (generatedLootRooms >= maxLootRoms)
+            {
                 return;
             }
 
             bool succesfulRoll = Random.Range(0, 101) > lootRoomChance;
-            if (succesfulRoll) {
+            if (succesfulRoll)
+            {
                 CreateLootRoom(_generatedNodes[i]);
-            };
+            }
+            ;
         }
 
-        void CreateLootRoom(RoomNode lootNode) {
+        void CreateLootRoom(RoomNode lootNode)
+        {
             lootNode.Data.SetType(RoomType.Loot);
             generatedLootRooms++;
         }
     }
 
-    void GenerateGuardedRooms() {
+    private void GenerateGuardedRooms()
+    {
         float hostileRoomChance = _guardedRoomSettings.guardedRoomChance;
-        for (int i = 1; i < _generatedNodes.Count; i++) {
+        for (int i = 1; i < _generatedNodes.Count; i++)
+        {
 
             float roll = Random.Range(0, 101);
             bool isGuarded = roll > hostileRoomChance;
 
-            if (isGuarded) {
+            if (isGuarded)
+            {
                 RoomNode node = _generatedNodes[i];
                 node.Data.SetType(RoomType.Guarded);
             }
         }
     }
 
-    void CleanEventHandler() {
+    private void CleanEventHandler()
+    {
         _roomPlacer.OnFirstRoomCreated -= FirstRoomNodeHandler;
         _roomPlacer.OnRoomCreated -= HandleRoomNodeCreation;
         _corridorPlacer.OnCorridorCreated -= HandleCorridorCreation;
     }
 
-    void CleanLists() {
+    private void CleanLists()
+    {
         _generatedRooms.Clear();
         _generatedNodes.Clear();
         _generatedCorridors.Clear();
@@ -230,7 +263,8 @@ public class LevelGenerator : MonoBehaviour {
 }
 
 
-public enum Level {
+public enum Level
+{
     Neon_City,
     Beaver_City,
 }

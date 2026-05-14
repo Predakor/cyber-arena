@@ -15,5 +15,8 @@ MonoBehaviour:
   statModifiers:
   - Stat: 9
     Type: 0
-    Value: 120
-  <Name>k__BackingField: Base Fire Rate Module
+    Value: 999
+  - Stat: 0
+    Type: 2
+    Value: 0.33
+  <Name>k__BackingField: Automatic fire

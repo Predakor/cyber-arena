@@ -76,5 +76,33 @@ namespace Systems.Guns.Modules.Shared
             EffectStrength = EffectStrength,
             EffectDuration = EffectDuration,
         };
+
+        public ShootContext ApplyStats(IWeaponStats stats)
+        {
+            Damage = stats.Damage;
+            Speed = stats.Speed;
+            Duration = stats.Duration;
+            Size = stats.Size;
+            AmmoCost = stats.AmmoCost;
+            CritChance = stats.CritChance;
+            CritDamage = stats.CritDamage;
+            EffectRadius = stats.EffectRadius;
+            EffectStrength = stats.EffectStrength;
+            EffectDuration = stats.EffectDuration;
+
+            return this;
+        }
+
+        public ShootContext SetShootState(ShootState newState)
+        {
+            State = newState;
+            return this;
+        }
+
+        public ShootContext SetMuzzle(Transform muzzle)
+        {
+            Muzzle = muzzle;
+            return this;
+        }
     }
 }

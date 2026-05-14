@@ -73,11 +73,17 @@ public sealed class WeaponPresenter : MonoBehaviour
         // Push current state immediately on connect
         _weaponChannel.RaiseStatsChanged(gun.Stats);
         _weaponChannel.RaiseModulesChanged(gun.Modules);
+        _weaponChannel.RaiseAmmoChanged(gun.CurrentState.CurrentAmmo);
     }
 
     private void ReconfigureWeaponHandler(WeaponEvents.Reconfigured x)
     {
         _weaponManager.CurrentWeapon.Configure(x.Config);
+
+        if (_weaponManager.CurrentWeapon is IGun gun)
+        {
+            SwapAmmoEvents(gun);
+        }
     }
 
     private void SubscribeStatsEvents(IGun gun)
@@ -127,6 +133,13 @@ public sealed class WeaponPresenter : MonoBehaviour
         ammoEvents.OnAmmoChange -= _weaponChannel.RaiseAmmoChanged;
         ammoEvents.OnReloadStart -= _weaponChannel.RaiseReloadStarted;
         ammoEvents.OnReloadEnd -= _weaponChannel.RaiseReloadFinished;
+    }
+
+    private void SwapAmmoEvents(IGun gun)
+    {
+        UnsubscribeAmmoEvents(_currentAmmoEvents);
+        _currentAmmoEvents = gun.AmmoEvents;
+        SubscribeAmmoEvents(_currentAmmoEvents);
     }
 }
 

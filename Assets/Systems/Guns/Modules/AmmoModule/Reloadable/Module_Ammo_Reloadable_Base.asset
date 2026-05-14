@@ -12,8 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac1d3ebea7b77ca4d84c7df9e8f87c7e, type: 3}
   m_Name: Module_Ammo_Reloadable_Base
   m_EditorClassIdentifier: 
-  _magazineSize: 30
-  _currentAmmo: 30
-  _reloadSpeed: 2
+  statModifiers:
+  - Stat: 10
+    Type: 0
+    Value: 60
+  - Stat: 11
+    Type: 0
+    Value: 0.5
+  <Name>k__BackingField: Base Ammo Module
+  _unlimitedAmmo: 1
   _reserveAmmo: 90
   _maxReserve: 480

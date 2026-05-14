@@ -17,11 +17,11 @@ namespace Systems.Guns
         IAmmoEvents AmmoEvents { get; }
         IWeaponStats Stats { get; }
         IWeaponModules Modules { get; }
+        ICurrentGunState CurrentState { get; }
 
         event Action<IWeaponStats> StatsChanged;
         event Action<IWeaponModules> ModulesChanged;
     }
-
 
     public interface IMelee : IWeapon { }
 

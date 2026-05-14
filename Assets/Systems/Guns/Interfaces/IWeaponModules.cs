@@ -9,4 +9,10 @@ namespace Systems.Guns.Assets.Systems.Guns.Interfaces
         IGunModule SpreadModule { get; }
         IGunModule ProjectileModule { get; }
     }
+
+    public interface ICurrentGunState
+    {
+        int CurrentAmmo { get; }
+        GunState State { get; }
+    }
 }

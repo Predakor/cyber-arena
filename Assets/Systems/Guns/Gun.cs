@@ -12,6 +12,15 @@ using UnityEngine;
 
 namespace Systems.Guns
 {
+    public enum GunState
+    {
+        None = 0,
+        Idle = 1,
+        Aiming = 2,
+        Shooting = 3,
+        Reloading = 4,
+    }
+
     [Serializable]
     public sealed class Configuration : IConfig<Gun>
     {
@@ -30,7 +39,6 @@ namespace Systems.Guns
         private ShootPipeline _pipeline;
         private ModuleContainer _modules;
 
-
         public event Action<IWeaponStats> StatsChanged;
         public event Action<IWeaponModules> ModulesChanged;
 
@@ -44,8 +52,9 @@ namespace Systems.Guns
             }
             get => _stats;
         }
-
         public IWeaponModules Modules => _modules;
+
+        public ICurrentGunState CurrentState => new InitialState(_modules.AmmoModule.CurrentAmmo, GunState.Idle);
 
         private void Awake()
         {
@@ -97,18 +106,22 @@ namespace Systems.Guns
                 .Build();
 
             Stats = stats;
+            ModulesChanged?.Invoke(_modules);
         }
 
         private void ShootHandler(ShootState state)
         {
-            var context = _config.projectileModule.GetShootContext();
-            context.State = state;
-            context.Muzzle = _muzzle;
+            var context = _config.projectileModule
+                .GetShootContext()
+                .SetShootState(state)
+                .SetMuzzle(_muzzle)
+                .ApplyStats(Stats);
+
             _pipeline.Execute(context);
         }
     }
 
-    internal sealed class ModuleContainer : IWeaponModules
+    internal sealed record ModuleContainer : IWeaponModules
     {
         public AmmoModuleBase AmmoModule { get; internal set; }
         public FireRateModuleBase FireRateModule { get; internal set; }
@@ -121,4 +134,6 @@ namespace Systems.Guns
         IGunModule IWeaponModules.SpreadModule => SpreadModule;
         IGunModule IWeaponModules.ProjectileModule => ProjectileModule;
     }
+
+    internal sealed record InitialState(int CurrentAmmo, GunState State) : ICurrentGunState;
 }

@@ -16,6 +16,12 @@ MonoBehaviour:
   - Stat: 14
     Type: 0
     Value: 0.15
+  - Stat: 4
+    Type: 0
+    Value: 5
+  - Stat: 0
+    Type: 2
+    Value: 0.7
   pelletCount: 12
   spreadAngle: 10
   damageMultiplier: 0.3
