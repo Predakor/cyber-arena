@@ -11,6 +11,7 @@ using Systems.Guns.Modules.AmmoModule.Base;
 using Systems.Guns.Modules.ProjectileModule;
 using Systems.Guns.Modules.ShootModules;
 using Systems.Guns.Modules.SpreadModule;
+using Systems.Inputs;
 using Systems.Inventories;
 using Systems.Weapons.Guns.Modules;
 using UI.Components;
@@ -160,6 +161,7 @@ namespace UI.Menus
         {
             Debug.Log(e.ToString());
             _menuOpen = !_menuOpen;
+            InputsHandler.Instance.EnablePlayerActions(!_menuOpen);
             _root.EnableInClassList("open", _menuOpen);
         }
 

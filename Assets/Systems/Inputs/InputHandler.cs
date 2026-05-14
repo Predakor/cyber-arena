@@ -47,6 +47,8 @@ namespace Systems.Inputs
             gameObject.SetActive(true);
         }
 
+        public void EnablePlayerActions(bool enabled) => SetActionMapEnabled(enabled);
+
         private void RegisterInputActions()
         {
             moveAction.performed += ct => _channel.RaiseMove(ct.ReadValue<Vector2>());
