@@ -4,9 +4,10 @@ using Systems.Inventories.Items;
 using Systems.Shared;
 using UnityEngine;
 
-public class LootManager : Singleton<LootManager>
+public sealed class LootManager : Singleton<LootManager>
 {
     [SerializeField] private List<InventoryItemBase> _avaiableLoot = new();
+    [field: SerializeField] public ItemContainerBase LootContainer { get; private set; }
 
     public void Init(List<InventoryItemBase> loot)
     {
@@ -15,7 +16,7 @@ public class LootManager : Singleton<LootManager>
 
     public static InventoryItemBase RequestLoot()
     {
-        InventoryItemBase item = CollectionUtils.RandomElement(Instance._avaiableLoot);
+        InventoryItemBase item = Instance._avaiableLoot.GetRandom();
         Debug.Log(item);
         return item;
     }
@@ -25,7 +26,7 @@ public class LootManager : Singleton<LootManager>
         List<InventoryItemBase> list = new();
         for (int i = 0; i < amount; i++)
         {
-            list.Add(CollectionUtils.RandomElement(Instance._avaiableLoot, amount));
+            list.Add(Instance._avaiableLoot.GetRandom());
         }
         return list;
     }
