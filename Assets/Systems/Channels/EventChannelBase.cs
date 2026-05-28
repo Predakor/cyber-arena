@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Systems.Shared.Loggers;
 using UnityEngine;
 
 namespace Systems.Channels
@@ -10,11 +11,13 @@ namespace Systems.Channels
         void Unsubscribe<TEvent>(Action<TEvent> handler);
     }
 
-    public abstract class EventChannelBase : ScriptableObject, IEventChannel
+    public abstract class EventChannelBase<TChild> : ScriptableObject, IEventChannel
+        where TChild : EventChannelBase<TChild>
     {
-        private readonly Dictionary<Type, Delegate> _handlers = new();
-
         protected const string MenuName = "Channels/";
+
+        private readonly Dictionary<Type, Delegate> _handlers = new();
+        private LogHandler<TChild> _logger;
 
         [SerializeField] private bool _debugMode = false;
 
@@ -63,10 +66,11 @@ namespace Systems.Channels
         [System.Diagnostics.Conditional("UNITY_EDITOR")]
         private void Log(string message)
         {
-            if (_debugMode)
+            if (_logger == null)
             {
-                Debug.Log($"[{name}] {message}");
+                _logger = GameLogger.GetOrAdd<TChild>();
             }
+            _logger.Info(message);
         }
     }
 }

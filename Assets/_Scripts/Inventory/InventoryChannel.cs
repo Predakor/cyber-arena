@@ -13,7 +13,7 @@ namespace Scripts.Inventories
 
     [CreateAssetMenu(fileName = "InventoryChannel", menuName = MenuName + "InventoryChannel")]
 
-    public sealed class InventoryChannel : EventChannelBase
+    public sealed class InventoryChannel : EventChannelBase<InventoryChannel>
     {
         public void RaiseItemAdded(InventoryItemBase item) => Raise(new InventoryEvents.ItemAdded(item));
 

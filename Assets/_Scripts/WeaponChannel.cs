@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Systems.Channels.Weapons
 {
     [CreateAssetMenu(fileName = "WeaponChannel", menuName = MenuName + "WeaponChannel")]
-    public sealed class WeaponChannel : EventChannelBase
+    public sealed class WeaponChannel : EventChannelBase<WeaponChannel>
     {
         public void RaiseSelected(byte slot, byte? prevSlot = null) => Raise(new WeaponEvents.Selected(slot, prevSlot));
         public void RaiseFired() => Raise(new WeaponEvents.Fired());

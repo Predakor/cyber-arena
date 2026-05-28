@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Systems.Channels
 {
     [CreateAssetMenu(fileName = "InputEventChannel", menuName = MenuName + "InputChannel")]
-    public sealed class InputsChannel : EventChannelBase
+    public sealed class InputsChannel : EventChannelBase<InputsChannel>
     {
         public void RaiseMove(Vector2 direction) => Raise(new InputEvents.Move(direction));
         public void RaiseLook(Vector2 direction) => Raise(new InputEvents.Look(direction));
