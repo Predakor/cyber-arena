@@ -1,4 +1,3 @@
-using Systems.Channels.Weapons;
 using Systems.Guns;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -22,21 +21,11 @@ public class AmmoTracker : MonoBehaviour
         _ammoLabel = root.Q<Label>("ammo-field");
         _reloadIndicator = root.Q<VisualElement>("reload-indicator");
 
-        if (_ammoLabel is null)
-        {
-            Debug.LogError("MIssing ammoLabel in UI Document");
-        }
+        Debug.Assert(_reloadIndicator is null, "Reload indicator not found in UI Document", this);
 
-        _weaponChannel.Subscribe<WeaponEvents.AmmoChanged>(HandleAmmoChanged);
-        _weaponChannel.Subscribe<WeaponEvents.ReloadStarted>(HandleReloadStarted);
-        _weaponChannel.Subscribe<WeaponEvents.ReloadFinished>(HandleReloadFinished);
-    }
-
-    private void OnDisable()
-    {
-        _weaponChannel.Unsubscribe<WeaponEvents.AmmoChanged>(HandleAmmoChanged);
-        _weaponChannel.Unsubscribe<WeaponEvents.ReloadStarted>(HandleReloadStarted);
-        _weaponChannel.Unsubscribe<WeaponEvents.ReloadFinished>(HandleReloadFinished);
+        _weaponChannel.Subscribe<WeaponEvents.AmmoChanged>(HandleAmmoChanged, destroyCancellationToken);
+        _weaponChannel.Subscribe<WeaponEvents.ReloadStarted>(HandleReloadStarted, destroyCancellationToken);
+        _weaponChannel.Subscribe<WeaponEvents.ReloadFinished>(HandleReloadFinished, destroyCancellationToken);
     }
 
     private void HandleAmmoChanged(WeaponEvents.AmmoChanged e)
@@ -45,7 +34,10 @@ public class AmmoTracker : MonoBehaviour
         {
             return;
         }
-        _ammoLabel.text = e.Reserve.HasValue ? $"{e.Current} / {e.Reserve}" : $"{e.Current}";
+
+        _ammoLabel.text = e.Reserve.HasValue
+            ? $"{e.Current} / {e.Reserve}"
+            : $"{e.Current}";
     }
 
     private void HandleReloadStarted(WeaponEvents.ReloadStarted e)

@@ -10,12 +10,12 @@ namespace Systems.Inventories
     {
         protected const string MenuPath = "Items/Inventory";
 
-        [SerializeField] private bool EnableLog = false;
         [SerializeField] private List<InventoryItemBase> items = new();
 
         [Header("Initial State (editor only)")]
         [Tooltip("This list is only used to set the initial state of the inventory. It will not be saved or loaded at runtime.")]
         [SerializeField] private List<InventoryItemBase> initialItems = new();
+
 
         private void OnEnable()
         {
@@ -43,22 +43,11 @@ namespace Systems.Inventories
         public void AddItem(InventoryItemBase item)
         {
             items.Add(item);
-            Log($"Added {item.Name} to the inventory.");
         }
 
         public void RemoveItem(InventoryItemBase item)
         {
             items.Remove(item);
-            Log($"Removed {item.Name} from the inventory.");
-        }
-
-        private void Log(string message)
-        {
-            if (EnableLog)
-            {
-                Debug.Log(message);
-            }
         }
     }
-
 }

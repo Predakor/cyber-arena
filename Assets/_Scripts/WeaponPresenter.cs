@@ -1,7 +1,7 @@
 using Systems.Channels;
 using Systems.Channels.Inputs;
-using Systems.Channels.Weapons;
 using Systems.Guns;
+using Systems.Shared.Loggers;
 using Systems.Weapons.Guns.Modules;
 using UnityEngine;
 
@@ -13,20 +13,19 @@ public sealed class WeaponPresenter : MonoBehaviour
 
     private IAmmoEvents _currentAmmoEvents;
     private IGun _currentGun;
+    private IGameLogger _logger;
 
     private void OnEnable()
     {
-        _inputChannel.Subscribe<InputEvents.Shoot>(OnShoot);
-        _inputChannel.Subscribe<InputEvents.SelectWeapon>(OnSelectWeapon);
-        _weaponChannel.Subscribe<WeaponEvents.Reconfigured>(ReconfigureWeaponHandler);
+        _logger = GameLogger.GetOrAdd<WeaponPresenter>(LogGroup.Guns);
+        _inputChannel.Subscribe<InputEvents.Shoot>(OnShoot, destroyCancellationToken);
+        _inputChannel.Subscribe<InputEvents.SelectWeapon>(OnSelectWeapon, destroyCancellationToken);
+        _weaponChannel.Subscribe<WeaponEvents.Reconfigured>(ReconfigureWeaponHandler, destroyCancellationToken);
         RewireGun(_weaponManager.CurrentWeapon);
     }
 
     private void OnDisable()
     {
-        _inputChannel.Unsubscribe<InputEvents.Shoot>(OnShoot);
-        _inputChannel.Unsubscribe<InputEvents.SelectWeapon>(OnSelectWeapon);
-        _weaponChannel.Unsubscribe<WeaponEvents.Reconfigured>(ReconfigureWeaponHandler);
         UnsubscribeAmmoEvents(_currentAmmoEvents);
         UnsubscribeStatsEvents(_currentGun);
         _currentAmmoEvents = null;
@@ -35,7 +34,7 @@ public sealed class WeaponPresenter : MonoBehaviour
 
     private void OnShoot(InputEvents.Shoot e)
     {
-        _weaponManager.CurrentWeapon.Use(e.IsPressed);
+        _weaponManager.CurrentWeapon?.Use(e.IsPressed);
     }
 
     private void OnSelectWeapon(InputEvents.SelectWeapon e)
@@ -54,13 +53,13 @@ public sealed class WeaponPresenter : MonoBehaviour
 
         if (weapon is null)
         {
-            Debug.LogError("expected weapon type but got null", this);
+            _logger.Warn("Current weapon is null", this);
             return;
         }
 
         if (weapon is not IGun gun)
         {
-            Debug.LogError("expected weapon type but got " + weapon.GetType(), this);
+            _logger.Error("expected weapon type but got " + weapon.GetType(), this);
             return;
         }
 

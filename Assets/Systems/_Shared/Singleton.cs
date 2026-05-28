@@ -1,3 +1,4 @@
+using Systems.Shared.Loggers;
 using UnityEngine;
 
 namespace Systems.Shared
@@ -5,6 +6,8 @@ namespace Systems.Shared
     public abstract class Singleton<TInstance> : MonoBehaviour where TInstance : MonoBehaviour
     {
         public static TInstance Instance { get; private set; }
+        protected static IGameLogger Logger { get; private set; }
+
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void InitializeOnLoad()
@@ -22,6 +25,7 @@ namespace Systems.Shared
 
             Instance = this as TInstance;
             DontDestroyOnLoad(gameObject);
+            Logger ??= GameLogger.GetOrAdd<TInstance>(LogGroup.Managers);
         }
     }
 }

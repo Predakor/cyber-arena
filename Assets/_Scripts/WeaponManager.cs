@@ -3,6 +3,7 @@ using Systems.Guns;
 using Systems.Guns.Interfaces;
 using Systems.Guns.Utils;
 using Systems.Inventories;
+using Systems.Shared.Loggers;
 using UnityEngine;
 
 public interface IWeaponManager
@@ -18,21 +19,23 @@ public sealed class WeaponManager : MonoBehaviour, IWeaponManager
 {
     private const byte MaxInventorySize = 3;
 
+
+    [SerializeField] private List<GameObject> _gWeapons = new(3);
+    [SerializeField] private Inventory _scriptableObjectIntentory;
+    [SerializeField] private Transform _transform;
+
     private readonly List<IWeapon> _weapons = new(3);
-
-    [SerializeField]
-    private List<GameObject> _gWeapons = new(3);
-
-    [SerializeField]
-    private Inventory _scriptableObjectIntentory;
-
-    [SerializeField]
-    private Transform _transform;
+    private IGameLogger _logger;
 
     public IWeapon CurrentWeapon { get; private set; }
 
     private void Start()
     {
+        _logger = GameLogger.GetOrAdd<WeaponManager>(LogGroup.Guns);
+        if (CurrentWeapon is null)
+        {
+            Equip(0);
+        }
         //_weapons.AddRange(_scriptableObjectIntentory.GetItems());
     }
 
@@ -47,7 +50,7 @@ public sealed class WeaponManager : MonoBehaviour, IWeaponManager
             return;
         }
 
-        Debug.Log("weapon not found");
+        _logger.Error("weapon not found", this);
     }
 
     public void Pickup<TWeapon>(IConfig<TWeapon> config)

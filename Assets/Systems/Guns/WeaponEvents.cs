@@ -1,7 +1,9 @@
 using Systems.Guns.Assets.Systems.Guns.Interfaces;
+using Systems.Shared.Channels;
 
 namespace Systems.Guns
 {
+    [ChannelEvents(typeof(WeaponChannel))]
     public static class WeaponEvents
     {
         public sealed record Selected(byte Slot, byte? PrevSlot);

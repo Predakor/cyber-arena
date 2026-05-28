@@ -1,12 +1,15 @@
-using Systems.Guns;
 using Systems.Guns.Assets.Systems.Guns.Interfaces;
+using Systems.Shared.Channels;
 using UnityEngine;
 
-namespace Systems.Channels.Weapons
+namespace Systems.Guns
 {
     [CreateAssetMenu(fileName = "WeaponChannel", menuName = MenuName + "WeaponChannel")]
-    public sealed class WeaponChannel : EventChannelBase
+    public sealed class WeaponChannel : EventChannelBase<WeaponChannel>
     {
+        [ContextMenu("Sync Event Log Rules")]
+        private void PopulateEventRules() => _logger.SyncEventLogRules();
+
         public void RaiseSelected(byte slot, byte? prevSlot = null) => Raise(new WeaponEvents.Selected(slot, prevSlot));
         public void RaiseFired() => Raise(new WeaponEvents.Fired());
         public void RaiseAmmoChanged(int current) => Raise(new WeaponEvents.AmmoChanged(current));

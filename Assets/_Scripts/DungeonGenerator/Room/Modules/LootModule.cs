@@ -1,6 +1,6 @@
 using Systems.Inventories.Items;
 
-public sealed class LootModule : RoomModule
+public sealed class LootModule : RoomModule<LootModule>
 {
     private ItemContainerBase _container;
 
