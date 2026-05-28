@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Systems.Inventories.Items;
+using Systems.Shared.Loggers;
 using UnityEngine;
 
 namespace Systems.Inventories
@@ -10,15 +11,17 @@ namespace Systems.Inventories
     {
         protected const string MenuPath = "Items/Inventory";
 
-        [SerializeField] private bool EnableLog = false;
         [SerializeField] private List<InventoryItemBase> items = new();
 
         [Header("Initial State (editor only)")]
         [Tooltip("This list is only used to set the initial state of the inventory. It will not be saved or loaded at runtime.")]
         [SerializeField] private List<InventoryItemBase> initialItems = new();
 
+        private IGameLogger _logger;
+
         private void OnEnable()
         {
+            _logger ??= GameLogger.GetOrAdd<Inventory>();
             items = initialItems.ToList();
         }
 
@@ -43,22 +46,13 @@ namespace Systems.Inventories
         public void AddItem(InventoryItemBase item)
         {
             items.Add(item);
-            Log($"Added {item.Name} to the inventory.");
+            _logger.Debug($"Added {item.Name} to the inventory.", this);
         }
 
         public void RemoveItem(InventoryItemBase item)
         {
             items.Remove(item);
-            Log($"Removed {item.Name} from the inventory.");
-        }
-
-        private void Log(string message)
-        {
-            if (EnableLog)
-            {
-                Debug.Log(message);
-            }
+            _logger.Debug($"Removed {item.Name} from the inventory.", this);
         }
     }
-
 }

@@ -2,32 +2,40 @@ using Helpers.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class BossModule : RoomModule {
-    [SerializeField] EnemyPoolData _enemyPoolData;
-    [SerializeField] Enemy _boss;
+public sealed class BossModule : RoomModule<BossModule>
+{
+    [SerializeField] private EnemyPoolData _enemyPoolData;
+    [SerializeField] private Enemy _boss;
 
-    VitalBars _vitalBar;
+    private VitalBars _vitalBar;
 
-    public void Init(EnemyPoolData enemyPoolData) {
+    public void Init(EnemyPoolData enemyPoolData)
+    {
         _enemyPoolData = enemyPoolData;
     }
 
-    override public void HandlePlayerNearby() {
-        Debug.Log("boss Room nearby", this);
-        if (IsPreloaded) {
+
+
+    public override void HandlePlayerNearby()
+    {
+        logger.Info("boss Room nearby");
+        if (IsPreloaded)
+        {
             return;
         }
 
         PreloadBoss();
         IsPreloaded = true;
 
-        if (_vitalBar == null) {
+        if (_vitalBar == null)
+        {
             HandleBossHealthBar();
         }
     }
 
-    override public void HandlePlayerEnter() {
-        Debug.Log("boss room entered", this);
+    public override void HandlePlayerEnter()
+    {
+        logger.Info("boss room entered", this);
 
         GameObject player = GetPlayer();
 
@@ -35,19 +43,23 @@ public class BossModule : RoomModule {
         _vitalBar.ShowVitals();
     }
 
-    public override void HandlePlayerFaraway() {
+    public override void HandlePlayerFaraway()
+    {
         base.HandlePlayerFaraway();
         IsPreloaded = false;
         UnloadBoss();
     }
 
-    void Awake() {
+    private void Awake()
+    {
         _boss = CollectionUtils.RandomElement(_enemyPoolData.Bosses);
     }
 
-    void HandleBossHealthBar() {
+    private void HandleBossHealthBar()
+    {
         VitalBars[] healthbars = FindObjectsOfType<VitalBars>();
-        if (healthbars.Count() == 0) {
+        if (healthbars.Count() == 0)
+        {
             Debug.LogError("No Healtbar for boss found");
         }
         _vitalBar = healthbars.Last();
@@ -55,24 +67,27 @@ public class BossModule : RoomModule {
         _vitalBar.SetHealthTarget(_boss.Health);
     }
 
-    void PreloadBoss() {
+    private void PreloadBoss()
+    {
         _boss = Instantiate(_boss, _room.transform);
         _boss.Health.OnHealthChange += UpdateHealthUI;
         _boss.Freeze();
     }
 
-    void UnloadBoss() {
+    private void UnloadBoss()
+    {
         _boss.Health.OnHealthChange -= UpdateHealthUI;
         Destroy(_boss);
         _boss = null;
     }
 
-    void HandleBossSetup(GameObject player) {
+    private void HandleBossSetup(GameObject player)
+    {
         _boss.AI.SetTarget(player);
         _boss.AI.Trigger();
         _boss.ActivateEnemy();
     }
 
-    GameObject GetPlayer() => FindObjectOfType<ControllerMovement>().gameObject;
-    void UpdateHealthUI(int health) => _vitalBar.SetHealth(health);
+    private GameObject GetPlayer() => FindObjectOfType<ControllerMovement>().gameObject;
+    private void UpdateHealthUI(int health) => _vitalBar.SetHealth(health);
 }

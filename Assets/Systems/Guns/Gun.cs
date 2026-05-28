@@ -7,6 +7,7 @@ using Systems.Guns.Modules.ProjectileModule;
 using Systems.Guns.Modules.Shared;
 using Systems.Guns.Modules.ShootModules;
 using Systems.Guns.Modules.SpreadModule;
+using Systems.Shared.Loggers;
 using Systems.Weapons.Guns.Modules;
 using UnityEngine;
 
@@ -38,6 +39,7 @@ namespace Systems.Guns
 
         private ShootPipeline _pipeline;
         private ModuleContainer _modules;
+        private IGameLogger _logger;
 
         public event Action<IWeaponStats> StatsChanged;
         public event Action<IWeaponModules> ModulesChanged;
@@ -58,6 +60,7 @@ namespace Systems.Guns
 
         private void Awake()
         {
+            _logger = GameLogger.GetOrAdd<Gun>();
             Configure();
         }
 
@@ -67,7 +70,7 @@ namespace Systems.Guns
         {
             if (config is not Configuration)
             {
-                Debug.LogError($"Incorrect configuration type passed Expected: {typeof(Configuration)} but got: {config.GetType()}");
+                _logger.Error($"Incorrect configuration type passed Expected: {typeof(Configuration)} but got: {config.GetType()}");
             }
 
             _config = config as Configuration;

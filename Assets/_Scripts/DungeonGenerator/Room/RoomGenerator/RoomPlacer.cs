@@ -1,26 +1,31 @@
 using Helpers.Collections;
 using System;
 using System.Collections.Generic;
+using Systems.Shared.Loggers;
 using UnityEngine;
 
-public class RoomPlacer : MonoBehaviour {
+public class RoomPlacer : MonoBehaviour
+{
     [Header("Prefabs/templates")]
-    [SerializeField] GameObject _collisionChecker;
-    [SerializeField] RoomRestrictionsSO _roomRestrictions;
+    [SerializeField] private GameObject _collisionChecker;
+    [SerializeField] private RoomRestrictionsSO _roomRestrictions;
 
     [Header("Generation details/beahaviour")]
-    [SerializeField] int _roomCount;
-    [SerializeField] float _roomSpacing;
-    [SerializeField] int _maxDepth = 20;
-    [SerializeField] int _desiredDepth = 10;
-    [SerializeField] int _maxTries = 100;
-    [SerializeField] List<RoomSize> _roomSizes = new(); //probbably use SO
+    [SerializeField] private int _roomCount;
+    [SerializeField] private float _roomSpacing;
+    [SerializeField] private int _maxDepth = 20;
+    [SerializeField] private int _desiredDepth = 10;
+    [SerializeField] private int _maxTries = 100;
+    [SerializeField] private List<RoomSize> _roomSizes = new(); //probbably use SO
+
+    private IGameLogger _logger;
 
     /// <summary>new room| current room|new room direction</summary>
     public event Action<RoomNode, RoomNode, Vector3> OnRoomCreated;
     public event Action<RoomNode> OnFirstRoomCreated;
 
-    public void Init(GameObject collisionCheck, TemplatesHolderData data, PlacerData placerData) {
+    public void Init(GameObject collisionCheck, TemplatesHolderData data, PlacerData placerData)
+    {
         _roomSpacing = placerData.minRoomDistance;
         _maxDepth = placerData.maxDepth;
         _desiredDepth = placerData.desiredDepth;
@@ -30,11 +35,13 @@ public class RoomPlacer : MonoBehaviour {
 
         _collisionChecker = collisionCheck;
         _roomRestrictions = data.RoomRestrictions;
+        _logger = GameLogger.GetOrAdd<RoomPlacer>();
     }
 
     [ContextMenu("Generate rooms")]
     public void GenerateRooms() => GenerateRooms(_roomCount);
-    public void GenerateRooms(int roomsToGenerate) {
+    public void GenerateRooms(int roomsToGenerate)
+    {
 
         _maxTries = roomsToGenerate * 2;
         _maxDepth = Mathf.Clamp(_maxDepth, _desiredDepth, roomsToGenerate);
@@ -43,7 +50,8 @@ public class RoomPlacer : MonoBehaviour {
         GenerateRoomRecursively(firstRoom, null, roomsToGenerate - 1);
     }
 
-    RoomNode InstantiateFirstRoom() {
+    private RoomNode InstantiateFirstRoom()
+    {
         RoomStats roomStats = RandomiseStats();
         roomStats.SetType(RoomType.Normal);
         RoomNode firstRoom = InstantiateRoom(transform.position, transform, roomStats);
@@ -51,16 +59,22 @@ public class RoomPlacer : MonoBehaviour {
         return firstRoom;
     }
 
-    void GenerateRoomRecursively(RoomNode previousRoom, RoomNode currentRoom,
-       int remainingRooms, int tries = 0, int depth = 0) {
-        if (remainingRooms <= 0 || tries > _maxTries) return;
+    private void GenerateRoomRecursively(RoomNode previousRoom, RoomNode currentRoom,
+       int remainingRooms, int tries = 0, int depth = 0)
+    {
+        if (remainingRooms <= 0 || tries > _maxTries)
+        {
+            return;
+        }
 
-        if (depth >= _maxDepth) {
+        if (depth >= _maxDepth)
+        {
             HandleBacktracking(previousRoom, remainingRooms, tries + 1);
             return;
         }
 
-        if (currentRoom == null) {
+        if (currentRoom == null)
+        {
             currentRoom = previousRoom;
         }
 
@@ -80,7 +94,8 @@ public class RoomPlacer : MonoBehaviour {
         List<Vector3> avaiablePositions = RoomHelpers.GetAvaiablePositions(currentRoom, prevRoomDirection, newRoomWorldSize, minDistanceToNextRoom, _roomSpacing / 2);
 
         bool noAvaiablePositionsFound = avaiablePositions.Count == 0;
-        if (noAvaiablePositionsFound) {
+        if (noAvaiablePositionsFound)
+        {
             HandleBacktracking(previousRoom, remainingRooms, tries);
             return;
         }
@@ -90,7 +105,8 @@ public class RoomPlacer : MonoBehaviour {
 
 
         RoomStats currentStats = currentRoom.Data;
-        if (!RoomHelpers.AreConnectable(currentStats, roomStats, currentRoomDirection)) {
+        if (!RoomHelpers.AreConnectable(currentStats, roomStats, currentRoomDirection))
+        {
             HandleUnconnectableRooms(currentStats, ref roomStats);
         }
 
@@ -100,17 +116,21 @@ public class RoomPlacer : MonoBehaviour {
         GenerateRoomRecursively(currentRoom, newRoom, remainingRooms - 1, tries + 1, depth + 1);
     }
 
-    RoomStats RandomiseStats() {
+    private RoomStats RandomiseStats()
+    {
         return RoomHelpers.RandomizeStats(_roomSizes, _roomRestrictions);
     }
 
-    static void HandleUnconnectableRooms(RoomStats currentRoom, ref RoomStats newRoom) {
+    private static void HandleUnconnectableRooms(RoomStats currentRoom, ref RoomStats newRoom)
+    {
         newRoom.sides = currentRoom.sides;
     }
 
-    void HandleBacktracking(RoomNode prevRoom, int remainingRooms, int tries) {
+    private void HandleBacktracking(RoomNode prevRoom, int remainingRooms, int tries)
+    {
 
-        if (prevRoom.TryGetPrevNode(out Node prevPrevNode)) {
+        if (prevRoom.TryGetPrevNode(out Node prevPrevNode))
+        {
             RoomNode backtrackedNode = prevPrevNode as RoomNode;
             int depth = backtrackedNode.Depth;
             GenerateRoomRecursively(backtrackedNode, prevRoom, remainingRooms, tries + 1, depth);
@@ -118,11 +138,12 @@ public class RoomPlacer : MonoBehaviour {
             return;
         }
 
-        Debug.LogError("No Valid place for the room found terminating");
+        _logger.Error("No Valid place for the room found terminating", this);
 
     }
 
-    RoomNode InstantiateRoom(Vector3 position, Transform transform, RoomStats data) {
+    private RoomNode InstantiateRoom(Vector3 position, Transform transform, RoomStats data)
+    {
         float size = RoomGenerator.GetRoomWorldSize(data);
 
         GameObject obj = GenerateFakeRoom(position, transform);
@@ -135,11 +156,13 @@ public class RoomPlacer : MonoBehaviour {
         return node;
     }
 
-    GameObject GenerateFakeRoom(Vector3 position, Transform transform) {
+    private GameObject GenerateFakeRoom(Vector3 position, Transform transform)
+    {
         return Instantiate(_collisionChecker, position, Quaternion.identity, transform);
     }
 }
-public struct InitData {
+public struct InitData
+{
     public GameObject roomPrefab;
     public RoomRestrictionsSO roomRestrictions;
 }

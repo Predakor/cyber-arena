@@ -55,7 +55,8 @@ namespace UI.Menus
             gameObject.EnsureComponent(out _uiDocument);
             Debug.Assert(_weaponChannel != null, "Weapon Channel is missing", this);
             Debug.Assert(_inputsChannel != null, "Input channel is missing", this);
-
+            Debug.Assert(_inventoryChannel != null, "Inventory channel is missing", this);
+            Debug.Assert(_inventory != null, "Inventory is missing", this);
 
         }
         private void Start()
@@ -70,10 +71,10 @@ namespace UI.Menus
         {
             MapAvaiableModules();
 
-            _weaponChannel.Subscribe<WeaponEvents.StatsChanged>(StatsChangeHandler);
-            _weaponChannel.Subscribe<WeaponEvents.ModulesChanged>(ModulsChangedHandler);
-            _inputsChannel.Subscribe<InputEvents.ConfigureWeapon>(ConfigureWeaponHandler);
-            _inventoryChannel.Subscribe<InventoryEvents.ItemAdded>(InventoryUpdatedHandler);
+            _weaponChannel.Subscribe<WeaponEvents.StatsChanged>(StatsChangeHandler, destroyCancellationToken);
+            _weaponChannel.Subscribe<WeaponEvents.ModulesChanged>(ModulsChangedHandler, destroyCancellationToken);
+            _inputsChannel.Subscribe<InputEvents.ConfigureWeapon>(ConfigureWeaponHandler, destroyCancellationToken);
+            _inventoryChannel.Subscribe<InventoryEvents.ItemAdded>(InventoryUpdatedHandler, destroyCancellationToken);
         }
 
         private void MapAvaiableModules()
@@ -97,14 +98,6 @@ namespace UI.Menus
                 .GetItemsOfType<TType>()
                 .AsEnumerable<IGunModule>()
                 .ToList() ?? new();
-
-        private void OnDisable()
-        {
-            _weaponChannel.Unsubscribe<WeaponEvents.StatsChanged>(StatsChangeHandler);
-            _weaponChannel.Unsubscribe<WeaponEvents.ModulesChanged>(ModulsChangedHandler);
-
-            _inputsChannel.Unsubscribe<InputEvents.ConfigureWeapon>(ConfigureWeaponHandler);
-        }
 
         private void StatsChangeHandler(WeaponEvents.StatsChanged e)
         {
@@ -158,7 +151,6 @@ namespace UI.Menus
 
         private void ConfigureWeaponHandler(InputEvents.ConfigureWeapon e)
         {
-            Debug.Log(e.ToString());
             _menuOpen = !_menuOpen;
             InputsHandler.Instance.EnablePlayerActions(!_menuOpen);
             _root.EnableInClassList("open", _menuOpen);

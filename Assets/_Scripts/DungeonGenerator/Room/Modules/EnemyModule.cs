@@ -1,18 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyModule : RoomModule {
-    [SerializeField] EnemyPoolData _avaiableEnemies;
-    [SerializeField] List<Enemy> _enemies = new();
+public class EnemyModule : RoomModule<EnemyModule>
+{
+    [SerializeField] private EnemyPoolData _avaiableEnemies;
+    [SerializeField] private List<Enemy> _enemies = new();
 
-    [SerializeField] int _enemiesToGenerate = 4;
-    [SerializeField] int _spawnedEnemies = 0;
+    [SerializeField] private int _enemiesToGenerate = 4;
+    [SerializeField] private int _spawnedEnemies = 0;
 
-    public void Init(EnemyPoolData levelEnemies) {
+    public void Init(EnemyPoolData levelEnemies)
+    {
         _avaiableEnemies = levelEnemies;
     }
 
-    public void RequestEnemies() {
+    public void RequestEnemies()
+    {
         //call for level enemies manager to get some prefabs?
     }
 
@@ -21,31 +24,37 @@ public class EnemyModule : RoomModule {
     public override void HandlePlayerNearby() => PreloadEnemies();
     public override void HandlePlayerFaraway() => UnloadEnemies();
 
-    void ActivateEnemies() => SetEnemies(true);
-    void DisableEnemies() => SetEnemies(false);
+    private void ActivateEnemies() => SetEnemies(true);
+    private void DisableEnemies() => SetEnemies(false);
 
-    void PreloadEnemies() {
-        if (!IsPreloaded) {
+    private void PreloadEnemies()
+    {
+        if (!IsPreloaded)
+        {
             SpawnEnemies();
             IsPreloaded = true;
         }
     }
 
-    void UnloadEnemies() {
-        foreach (Enemy enemy in _enemies) {
+    private void UnloadEnemies()
+    {
+        foreach (Enemy enemy in _enemies)
+        {
             enemy.OnDeath -= HandleEnemyDeath;
             Destroy(enemy);
         }
         IsPreloaded = false;
     }
 
-    void SpawnEnemies() {
+    private void SpawnEnemies()
+    {
         GameObject player = GetPlayer();
         Transform parent = transform.parent;
         Vector3 roomCenter = transform.position;
         Vector3 offset = Vector3.zero;
 
-        for (int i = 0; i < _enemiesToGenerate; i++) {
+        for (int i = 0; i < _enemiesToGenerate; i++)
+        {
             Enemy randomEnemy = _avaiableEnemies.GetRandomEnemy();
 
             float offsetX = RoomHelpers.GetPointInsideRoom(_room);
@@ -65,18 +74,21 @@ public class EnemyModule : RoomModule {
         }
     }
 
-    void HandleEnemyDeath(Enemy enemy) {
+    private void HandleEnemyDeath(Enemy enemy)
+    {
         _enemies.Remove(enemy);
         enemy.OnDeath -= HandleEnemyDeath;
     }
 
-    void SetEnemies(bool active) {
-        if (!HasPreloadedEnemies()) {
+    private void SetEnemies(bool active)
+    {
+        if (!HasPreloadedEnemies())
+        {
             return;
         }
 
         _enemies.ForEach(enemy => enemy.SetEnemy(active));
     }
-    GameObject GetPlayer() => FindObjectOfType<ControllerMovement>().gameObject;
-    bool HasPreloadedEnemies() => _enemies.Count > 0;
+    private GameObject GetPlayer() => FindObjectOfType<ControllerMovement>().gameObject;
+    private bool HasPreloadedEnemies() => _enemies.Count > 0;
 }

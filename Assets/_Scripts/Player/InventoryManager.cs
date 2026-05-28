@@ -27,7 +27,6 @@ namespace Scripts.Player
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"Collided with {other.name}");
             if (other.TryGetComponent(out ItemContainerBase itemContainer))
             {
                 var item = itemContainer.Pickup();

@@ -1,6 +1,8 @@
+using Assets.Scripts.Utils;
 using UnityEngine;
 
-public class BaseMovement : MonoBehaviour {
+public class BaseMovement : MonoBehaviour
+{
     [Header("Movement")]
     [SerializeField] protected float walkSpeed = 3f;
     [SerializeField] protected float sprintSpeed = 5f;
@@ -18,8 +20,8 @@ public class BaseMovement : MonoBehaviour {
 
 
     [Header("Movement flags")]
-    [SerializeField] bool canMove = true;
-    [SerializeField] bool canRotate = true;
+    [SerializeField] private bool canMove = true;
+    [SerializeField] private bool canRotate = true;
 
     public bool CanMove { get => canMove; }
     public bool CanRotate { get => canRotate; }
@@ -28,46 +30,47 @@ public class BaseMovement : MonoBehaviour {
     public void AllowRotation(bool allow = true) => canRotate = allow;
     public void AllowMovement(bool allow = true) => canMove = allow;
 
-    void Awake() {
-        if (rb == null) {
-            rb = GetComponent<Rigidbody>();
-        }
-        if (animator == null) {
-            animator = GetComponent<Animator>();
-        }
+    private void Awake()
+    {
+        gameObject
+            .EnsureComponent(out rb)
+            .EnsureComponent(out animator);
     }
 
-    void Start() {
-        if (!rb) { Debug.LogError("no rigidbody", this); }
-        if (!animator) Debug.LogError("no animator", this);
-    }
-
-    void FixedUpdate() {
-        if (CanRotate) {
+    private void FixedUpdate()
+    {
+        if (CanRotate)
+        {
             HandleRotation();
         }
-        if (CanMove) {
+        if (CanMove)
+        {
             HandleMovement();
         }
     }
 
 
-    protected virtual void HandleMovement() {
+    protected virtual void HandleMovement()
+    {
         rb.velocity = walkSpeed * moveDirection;
         bool _moving = moveDirection != Vector3.zero;
 
-        if (animator && animator.GetBool("Moving") != _moving) {
+        if (animator && animator.GetBool("Moving") != _moving)
+        {
             animator.SetBool("Moving", _moving);
         }
     }
 
-    protected virtual void HandleRotation() {
-        if (rotateTowards == null) {
+    protected virtual void HandleRotation()
+    {
+        if (rotateTowards == null)
+        {
             return;
         }
 
         //check if object is to close
-        if ((transform.position - rotateTowards.position).sqrMagnitude < Mathf.Epsilon) {
+        if ((transform.position - rotateTowards.position).sqrMagnitude < Mathf.Epsilon)
+        {
             return;
         }
 
@@ -78,7 +81,8 @@ public class BaseMovement : MonoBehaviour {
 
         float _angle = Vector3.Angle(transform.forward, rotationDirection);
 
-        if (_angle > rotationTreshold) {
+        if (_angle > rotationTreshold)
+        {
             // Calculate target rotation
             Quaternion targetRotation = Quaternion.LookRotation(rotationDirection);
 
@@ -88,7 +92,8 @@ public class BaseMovement : MonoBehaviour {
 
         bool _rotating = rotationDirection != Vector3.zero;
 
-        if (animator && animator.GetBool("Rotating") != _rotating) {
+        if (animator && animator.GetBool("Rotating") != _rotating)
+        {
             animator.SetBool("Rotating", _rotating);
         }
     }

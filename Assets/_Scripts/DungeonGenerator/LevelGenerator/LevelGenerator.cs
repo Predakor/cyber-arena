@@ -1,6 +1,7 @@
 using Helpers.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Systems.Shared.Loggers;
 using UnityEngine;
 
 
@@ -40,6 +41,7 @@ public class LevelGenerator : MonoBehaviour
 
     #endregion
 
+    private IGameLogger _logger;
 #if UNITY_EDITOR
 
     [ContextMenu("Generate Floor")]
@@ -86,6 +88,10 @@ public class LevelGenerator : MonoBehaviour
 
 #endif
 
+    private void Awake()
+    {
+        _logger = GameLogger.GetOrAdd<LevelGenerator>();
+    }
     public void Init(Level level = Level.Neon_City)
     {
         string templatePath = "LevelData/BaseTemplates/Level_Template_Holder";
@@ -94,7 +100,7 @@ public class LevelGenerator : MonoBehaviour
         if (templates == null)
         {
             string templatesName = templatePath.Split('/').Last();
-            Debug.LogError($"templates not found {templatesName}");
+            _logger.Error($"templates not found {templatesName}");
         }
 
         _roomRestrictions = templates.RoomRestrictions;
@@ -107,7 +113,7 @@ public class LevelGenerator : MonoBehaviour
         var levelData = Resources.Load(levelPath);
         if (levelData == null)
         {
-            Debug.Log($"No data found for {level} level");
+            _logger.Error($"No data found for {level} level");
         }
         Resources.UnloadAsset(levelData);
     }

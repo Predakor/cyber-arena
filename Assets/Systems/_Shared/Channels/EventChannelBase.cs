@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 namespace Systems.Shared.Channels
@@ -21,43 +22,69 @@ namespace Systems.Shared.Channels
             _logger.EnsureEventLogMap();
         }
 
+        [Obsolete("This method does not support automatic unsubscription and may lead to memory leaks if not used carefully.")]
         public void Subscribe<TEvent>(Action<TEvent> handler)
         {
-            if (_handlers.TryGetValue(typeof(TEvent), out var del))
+            Type eventType = typeof(TEvent);
+            if (_handlers.TryGetValue(eventType, out var del))
             {
-                _handlers[typeof(TEvent)] = Delegate.Combine(del, handler);
+                _handlers[eventType] = Delegate.Combine(del, handler);
             }
             else
             {
-                _handlers[typeof(TEvent)] = handler;
+                _handlers[eventType] = handler;
             }
 
-            _logger.LogEvent(typeof(TEvent), $"+ {typeof(TEvent).Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
+            _logger.LogEvent(eventType, $"+ {eventType.Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
+        }
+
+        public void Subscribe<TEvent>(Action<TEvent> handler, CancellationToken ct)
+        {
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            Type eventType = typeof(TEvent);
+            if (_handlers.TryGetValue(eventType, out var del))
+            {
+                _handlers[eventType] = Delegate.Combine(del, handler);
+            }
+            else
+            {
+                _handlers[eventType] = handler;
+            }
+
+            _logger.LogEvent(eventType, $"+ {eventType.Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
+
+            ct.Register(() => Unsubscribe(handler));
         }
 
         public void Unsubscribe<TEvent>(Action<TEvent> handler)
         {
-            if (_handlers.TryGetValue(typeof(TEvent), out var del))
+            Type eventType = typeof(TEvent);
+            if (_handlers.TryGetValue(eventType, out var del))
             {
                 var current = Delegate.Remove(del, handler);
                 if (current == null)
                 {
-                    _handlers.Remove(typeof(TEvent));
+                    _handlers.Remove(eventType);
                 }
                 else
                 {
-                    _handlers[typeof(TEvent)] = current;
+                    _handlers[eventType] = current;
                 }
             }
 
-            _logger.LogEvent(typeof(TEvent), $"- {typeof(TEvent).Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
+            _logger.LogEvent(eventType, $"- {eventType.Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
         }
 
         public void Raise<TEvent>(TEvent evt)
         {
-            _logger.LogEvent(typeof(TEvent), $"▶ {typeof(TEvent).Name}: {evt}");
+            Type eventType = typeof(TEvent);
+            _logger.LogEvent(eventType, $"▶ {eventType.Name}: {evt}");
 
-            if (_handlers.TryGetValue(typeof(TEvent), out var del) && del is Action<TEvent> action)
+            if (_handlers.TryGetValue(eventType, out var del) && del is Action<TEvent> action)
             {
                 action.Invoke(evt);
             }

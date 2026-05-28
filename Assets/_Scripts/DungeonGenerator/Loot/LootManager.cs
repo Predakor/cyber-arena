@@ -17,7 +17,7 @@ public sealed class LootManager : Singleton<LootManager>
     public static InventoryItemBase RequestLoot()
     {
         InventoryItemBase item = Instance._avaiableLoot.GetRandom();
-        Debug.Log(item);
+        Logger.Info(item.ToString());
         return item;
     }
 

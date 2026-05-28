@@ -1,38 +1,48 @@
+using Systems.Shared.Loggers;
 using UnityEngine;
 
 [RequireComponent(typeof(Room))]
-public abstract class RoomModule : MonoBehaviour, IRoomModule {
+public abstract class RoomModule<TModule> : MonoBehaviour, IRoomModule
+    where TModule : RoomModule<TModule>
+{
     [SerializeField] protected Room _room;
     [SerializeField] protected bool _isPreloaded = false;
 
-    public virtual bool IsPreloaded {
+    protected IGameLogger logger;
+    public virtual bool IsPreloaded
+    {
         get => _isPreloaded;
         set => _isPreloaded = value;
     }
 
-    void Awake() {
-        if (_room == null) {
-            Debug.LogWarning("No room selected add it in template ", this);
+    private void Awake()
+    {
+        logger = GameLogger.GetOrAdd<TModule>();
+        if (_room == null)
+        {
+            logger.Warn("No room selected add it in template ", this);
             _room = GetComponent<Room>();
         }
     }
 
-    void OnEnable() {
+    private void OnEnable()
+    {
         _room.OnRoomEnter += HandlePlayerEnter;
         _room.OnRoomExit += HandlePlayerExit;
         _room.OnPlayerNearby += HandlePlayerNearby;
         _room.OnPlayerFaraway += HandlePlayerFaraway;
     }
 
-    void OnDisable() {
+    private void OnDisable()
+    {
         _room.OnRoomEnter -= HandlePlayerEnter;
         _room.OnRoomExit -= HandlePlayerExit;
         _room.OnPlayerNearby -= HandlePlayerNearby;
         _room.OnPlayerFaraway -= HandlePlayerFaraway;
     }
 
-    virtual public void HandlePlayerEnter() { }
-    virtual public void HandlePlayerExit() { }
-    virtual public void HandlePlayerNearby() { }
-    virtual public void HandlePlayerFaraway() { }
+    public virtual void HandlePlayerEnter() { }
+    public virtual void HandlePlayerExit() { }
+    public virtual void HandlePlayerNearby() { }
+    public virtual void HandlePlayerFaraway() { }
 }

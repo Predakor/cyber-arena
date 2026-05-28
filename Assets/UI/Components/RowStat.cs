@@ -15,17 +15,8 @@ namespace UI.Components
             _nameLabel = this.Q<Label>("stat-label");
             _valueLabel = this.Q<Label>("stat-value");
 
-            if (_nameLabel is null)
-            {
-                Debug.LogError("Missing stat-label in RowStat template");
-                return;
-            }
-
-            if (_valueLabel is null)
-            {
-                Debug.LogError("Missing stat-value in RowStat template");
-                return;
-            }
+            Debug.Assert(_nameLabel != null, "Missing stat-label in RowStat template");
+            Debug.Assert(_valueLabel != null, "Missing stat-value in RowStat template");
 
             _nameLabel.text = statName;
             _valueLabel.text = value;

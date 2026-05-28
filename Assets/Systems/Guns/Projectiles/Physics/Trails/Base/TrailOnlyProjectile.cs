@@ -11,10 +11,11 @@ namespace Systems.Guns.Projectiles.Physics
         [SerializeField] private TrailRenderer _trail;
         [SerializeField] private Rigidbody _rigidbody;
 
-        private readonly IGameLogger _logger = GameLogger.GetOrAdd<TrailOnlyProjectile>();
+        private IGameLogger _logger;
 
         protected override void Awake()
         {
+            _logger = GameLogger.GetOrAdd<TrailOnlyProjectile>();
             base.Awake();
             gameObject
                 .EnsureComponent(out _trail)

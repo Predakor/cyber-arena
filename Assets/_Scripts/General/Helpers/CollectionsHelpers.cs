@@ -21,7 +21,6 @@ namespace Helpers.Collections
         {
             if (end == 0)
             {
-                Debug.LogError($"Collection is null or empty: {typeof(T).Name}");
                 return default;
             }
 

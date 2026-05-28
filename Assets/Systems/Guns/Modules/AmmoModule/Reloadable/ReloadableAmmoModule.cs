@@ -22,6 +22,7 @@ namespace Systems.Guns.Modules.AmmoModule
 
             if (!_unlimitedAmmo && _reserveAmmo <= 0)
             {
+                //shoult emmit some event or something 
                 Debug.Log("Ammo reserve is empty", this);
                 return;
             }
