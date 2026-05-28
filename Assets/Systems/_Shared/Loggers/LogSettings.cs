@@ -13,6 +13,7 @@ namespace Systems.Shared.Loggers
 
         private Dictionary<string, LogRule> _ruleMap;
 
+        [ContextMenu("Refresh Rules")]
         public void RefreshRules()
         {
             _ruleMap = _rules
@@ -20,7 +21,13 @@ namespace Systems.Shared.Loggers
                 .ToDictionary(x => x.ClassName, x => x, StringComparer.Ordinal);
         }
 
-        public LogRule GetRuleOrDefault<TType>()
+        [ContextMenu("Enable All Rules")]
+        public void EnableAll() => SetAllRulesState(true);
+
+        [ContextMenu("Disable All Rules")]
+        public void DisableAll() => SetAllRulesState(false);
+
+        public LogRule GetRuleOrDefault<TType>(LogGroup group)
         {
             if (_ruleMap == null)
             {
@@ -37,7 +44,8 @@ namespace Systems.Shared.Loggers
             {
                 ClassName = typeof(TType).Name,
                 Enabled = true,
-                EnabledLevels = _defaultEnabledLevels
+                EnabledLevels = _defaultEnabledLevels,
+                Group = group,
             };
 
             _rules.Add(rule);
@@ -47,6 +55,14 @@ namespace Systems.Shared.Loggers
 
         }
 
+
+        private void SetAllRulesState(bool enabled)
+        {
+            foreach (var rule in _rules)
+            {
+                rule.Enabled = enabled;
+            }
+        }
     }
 
 }

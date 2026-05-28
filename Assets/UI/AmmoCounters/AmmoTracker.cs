@@ -1,5 +1,4 @@
 using Systems.Guns;
-using Systems.Shared.Loggers;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,11 +10,9 @@ public class AmmoTracker : MonoBehaviour
     [SerializeField] private Label _ammoLabel;
     [SerializeField] private VisualElement _reloadIndicator;
 
-    private IGameLogger _logger;
     private void Awake()
     {
         _uiDocument = GetComponent<UIDocument>();
-        _logger ??= GameLogger.GetOrAdd<AmmoTracker>();
     }
 
     private void OnEnable()
@@ -24,10 +21,7 @@ public class AmmoTracker : MonoBehaviour
         _ammoLabel = root.Q<Label>("ammo-field");
         _reloadIndicator = root.Q<VisualElement>("reload-indicator");
 
-        if (_ammoLabel is null)
-        {
-            _logger.Error("Missing ammoLabel in UI Document", this);
-        }
+        Debug.Assert(_reloadIndicator is null, "Reload indicator not found in UI Document", this);
 
         _weaponChannel.Subscribe<WeaponEvents.AmmoChanged>(HandleAmmoChanged, destroyCancellationToken);
         _weaponChannel.Subscribe<WeaponEvents.ReloadStarted>(HandleReloadStarted, destroyCancellationToken);

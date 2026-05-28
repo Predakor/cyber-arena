@@ -28,14 +28,14 @@ namespace Systems.Shared.Loggers
             _settings = settings;
         }
 
-        public static IGameLogger GetOrAdd<TType>()
+        public static IGameLogger GetOrAdd<TType>(LogGroup group = LogGroup.Other)
         {
             if (_settings == null)
             {
                 GetSettingsOrDefault();
             }
 
-            var rule = _settings.GetRuleOrDefault<TType>();
+            var rule = _settings.GetRuleOrDefault<TType>(group);
             return new LogHandler<TType>(rule);
         }
 

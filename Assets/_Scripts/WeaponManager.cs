@@ -31,7 +31,11 @@ public sealed class WeaponManager : MonoBehaviour, IWeaponManager
 
     private void Start()
     {
-        _logger = GameLogger.GetOrAdd<WeaponManager>();
+        _logger = GameLogger.GetOrAdd<WeaponManager>(LogGroup.Guns);
+        if (CurrentWeapon is null)
+        {
+            Equip(0);
+        }
         //_weapons.AddRange(_scriptableObjectIntentory.GetItems());
     }
 

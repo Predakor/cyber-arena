@@ -5,39 +5,28 @@ using UnityEngine;
 
 namespace Systems.Shared.Channels
 {
-    public abstract class EventChannelBase<TChild> : ScriptableObject, IEventChannel
+    public abstract class EventChannelBase<TChild> : ScriptableObject, IEventChannel, IEventChannelLogRules
         where TChild : EventChannelBase<TChild>
     {
         protected const string MenuName = "Channels/";
 
         [Header("Event Log Filtering (by container type name)")]
-        [SerializeField] protected List<EventLogRule> _eventLogRules = new();
         [SerializeField] protected EventChannellLoger<TChild> _logger;
+        [SerializeField] protected List<EventLogRule> _rules;
 
         private readonly Dictionary<Type, Delegate> _handlers = new();
+        public List<EventLogRule> EventLogRules => _rules;
+
+        public void RefreshLogRules() => _logger.SyncEventLogRules();
+        public void SetAllRules(bool state) => _logger.SetAllRules(state);
 
         private void OnEnable()
         {
-            _logger = new EventChannellLoger<TChild>(this, _eventLogRules);
-            _logger.EnsureEventLogMap();
+            _logger = new EventChannellLoger<TChild>(this, _rules);
         }
+        private void OnValidate() => _logger.ClearCache();
 
-        [Obsolete("This method does not support automatic unsubscription and may lead to memory leaks if not used carefully.")]
-        public void Subscribe<TEvent>(Action<TEvent> handler)
-        {
-            Type eventType = typeof(TEvent);
-            if (_handlers.TryGetValue(eventType, out var del))
-            {
-                _handlers[eventType] = Delegate.Combine(del, handler);
-            }
-            else
-            {
-                _handlers[eventType] = handler;
-            }
-
-            _logger.LogEvent(eventType, $"+ {eventType.Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
-        }
-
+        /// <summary>Subscribe with gameobject.destroyCancelationToken</summary>
         public void Subscribe<TEvent>(Action<TEvent> handler, CancellationToken ct)
         {
             if (ct.IsCancellationRequested)
@@ -55,7 +44,11 @@ namespace Systems.Shared.Channels
                 _handlers[eventType] = handler;
             }
 
-            _logger.LogEvent(eventType, $"+ {eventType.Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
+            if (_logger.IsEventLoggingEnabled(eventType))
+            {
+                var fullHandlerName = $"{handler.Target?.GetType().Name}.{handler.Method.Name}";
+                _logger.LogEvent($"<b><color=green>[O]</color></b>: {eventType.Name} by {fullHandlerName}");
+            }
 
             ct.Register(() => Unsubscribe(handler));
         }
@@ -76,19 +69,26 @@ namespace Systems.Shared.Channels
                 }
             }
 
-            _logger.LogEvent(eventType, $"- {eventType.Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
+            if (_logger.IsEventLoggingEnabled(eventType))
+            {
+                var fullHandlerName = $"{handler.Target?.GetType().Name}.{handler.Method.Name}";
+                _logger.LogEvent($"<b><color=red>[O]--</color></b>: {eventType.Name} by {fullHandlerName}");
+            }
         }
 
         public void Raise<TEvent>(TEvent evt)
         {
             Type eventType = typeof(TEvent);
-            _logger.LogEvent(eventType, $"▶ {eventType.Name}: {evt}");
+
+            if (_logger.IsEventLoggingEnabled(eventType))
+            {
+                _logger.LogEvent($"<b><color=yellow>[EVENT]>></color></b>: {eventType.Name}: {evt}");
+            }
 
             if (_handlers.TryGetValue(eventType, out var del) && del is Action<TEvent> action)
             {
                 action.Invoke(evt);
             }
         }
-
     }
 }

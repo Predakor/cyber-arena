@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Systems.Shared.Loggers;
@@ -32,48 +32,16 @@ namespace Systems.Shared.Channels
     {
         private readonly UnityEngine.Object owner;
         private IGameLogger _logger;
+        private IGameLogger Logger => _logger ??= GameLogger.GetOrAdd<TChannel>(LogGroup.Channels);
 
         private readonly List<EventLogRule> _eventLogRules;
-        private Dictionary<string, EventLogRule> _eventLogMap;
+        private readonly Dictionary<string, EventLogRule> _eventLogMap;
+        private readonly ConcurrentDictionary<Type, bool> _logEnabledCachce = new();
 
         public EventChannellLoger(UnityEngine.Object owner, List<EventLogRule> eventLogRules)
         {
             this.owner = owner;
             _eventLogRules = eventLogRules ?? new();
-            EnsureEventLogMap();
-        }
-
-        public void LogEvent(Type eventType, string message)
-        {
-            if (!IsEventLoggingEnabled(eventType))
-            {
-                return;
-            }
-
-            _logger ??= GameLogger.GetOrAdd<TChannel>();
-            _logger.Info(message);
-        }
-
-        private bool IsEventLoggingEnabled(Type eventType)
-        {
-            EnsureEventLogMap();
-
-            Type container = eventType.DeclaringType;
-            if (container == null)
-            {
-                return true;
-            }
-
-            if (_eventLogMap.TryGetValue(container.Name, out var rule))
-            {
-                return rule.Enabled;
-            }
-
-            return true;
-        }
-
-        public void EnsureEventLogMap()
-        {
             _eventLogMap ??= _eventLogRules
                 .Where(x => !string.IsNullOrWhiteSpace(x.EventName))
                 .ToDictionary(
@@ -81,10 +49,38 @@ namespace Systems.Shared.Channels
                     x => x
                 );
         }
+        public void ClearCache() => _logEnabledCachce?.Clear();
+        public void LogEvent(string message) => Logger.Info(message);
+        public void SetAllRules(bool state)
+        {
+            foreach (var rule in _eventLogRules)
+            {
+                rule.Enabled = state;
+            }
+            ClearCache();
+        }
+
+        public bool IsEventLoggingEnabled(Type eventType)
+        {
+            return _logEnabledCachce.GetOrAdd(eventType, t =>
+             {
+                 if (eventType is null)
+                 {
+                     return true;
+                 }
+
+                 if (_eventLogMap.TryGetValue(eventType.Name, out var rule))
+                 {
+                     return rule.Enabled;
+                 }
+
+                 return true;
+             });
+        }
 
         public void SyncEventLogRules()
         {
-            var stopper = new Stopwatch();
+            ClearCache();
             var eventTypes = GetAllEventTypes().ToList();
             if (eventTypes.Count == 0)
             {
@@ -227,5 +223,7 @@ namespace Systems.Shared.Channels
 
             return attribute.ChannelType == typeof(TChannel);
         }
+
+
     }
 }

@@ -60,7 +60,7 @@ namespace Systems.Guns
 
         private void Awake()
         {
-            _logger = GameLogger.GetOrAdd<Gun>();
+            _logger = GameLogger.GetOrAdd<Gun>(LogGroup.Guns);
             Configure();
         }
 

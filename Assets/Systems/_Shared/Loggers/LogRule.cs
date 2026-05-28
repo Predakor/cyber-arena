@@ -14,12 +14,21 @@ namespace Systems.Shared.Loggers
         All = Debug | Info | Warning | Error
     }
 
+    public enum LogGroup
+    {
+        Other = 0,
+        Channels,
+        Guns,
+        Rooms,
+        Managers
+    }
+
     [Serializable]
     public sealed class LogRule
     {
         [SerializeField] public string ClassName;
         [SerializeField] public bool Enabled;
         [SerializeField] public LogLevelFlags EnabledLevels;
+        [SerializeField] public LogGroup Group = LogGroup.Other;
     }
-
 }

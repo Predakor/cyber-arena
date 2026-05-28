@@ -17,7 +17,7 @@ public abstract class RoomModule<TModule> : MonoBehaviour, IRoomModule
 
     private void Awake()
     {
-        logger = GameLogger.GetOrAdd<TModule>();
+        logger = GameLogger.GetOrAdd<TModule>(LogGroup.Rooms);
         if (_room == null)
         {
             logger.Warn("No room selected add it in template ", this);

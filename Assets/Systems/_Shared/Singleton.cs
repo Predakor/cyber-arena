@@ -25,7 +25,7 @@ namespace Systems.Shared
 
             Instance = this as TInstance;
             DontDestroyOnLoad(gameObject);
-            Logger ??= GameLogger.GetOrAdd<TInstance>();
+            Logger ??= GameLogger.GetOrAdd<TInstance>(LogGroup.Managers);
         }
     }
 }

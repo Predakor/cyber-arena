@@ -17,7 +17,7 @@ public sealed class WeaponPresenter : MonoBehaviour
 
     private void OnEnable()
     {
-        _logger = GameLogger.GetOrAdd<WeaponPresenter>();
+        _logger = GameLogger.GetOrAdd<WeaponPresenter>(LogGroup.Guns);
         _inputChannel.Subscribe<InputEvents.Shoot>(OnShoot, destroyCancellationToken);
         _inputChannel.Subscribe<InputEvents.SelectWeapon>(OnSelectWeapon, destroyCancellationToken);
         _weaponChannel.Subscribe<WeaponEvents.Reconfigured>(ReconfigureWeaponHandler, destroyCancellationToken);
@@ -53,7 +53,7 @@ public sealed class WeaponPresenter : MonoBehaviour
 
         if (weapon is null)
         {
-            _logger.Error("expected weapon type but got null", this);
+            _logger.Warn("Current weapon is null", this);
             return;
         }
 

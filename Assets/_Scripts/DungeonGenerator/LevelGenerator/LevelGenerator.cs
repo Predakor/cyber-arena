@@ -90,7 +90,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void Awake()
     {
-        _logger = GameLogger.GetOrAdd<LevelGenerator>();
+        _logger = GameLogger.GetOrAdd<LevelGenerator>(LogGroup.Rooms);
     }
     public void Init(Level level = Level.Neon_City)
     {

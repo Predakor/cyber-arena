@@ -17,7 +17,7 @@ namespace Assets.Scripts.Utils
             where TComponent : Component
         {
             component = go.GetOrAddComponent<TComponent>();
-            Debug.Assert(component != null, "Component not found and adding failed", go);
+            Debug.Assert(component != null, $"Component not found and adding failed: {typeof(TComponent).Name}", go);
             return go;
         }
     }
