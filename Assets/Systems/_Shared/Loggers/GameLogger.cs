@@ -28,7 +28,7 @@ namespace Systems.Shared.Loggers
             _settings = settings;
         }
 
-        public static LogHandler<TType> GetOrAdd<TType>()
+        public static IGameLogger GetOrAdd<TType>()
         {
             if (_settings == null)
             {
@@ -85,8 +85,15 @@ namespace Systems.Shared.Loggers
                 : throw new Exception($"LogSettings asset not found at path: {SettingsPath}");
         }
     }
+    public interface IGameLogger
+    {
+        void Debug(string message, UnityEngine.Object context = null);
+        void Info(string message, UnityEngine.Object context = null);
+        void Warn(string message, UnityEngine.Object context = null);
+        void Error(string message, UnityEngine.Object context = null);
 
-    public sealed record LogHandler<TType>(LogRule Rule)
+    }
+    internal sealed record LogHandler<TType>(LogRule Rule) : IGameLogger
     {
         private readonly string prefix = $"[{typeof(TType).Name}]:";
         public void Debug(string message, UnityEngine.Object context = null) => GameLogger.Log<TType>(Rule, message, prefix, LogLevel.Debug, context);

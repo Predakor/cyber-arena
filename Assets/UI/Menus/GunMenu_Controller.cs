@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Systems.Channels;
 using Systems.Channels.Inputs;
-using Systems.Channels.Weapons;
 using Systems.Guns;
 using Systems.Guns.Modules.AmmoModule.Base;
 using Systems.Guns.Modules.ProjectileModule;

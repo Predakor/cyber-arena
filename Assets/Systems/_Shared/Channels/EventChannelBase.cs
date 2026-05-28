@@ -1,25 +1,25 @@
 using System;
 using System.Collections.Generic;
-using Systems.Shared.Loggers;
 using UnityEngine;
 
-namespace Systems.Channels
+namespace Systems.Shared.Channels
 {
-    public interface IEventChannel
-    {
-        void Subscribe<TEvent>(Action<TEvent> handler);
-        void Unsubscribe<TEvent>(Action<TEvent> handler);
-    }
-
     public abstract class EventChannelBase<TChild> : ScriptableObject, IEventChannel
         where TChild : EventChannelBase<TChild>
     {
         protected const string MenuName = "Channels/";
 
-        private readonly Dictionary<Type, Delegate> _handlers = new();
-        private LogHandler<TChild> _logger;
+        [Header("Event Log Filtering (by container type name)")]
+        [SerializeField] protected List<EventLogRule> _eventLogRules = new();
+        [SerializeField] protected EventChannellLoger<TChild> _logger;
 
-        [SerializeField] private bool _debugMode = false;
+        private readonly Dictionary<Type, Delegate> _handlers = new();
+
+        private void OnEnable()
+        {
+            _logger = new EventChannellLoger<TChild>(this, _eventLogRules);
+            _logger.EnsureEventLogMap();
+        }
 
         public void Subscribe<TEvent>(Action<TEvent> handler)
         {
@@ -32,7 +32,7 @@ namespace Systems.Channels
                 _handlers[typeof(TEvent)] = handler;
             }
 
-            Log($"+ {typeof(TEvent).Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
+            _logger.LogEvent(typeof(TEvent), $"+ {typeof(TEvent).Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
         }
 
         public void Unsubscribe<TEvent>(Action<TEvent> handler)
@@ -50,12 +50,12 @@ namespace Systems.Channels
                 }
             }
 
-            Log($"- {typeof(TEvent).Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
+            _logger.LogEvent(typeof(TEvent), $"- {typeof(TEvent).Name} ← {handler.Target?.GetType().Name}.{handler.Method.Name}");
         }
 
         public void Raise<TEvent>(TEvent evt)
         {
-            Log($"▶ {typeof(TEvent).Name}: {evt}");
+            _logger.LogEvent(typeof(TEvent), $"▶ {typeof(TEvent).Name}: {evt}");
 
             if (_handlers.TryGetValue(typeof(TEvent), out var del) && del is Action<TEvent> action)
             {
@@ -63,14 +63,5 @@ namespace Systems.Channels
             }
         }
 
-        [System.Diagnostics.Conditional("UNITY_EDITOR")]
-        private void Log(string message)
-        {
-            if (_logger == null)
-            {
-                _logger = GameLogger.GetOrAdd<TChild>();
-            }
-            _logger.Info(message);
-        }
     }
 }

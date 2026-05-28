@@ -1,7 +1,9 @@
+using Systems.Shared.Channels;
 using UnityEngine;
 
 namespace Systems.Channels.Inputs
 {
+    [ChannelEvents(typeof(InputsChannel))]
     public static class InputEvents
     {
         public sealed record Move(Vector2 Direction);

@@ -1,5 +1,6 @@
 using Assets.Scripts.Utils;
 using Systems.Guns.Modules.Shared;
+using Systems.Shared.Loggers;
 using UnityEngine;
 
 namespace Systems.Guns.Projectiles.Physics
@@ -9,6 +10,8 @@ namespace Systems.Guns.Projectiles.Physics
     {
         [SerializeField] private TrailRenderer _trail;
         [SerializeField] private Rigidbody _rigidbody;
+
+        private readonly IGameLogger _logger = GameLogger.GetOrAdd<TrailOnlyProjectile>();
 
         protected override void Awake()
         {
@@ -47,17 +50,15 @@ namespace Systems.Guns.Projectiles.Physics
 
         public override void Shoot()
         {
-            Debug.Log($"[TrailProjectile] Shoot | damage={_damage} speed={_speed} size={_size}");
+            _logger.Debug($"[TrailProjectile] Shoot | damage={_damage} speed={_speed} size={_size}");
             _rigidbody.velocity = transform.forward * _speed;
         }
 
         public override void Shoot(Transform origin)
         {
-            Debug.Log($"[TrailProjectile] Shoot | damage={_damage} speed={_speed} size={_size} pos={origin.position} dir={origin.forward}");
+            _logger.Debug($"[TrailProjectile] Shoot | damage={_damage} speed={_speed} size={_size} pos={origin.position} dir={origin.forward}");
             transform.SetPositionAndRotation(origin.position, origin.rotation);
             _rigidbody.velocity = origin.forward * _speed;
         }
-
-
     }
 }

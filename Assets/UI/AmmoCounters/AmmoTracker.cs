@@ -1,4 +1,3 @@
-using Systems.Channels.Weapons;
 using Systems.Guns;
 using UnityEngine;
 using UnityEngine.UIElements;

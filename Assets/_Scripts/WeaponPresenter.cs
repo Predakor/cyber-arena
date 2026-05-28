@@ -1,6 +1,5 @@
 using Systems.Channels;
 using Systems.Channels.Inputs;
-using Systems.Channels.Weapons;
 using Systems.Guns;
 using Systems.Weapons.Guns.Modules;
 using UnityEngine;
@@ -35,7 +34,7 @@ public sealed class WeaponPresenter : MonoBehaviour
 
     private void OnShoot(InputEvents.Shoot e)
     {
-        _weaponManager.CurrentWeapon.Use(e.IsPressed);
+        _weaponManager.CurrentWeapon?.Use(e.IsPressed);
     }
 
     private void OnSelectWeapon(InputEvents.SelectWeapon e)
