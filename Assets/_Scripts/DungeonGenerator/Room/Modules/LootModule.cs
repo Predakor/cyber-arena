@@ -1,3 +1,4 @@
+using Scripts.Player;
 using Systems.Inventories.Items;
 
 public sealed class LootModule : RoomModule<LootModule>
@@ -10,12 +11,12 @@ public sealed class LootModule : RoomModule<LootModule>
         _container.SetItem(LootManager.RequestLoot());
     }
 
-    public override void HandlePlayerNearby()
+    public override void HandlePlayerNearby(Player player)
     {
-        if (!_isPreloaded)
+        if (!IsPreloaded)
         {
             PlaceLoot();
-            _isPreloaded = true;
+            IsPreloaded = true;
         }
     }
 }

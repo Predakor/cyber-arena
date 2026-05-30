@@ -1,8 +1,11 @@
-public interface IRoomModule {
-    void HandlePlayerEnter();
-    void HandlePlayerExit();
-    void HandlePlayerNearby();
-    void HandlePlayerFaraway();
+using Scripts.Player;
 
-    bool IsPreloaded { get; set; }
+public interface IRoomModule
+{
+    void HandlePlayerEnter(Player player);
+    void HandlePlayerExit(Player player);
+    void HandlePlayerNearby(Player player);
+    void HandlePlayerFaraway(Player player);
+
+    bool IsPreloaded { get; }
 }

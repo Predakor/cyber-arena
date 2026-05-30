@@ -17,9 +17,80 @@ MonoBehaviour:
   - ClassName: InputsChannel
     Enabled: 0
     EnabledLevels: 14
+    Group: 0
   - ClassName: WeaponChannel
-    Enabled: 1
+    Enabled: 0
     EnabledLevels: 14
+    Group: 0
   - ClassName: InventoryChannel
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 0
+  - ClassName: EnemyModule
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 3
+  - ClassName: LevelGenerator
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 3
+  - ClassName: LootManager
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 4
+  - ClassName: WeaponPresenter
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 2
+  - ClassName: LootModule
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 3
+  - ClassName: ProjectileFactory
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 4
+  - ClassName: EffectRunner
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 4
+  - ClassName: CoroutineRunner
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 4
+  - ClassName: VfxRunner
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 4
+  - ClassName: InputsHandler
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 4
+  - ClassName: BossModule
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 3
+  - ClassName: InstanceHolder
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 4
+  - ClassName: WeaponManager
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 2
+  - ClassName: Gun
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 2
+  - ClassName: TrailOnlyProjectile
+    Enabled: 0
+    EnabledLevels: 14
+    Group: 0
+  - ClassName: BossUiManager
     Enabled: 1
     EnabledLevels: 14
+    Group: 4
+  - ClassName: FloorChannel
+    Enabled: 1
+    EnabledLevels: 14
+    Group: 1

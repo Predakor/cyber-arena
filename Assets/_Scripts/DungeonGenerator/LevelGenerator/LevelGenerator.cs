@@ -113,7 +113,7 @@ public class LevelGenerator : MonoBehaviour
         var levelData = Resources.Load(levelPath);
         if (levelData == null)
         {
-            _logger.Error($"No data found for {level} level");
+            _logger?.Error($"No data found for {level} level");
         }
         Resources.UnloadAsset(levelData);
     }

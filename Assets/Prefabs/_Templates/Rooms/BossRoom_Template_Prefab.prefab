@@ -78,8 +78,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 5927898351408706249}
-  _enemyPoolData: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
+  <IsPreloaded>k__BackingField: 0
   _boss: {fileID: 0}
+  _channel: {fileID: 11400000, guid: f2e88021555ce6045bd073e37b6f37f4, type: 2}
 --- !u!114 &5927898351408706249 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1778233410977710197, guid: 3c968176d3489b8488d2064207e85390, type: 3}

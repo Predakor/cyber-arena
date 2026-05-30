@@ -55,6 +55,7 @@ public class RoomPlacer : MonoBehaviour
         RoomStats roomStats = RandomiseStats();
         roomStats.SetType(RoomType.Normal);
         RoomNode firstRoom = InstantiateRoom(transform.position, transform, roomStats);
+
         OnFirstRoomCreated?.Invoke(firstRoom);
         return firstRoom;
     }

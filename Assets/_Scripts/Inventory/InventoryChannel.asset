@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d672ff0b1a8384493d345934360312, type: 3}
   m_Name: InventoryChannel
   m_EditorClassIdentifier: 
-  _debugMode: 0
+  _rules:
+  - EventName: ItemAdded
+    Enabled: 1
+  - EventName: ItemRemoved
+    Enabled: 1
