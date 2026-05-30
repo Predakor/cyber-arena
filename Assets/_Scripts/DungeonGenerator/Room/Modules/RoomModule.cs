@@ -1,3 +1,4 @@
+using Scripts.Player;
 using Systems.Shared.Loggers;
 using UnityEngine;
 
@@ -6,14 +7,9 @@ public abstract class RoomModule<TModule> : MonoBehaviour, IRoomModule
     where TModule : RoomModule<TModule>
 {
     [SerializeField] protected Room _room;
-    [SerializeField] protected bool _isPreloaded = false;
+    [field: SerializeField] public bool IsPreloaded { get; protected set; }
 
     protected IGameLogger logger;
-    public virtual bool IsPreloaded
-    {
-        get => _isPreloaded;
-        set => _isPreloaded = value;
-    }
 
     private void Awake()
     {
@@ -41,8 +37,8 @@ public abstract class RoomModule<TModule> : MonoBehaviour, IRoomModule
         _room.OnPlayerFaraway -= HandlePlayerFaraway;
     }
 
-    public virtual void HandlePlayerEnter() { }
-    public virtual void HandlePlayerExit() { }
-    public virtual void HandlePlayerNearby() { }
-    public virtual void HandlePlayerFaraway() { }
+    public virtual void HandlePlayerEnter(Player player) { }
+    public virtual void HandlePlayerExit(Player player) { }
+    public virtual void HandlePlayerNearby(Player player) { }
+    public virtual void HandlePlayerFaraway(Player player) { }
 }

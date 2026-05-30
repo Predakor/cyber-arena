@@ -1,22 +1,19 @@
-using Helpers.Collections;
-using System.Linq;
+using Scripts.DungeonGenerator;
+using Scripts.Player;
 using UnityEngine;
 
 public sealed class BossModule : RoomModule<BossModule>
 {
-    [SerializeField] private EnemyPoolData _enemyPoolData;
     [SerializeField] private Enemy _boss;
+    [SerializeField] private FloorChannel _channel;
 
-    private VitalBars _vitalBar;
-
-    public void Init(EnemyPoolData enemyPoolData)
+    public void Init(Enemy enemy, FloorChannel channel)
     {
-        _enemyPoolData = enemyPoolData;
+        _boss = enemy;
+        _channel = channel;
     }
 
-
-
-    public override void HandlePlayerNearby()
+    public override void HandlePlayerNearby(Player player)
     {
         logger.Info("boss Room nearby");
         if (IsPreloaded)
@@ -27,67 +24,37 @@ public sealed class BossModule : RoomModule<BossModule>
         PreloadBoss();
         IsPreloaded = true;
 
-        if (_vitalBar == null)
-        {
-            HandleBossHealthBar();
-        }
     }
 
-    public override void HandlePlayerEnter()
+    public override void HandlePlayerEnter(Player player)
     {
-        logger.Info("boss room entered", this);
+        _channel.RaiseRoomEntered(_room);
 
-        GameObject player = GetPlayer();
+        _boss.AI.SetTarget(player.gameObject);
+        _boss.AI.Trigger();
+        _boss.ActivateEnemy();
 
-        HandleBossSetup(player);
-        _vitalBar.ShowVitals();
+        _channel.RaiseBossStarted(new(_boss.name, _boss.Health));
+
     }
 
-    public override void HandlePlayerFaraway()
+    public override void HandlePlayerFaraway(Player player)
     {
-        base.HandlePlayerFaraway();
+        base.HandlePlayerFaraway(player);
         IsPreloaded = false;
         UnloadBoss();
-    }
-
-    private void Awake()
-    {
-        _boss = CollectionUtils.RandomElement(_enemyPoolData.Bosses);
-    }
-
-    private void HandleBossHealthBar()
-    {
-        VitalBars[] healthbars = FindObjectsOfType<VitalBars>();
-        if (healthbars.Count() == 0)
-        {
-            Debug.LogError("No Healtbar for boss found");
-        }
-        _vitalBar = healthbars.Last();
-        _vitalBar.ShowVitals(false);
-        _vitalBar.SetHealthTarget(_boss.Health);
     }
 
     private void PreloadBoss()
     {
         _boss = Instantiate(_boss, _room.transform);
-        _boss.Health.OnHealthChange += UpdateHealthUI;
         _boss.Freeze();
     }
 
     private void UnloadBoss()
     {
-        _boss.Health.OnHealthChange -= UpdateHealthUI;
         Destroy(_boss);
         _boss = null;
     }
 
-    private void HandleBossSetup(GameObject player)
-    {
-        _boss.AI.SetTarget(player);
-        _boss.AI.Trigger();
-        _boss.ActivateEnemy();
-    }
-
-    private GameObject GetPlayer() => FindObjectOfType<ControllerMovement>().gameObject;
-    private void UpdateHealthUI(int health) => _vitalBar.SetHealth(health);
 }

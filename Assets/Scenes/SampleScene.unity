@@ -3832,7 +3832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 104113318}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _enemiesToGenerate: 4
@@ -6866,7 +6866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 197103947}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _enemiesToGenerate: 4
@@ -8797,7 +8797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 256561882}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _enemiesToGenerate: 4
@@ -10695,7 +10695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 301612344}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _enemiesToGenerate: 4
@@ -13835,7 +13835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 368917259}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _enemiesToGenerate: 4
@@ -13910,6 +13910,7 @@ Transform:
   m_Children:
   - {fileID: 2012212752}
   - {fileID: 988841948}
+  - {fileID: 928365596}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &371829241
@@ -36594,7 +36595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 910061948}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
 --- !u!65 &910061947
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37484,6 +37485,86 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 927160682}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &928365595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 928365596}
+  - component: {fileID: 928365599}
+  - component: {fileID: 928365598}
+  - component: {fileID: 928365597}
+  m_Layer: 5
+  m_Name: BossGui
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &928365596
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928365595}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 371572743}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &928365597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928365595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815e7587a84a85e45a9c92897d52b9ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarName: BossHealthBar
+  shieldBarName: shield-bar
+  _document: {fileID: 928365599}
+  healthTargetSource: {fileID: 2093479486}
+--- !u!114 &928365598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928365595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7335396cd56f9d2468cf806ace7d453c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bossBar: {fileID: 928365597}
+  _channel: {fileID: 11400000, guid: f2e88021555ce6045bd073e37b6f37f4, type: 2}
+--- !u!114 &928365599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928365595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 0bcffc6f21d20ff43b466867d3e05f09, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: f93cf9384ed4f0e48965d3f997838729, type: 3}
+  m_SortingOrder: 9999
 --- !u!1 &930496545
 GameObject:
   m_ObjectHideFlags: 0
@@ -40444,8 +40525,9 @@ MonoBehaviour:
   rb: {fileID: 999693051}
   canMove: 1
   canRotate: 1
-  inputHandler: {fileID: 0}
+  inputsChannell: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
   dashScript: {fileID: 0}
+  direction: {x: 0, y: 0}
 --- !u!4 &1002850200 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8801809618224778798, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
@@ -43073,7 +43155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 1066473685}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _enemiesToGenerate: 4
@@ -48015,7 +48097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 1200149202}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _enemiesToGenerate: 4
@@ -53336,7 +53418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 1381903167}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _enemiesToGenerate: 4
@@ -54550,9 +54632,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 1410605563}
-  _isPreloaded: 0
-  _enemyPoolData: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
+  <IsPreloaded>k__BackingField: 0
   _boss: {fileID: 0}
+  _channel: {fileID: 0}
 --- !u!65 &1410605562
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -69158,7 +69240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 1832646771}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _enemiesToGenerate: 4
@@ -75734,7 +75816,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2012212752}
-  - component: {fileID: 2012212756}
   - component: {fileID: 2012212755}
   - component: {fileID: 2012212754}
   - component: {fileID: 2012212753}
@@ -75767,7 +75848,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2012212751}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d061b5fd056f124f9c9147a44143dc5, type: 3}
   m_Name: 
@@ -75781,14 +75862,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2012212751}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 815e7587a84a85e45a9c92897d52b9ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthTarget: {fileID: 0}
   healthBarName: health-bar
   shieldBarName: shield-bar
+  _document: {fileID: 0}
+  healthTargetSource: {fileID: 0}
 --- !u!114 &2012212755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75805,21 +75887,6 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 9c31fc6c6abbc6d4b913b8f1faa3414e, type: 3}
   m_SortingOrder: 0
---- !u!114 &2012212756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2012212751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 815e7587a84a85e45a9c92897d52b9ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthTarget: {fileID: 0}
-  healthBarName: BossHealthBar
-  shieldBarName: 
 --- !u!1 &2016517101
 GameObject:
   m_ObjectHideFlags: 0
@@ -78469,6 +78536,17 @@ Transform:
   - {fileID: 8012710}
   m_Father: {fileID: 1568213986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2093479486 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2195192868085993849, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
+  m_PrefabInstance: {fileID: 2105885862}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aef168a308dd374ab8c998a033b8293, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2093550175
 GameObject:
   m_ObjectHideFlags: 0
@@ -80924,7 +81002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 2142230863}
-  _isPreloaded: 0
+  <IsPreloaded>k__BackingField: 0
   _avaiableEnemies: {fileID: 11400000, guid: 1eb249b0bac285641b668bcdebad0fe3, type: 2}
   _enemies: []
   _enemiesToGenerate: 4

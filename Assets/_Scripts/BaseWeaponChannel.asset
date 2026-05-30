@@ -12,4 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79b60feea9d43dd46925954b062aa891, type: 3}
   m_Name: BaseWeaponChannel
   m_EditorClassIdentifier: 
-  _debugMode: 1
+  _rules:
+  - EventName: Selected
+    Enabled: 1
+  - EventName: Fired
+    Enabled: 1
+  - EventName: AmmoChanged
+    Enabled: 1
+  - EventName: ReloadStarted
+    Enabled: 1
+  - EventName: ReloadFinished
+    Enabled: 1
+  - EventName: StatsChanged
+    Enabled: 1
+  - EventName: ModulesChanged
+    Enabled: 1
+  - EventName: Reconfigured
+    Enabled: 1

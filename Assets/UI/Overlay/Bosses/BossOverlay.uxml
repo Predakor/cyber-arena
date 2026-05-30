@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="BossBar" src="project://database/Assets/UI/BossBar.uxml?fileID=9197481963319205126&amp;guid=605fbc36dfa784640bd3eddbead74e98&amp;type=3#BossBar" />
+    <ui:VisualElement name="Container" style="flex-grow: 1; width: 100%; height: 100%; justify-content: flex-end; padding-top: 1%; padding-right: 20%; padding-bottom: 1%; padding-left: 20%;">
+        <ui:Instance template="BossBar" name="BossBar" />
+    </ui:VisualElement>
+</ui:UXML>

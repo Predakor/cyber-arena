@@ -1,5 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:Template name="BossBar" src="project://database/Assets/UI/BossBar.uxml?fileID=9197481963319205126&amp;guid=605fbc36dfa784640bd3eddbead74e98&amp;type=3#BossBar" />
     <Style src="project://database/Assets/UI/Overlay/overlay.uss?fileID=7433441132597879392&amp;guid=c459ff4b213b7ce4eb721ad15fe82c90&amp;type=3#overlay" />
     <ui:VisualElement name="Panel" style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; padding-top: 0.5%; padding-right: 0.5%; padding-bottom: 0.5%; padding-left: 0.5%; align-self: stretch;">
         <ui:VisualElement name="TopPanel" style="flex-grow: 1; align-self: auto; justify-content: space-between; flex-direction: row;">
@@ -16,7 +15,6 @@
                 <ui:VisualElement class="gun-container" />
                 <ui:VisualElement class="gun-container" />
             </ui:VisualElement>
-            <ui:Instance template="BossBar" name="BossBar" style="flex-grow: 0.8;" />
             <ui:VisualElement name="AmmoPanel" style="flex-basis: 15%; justify-content: flex-end; align-items: flex-end; flex-grow: 0;">
                 <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ammo-field" style="align-self: flex-end; height: 100%; width: 300px; white-space: normal; font-size: 42px; -unity-text-align: middle-right; background-color: rgba(255, 255, 255, 0); color: rgb(255, 255, 255); -unity-font-style: bold;" />
             </ui:VisualElement>

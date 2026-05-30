@@ -1,3 +1,4 @@
+using Scripts.Player;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,10 +20,10 @@ public class EnemyModule : RoomModule<EnemyModule>
         //call for level enemies manager to get some prefabs?
     }
 
-    public override void HandlePlayerEnter() => ActivateEnemies();
-    public override void HandlePlayerExit() => DisableEnemies();
-    public override void HandlePlayerNearby() => PreloadEnemies();
-    public override void HandlePlayerFaraway() => UnloadEnemies();
+    public override void HandlePlayerEnter(Player player) => ActivateEnemies();
+    public override void HandlePlayerExit(Player player) => DisableEnemies();
+    public override void HandlePlayerNearby(Player player) => PreloadEnemies();
+    public override void HandlePlayerFaraway(Player player) => UnloadEnemies();
 
     private void ActivateEnemies() => SetEnemies(true);
     private void DisableEnemies() => SetEnemies(false);

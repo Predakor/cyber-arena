@@ -9,19 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07cb6c2e5e6381b4fafdacf785d735b2, type: 3}
-  m_Name: InputEventChannel
+  m_Script: {fileID: 11500000, guid: 7fd363028a1eaad47b6a868128dbf79e, type: 3}
+  m_Name: FloorChannel
   m_EditorClassIdentifier: 
   _rules:
-  - EventName: Move
+  - EventName: RoomEntered
     Enabled: 1
-  - EventName: Look
+  - EventName: RoomExited
     Enabled: 1
-  - EventName: Shoot
+  - EventName: BossRoomEntered
     Enabled: 1
-  - EventName: RaiseAbility
+  - EventName: BossRoomExited
     Enabled: 1
-  - EventName: SelectWeapon
+  - EventName: BossStarted
     Enabled: 1
-  - EventName: ConfigureWeapon
+  - EventName: BossDamaged
+    Enabled: 1
+  - EventName: BossKilled
     Enabled: 1
