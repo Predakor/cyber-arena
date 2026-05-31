@@ -19,5 +19,6 @@
                 <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ammo-field" style="align-self: flex-end; height: 100%; width: 300px; white-space: normal; font-size: 42px; -unity-text-align: middle-right; background-color: rgba(255, 255, 255, 0); color: rgb(255, 255, 255); -unity-font-style: bold;" />
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:Label tabindex="-1" text="Reloading" parse-escape-sequences="true" display-tooltip-when-elided="true" name="reload-indicator" style="position: absolute; top: 50%; left: 50%; height: 73px; width: 210px; font-size: 32px;" />
     </ui:VisualElement>
 </ui:UXML>

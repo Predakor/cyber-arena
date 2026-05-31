@@ -1,10 +1,14 @@
+using Scripts.Player;
 using System;
 using Systems.Shared;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameManager : Singleton<GameManager> {
-    public GameState State { get; private set; }
+public sealed class GameManager : Singleton<GameManager>
+{
+    [field: SerializeField] public GameState State { get; private set; }
+    [field: SerializeField] public Player Player { get; private set; }
+
 
     #region events
     public UnityEvent<GameState, GameState> OnBeforeGameStateChanged; //<new state ,old state>
@@ -18,12 +22,17 @@ public class GameManager : Singleton<GameManager> {
 
     #endregion
 
-    public void ChangeGameState(GameState newGameState) {
-        if (State == newGameState) { return; }
+    public void ChangeGameState(GameState newGameState)
+    {
+        if (State == newGameState)
+        {
+            return;
+        }
 
         OnBeforeGameStateChanged?.Invoke(newGameState, State);
 
-        switch (newGameState) {
+        switch (newGameState)
+        {
             case GameState.started:
                 OnGameStarted?.Invoke();
                 HandleStart();
@@ -57,31 +66,51 @@ public class GameManager : Singleton<GameManager> {
     public void RestartGame() => ChangeGameState(GameState.started);
     #endregion
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
-    void Start() {
+    private void Start()
+    {
+        if (Player == null)
+        {
+            Player = FindObjectOfType<Player>();
+        }
         StartGame();
     }
 
+    public void Init()
+    {
+        if (Player == null)
+        {
+            Player = FindObjectOfType<Player>();
+        }
+    }
 
 
-    void HandleStart() {
+    private void HandleStart()
+    {
         //load other managers
         //load map
         //load enemies
         //spawn player
-        if (Time.timeScale == 0) {
+        if (Time.timeScale == 0)
+        {
             Time.timeScale = 1;
         }
     }
 
-    void HandlePause() {
+    private void HandlePause()
+    {
         Time.timeScale = 0;
         //show pause menu
         throw new NotImplementedException();
 
     }
 
-    void HandleRestart() {
+    private void HandleRestart()
+    {
         //reset player
         //reset level
         //reset score trackers
@@ -89,20 +118,23 @@ public class GameManager : Singleton<GameManager> {
 
     }
 
-    void HandleGameWon() {
+    private void HandleGameWon()
+    {
         //show game victory screen
 
         throw new NotImplementedException();
     }
 
-    void HandleGameOver() {
+    private void HandleGameOver()
+    {
 
         //show game lsot screen
         throw new NotImplementedException();
     }
 }
 
-public enum GameState {
+public enum GameState
+{
     paused,
     started,
     lost,

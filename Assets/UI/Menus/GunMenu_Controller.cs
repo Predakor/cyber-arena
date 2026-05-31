@@ -1,4 +1,3 @@
-using Assets.Scripts.Utils;
 using Scripts.Inventories;
 using System;
 using System.Collections.Generic;
@@ -15,13 +14,14 @@ using Systems.Inventories;
 using Systems.Weapons.Guns.Modules;
 using UI.Components;
 using UI.Components.GunModule;
+using UI.Core;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UI.Menus
 {
     [RequireComponent(typeof(UIDocument))]
-    public sealed class GunMenu_Controller : MonoBehaviour
+    public sealed class GunMenu_Controller : UIComponentBehaviour
     {
         [SerializeField] private WeaponChannel _weaponChannel;
         [SerializeField] private InputsChannel _inputsChannel;
@@ -36,39 +36,31 @@ namespace UI.Menus
 
 
         [Header("UI References")]
-        [SerializeField] private UIDocument _uiDocument;
         [SerializeField] private VisualTreeAsset _rowStatTemplate;
         [SerializeField] private VisualTreeAsset _moduleTemplate;
 
-        private VisualElement _statsContainer;
-        private VisualElement _root;
-        private VisualElement _modulesContainer;
+        [UIElement("stats-container")] private readonly VisualElement _statsContainer;
+        [UIElement("modules-container")] private readonly VisualElement _modulesContainer;
+        [UIElement("Container")] private readonly VisualElement _root;
+
         private bool _menuOpen = false;
 
 
         private Dictionary<Type, List<IGunModule>> _modulesMap;
-        private Dictionary<Type, IGunModule> _selectedModulesMap;
         private Configuration _gunConfig;
 
-        private void Awake()
+        protected override void Awake()
         {
-            gameObject.EnsureComponent(out _uiDocument);
             Debug.Assert(_weaponChannel != null, "Weapon Channel is missing", this);
             Debug.Assert(_inputsChannel != null, "Input channel is missing", this);
             Debug.Assert(_inventoryChannel != null, "Inventory channel is missing", this);
             Debug.Assert(_inventory != null, "Inventory is missing", this);
 
         }
-        private void Start()
-        {
-            _statsContainer = _uiDocument.rootVisualElement.Q<VisualElement>("stats-container");
-            _modulesContainer = _uiDocument.rootVisualElement.Q<VisualElement>("modules-container");
-            _root = _uiDocument.rootVisualElement.Q<VisualElement>("Container");
-            _root.EnableInClassList("open", false);
-        }
 
-        private void OnEnable()
+        protected override void OnUIEnabled()
         {
+            _root.EnableInClassList("open", false);
             MapAvaiableModules();
 
             _weaponChannel.Subscribe<WeaponEvents.StatsChanged>(StatsChangeHandler, destroyCancellationToken);
@@ -137,12 +129,6 @@ namespace UI.Menus
         private void RebuildUI()
         {
             _modulesContainer.Clear();
-            _selectedModulesMap = new()
-            {
-                { typeof(FireRateModuleBase), _gunConfig.fireRateModule },
-                { typeof(SpreadModuleBase), _gunConfig.spreadModule},
-                { typeof(AmmoModuleBase), _gunConfig.ammoModule}
-            };
 
             AddModule(_gunConfig.fireRateModule, typeof(FireRateModuleBase));
             AddModule(_gunConfig.ammoModule, typeof(AmmoModuleBase));

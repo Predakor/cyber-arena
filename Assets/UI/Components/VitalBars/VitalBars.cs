@@ -1,36 +1,24 @@
-using Assets.Scripts.Utils;
+using UI.Core;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(UIDocument))]
-public class VitalBars : MonoBehaviour
+public class VitalBars : UIComponentBehaviour
 {
-    [SerializeField] private string healthBarName;
-    [SerializeField] private string shieldBarName;
+    [SerializeField] private MonoBehaviour _healthTargetSource;//for inspector reference,
+    [SerializeField] private bool _visibleOnStart = true;
 
-    [SerializeField] private UIDocument _document;
-    [SerializeField] private MonoBehaviour healthTargetSource;
-
-    private ProgressBar _healthBar;
-    private ProgressBar _shieldBar;
+    [UIElement("health-bar")] private readonly ProgressBar _healthBar;
+    [UIElement("shield-bar")] private readonly ProgressBar _shieldBar;
 
     private IHealthMonitor _target;
 
-
-    private void Awake()
+    protected override void OnUIEnabled()
     {
-        gameObject.EnsureComponent(out _document);
+        ShowVitals(_visibleOnStart);
     }
 
-
-    private void OnEnable()
-    {
-        var root = _document.rootVisualElement;
-        _healthBar ??= root.Q<ProgressBar>(healthBarName);
-        _shieldBar ??= root.Q<ProgressBar>(shieldBarName);
-    }
-
-    private void OnDisable()
+    protected override void OnUIDisabled()
     {
         CleanupCurrentTarget();
     }
@@ -59,7 +47,7 @@ public class VitalBars : MonoBehaviour
         }
 
         _target = newTarget;
-        healthTargetSource = (MonoBehaviour)newTarget;
+        _healthTargetSource = (MonoBehaviour)newTarget;
 
         if (_healthBar is not null)
         {

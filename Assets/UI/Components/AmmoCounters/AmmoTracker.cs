@@ -1,31 +1,23 @@
 using Systems.Guns;
+using UI.Core;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(UIDocument))]
-public class AmmoTracker : MonoBehaviour
+public sealed class AmmoTracker : UIComponentBehaviour
 {
-    [SerializeField] private WeaponChannel _weaponChannel;
-    [SerializeField] private UIDocument _uiDocument;
+    [UIElement("ammo-field")]
     [SerializeField] private Label _ammoLabel;
+    [UIElement("reload-indicator")]
     [SerializeField] private VisualElement _reloadIndicator;
 
-    private void Awake()
+    [SerializeField] private WeaponChannel _weaponChannel;
+
+    protected override void OnUIEnabled()
     {
-        _uiDocument = GetComponent<UIDocument>();
-    }
-
-    private void OnEnable()
-    {
-        var root = _uiDocument.rootVisualElement;
-        _ammoLabel = root.Q<Label>("ammo-field");
-        _reloadIndicator = root.Q<VisualElement>("reload-indicator");
-
-        Debug.Assert(_reloadIndicator is null, "Reload indicator not found in UI Document", this);
-
-        _weaponChannel.Subscribe<WeaponEvents.AmmoChanged>(HandleAmmoChanged, destroyCancellationToken);
-        _weaponChannel.Subscribe<WeaponEvents.ReloadStarted>(HandleReloadStarted, destroyCancellationToken);
-        _weaponChannel.Subscribe<WeaponEvents.ReloadFinished>(HandleReloadFinished, destroyCancellationToken);
+        _weaponChannel.Subscribe<WeaponEvents.AmmoChanged>(HandleAmmoChanged, UiCancellationToken);
+        _weaponChannel.Subscribe<WeaponEvents.ReloadStarted>(HandleReloadStarted, UiCancellationToken);
+        _weaponChannel.Subscribe<WeaponEvents.ReloadFinished>(HandleReloadFinished, UiCancellationToken);
     }
 
     private void HandleAmmoChanged(WeaponEvents.AmmoChanged e)
