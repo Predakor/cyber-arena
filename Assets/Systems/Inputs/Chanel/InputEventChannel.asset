@@ -18,10 +18,14 @@ MonoBehaviour:
   - EventName: Look
     Enabled: 0
   - EventName: Shoot
-    Enabled: 1
+    Enabled: 0
   - EventName: RaiseAbility
     Enabled: 0
   - EventName: SelectWeapon
     Enabled: 0
   - EventName: ConfigureWeapon
+    Enabled: 0
+  - EventName: MousePosition
+    Enabled: 0
+  - EventName: MouseDelta
     Enabled: 0

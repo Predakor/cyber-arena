@@ -10189,6 +10189,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 456
+  _channel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
 --- !u!1 &280453550
 GameObject:
   m_ObjectHideFlags: 0
@@ -13679,7 +13680,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  cam: {fileID: 0}
+  cam: {fileID: 963194227}
+  _channel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
   treshold: 8
   cameraSpeed: 3
   zoomDistance: 14
@@ -37878,7 +37880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: 0
-  <Player>k__BackingField: {fileID: 0}
+  <Player>k__BackingField: {fileID: 999693059}
   OnBeforeGameStateChanged:
     m_PersistentCalls:
       m_Calls: []

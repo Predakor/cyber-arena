@@ -9,13 +9,17 @@ namespace Systems.Inputs.Handlers
     internal sealed class PlayerInputHandler
         : InputHandlerBase, PlayerControls.IPlayerActions
     {
+        private const float UpdateInterval = 0.125f; // 125 ms
+        private float _lastDeltaUpdateTime;
+        private float _lastPositionUpdateTime;
+
         public PlayerInputHandler(InputsChannel channel) : base(channel) { }
 
         public override void Init(PlayerControls controls, Dictionary<ControlType, Action> enablers, List<InputActionMap> actionMaps)
         {
             controls.Player.SetCallbacks(this);
-            enablers.Add(ControlType.UI, () => controls.UI.Enable());
-            actionMaps.Add(controls.UI);
+            enablers.Add(ControlType.Gameplay, () => controls.Player.Enable());
+            actionMaps.Add(controls.Player);
         }
 
         public void OnMove(InputAction.CallbackContext context)
@@ -32,13 +36,21 @@ namespace Systems.Inputs.Handlers
 
         public void OnLook(InputAction.CallbackContext context)
         {
+            float currentTime = Time.time;
+            bool intervalPassed = currentTime - _lastDeltaUpdateTime >= UpdateInterval;
+            if (!intervalPassed)
+            {
+                return;
+            }
+
+            _lastDeltaUpdateTime = currentTime;
             if (context.performed)
             {
-                Channel.RaiseLook(context.ReadValue<Vector2>());
+                Channel.RaiseMouseDelta(context.ReadValue<Vector2>());
             }
             else if (context.canceled)
             {
-                Channel.RaiseLook(Vector2.zero);
+                Channel.RaiseMouseDelta(Vector2.zero);
             }
         }
 
@@ -74,5 +86,24 @@ namespace Systems.Inputs.Handlers
             throw new System.NotImplementedException();
         }
 
+        public void OnMousePosition(InputAction.CallbackContext context)
+        {
+            float currentTime = Time.time;
+            bool intervalPassed = currentTime - _lastPositionUpdateTime >= UpdateInterval;
+            if (!intervalPassed)
+            {
+                return;
+            }
+
+            _lastPositionUpdateTime = currentTime;
+            if (context.performed)
+            {
+                Channel.RaiseMousePosition(context.ReadValue<Vector2>());
+            }
+            else if (context.canceled)
+            {
+                Channel.RaiseMousePosition(Vector2.zero);
+            }
+        }
     }
 }
