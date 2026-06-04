@@ -6,102 +6,85 @@ using UnityEngine.InputSystem.Controls;
 
 namespace Systems.Inputs
 {
-    public sealed class InputsHandler : Singleton<InputsHandler>
+    public sealed class InputsHandler : Singleton<InputsHandler>, PlayerControls.IPlayerActions
     {
-        [SerializeField] private InputActionAsset playerControls;
-
         [SerializeField] private InputsChannel _channel;
 
-        [SerializeField] private string actionMapName = "Player";
+        private PlayerControls _controls;
 
-        [Header("Action Name References")]
-        [SerializeField] private string move = "Move";
-        [SerializeField] private string look = "Look";
-        [SerializeField] private string shoot = "Shoot";
-        [SerializeField] private string dash = "Dash";
-        [SerializeField] private string configureWeapon = "ConfigureWeapon";
-
-
-        [SerializeField]
-        private string selectWeapon = "SelectWeapon";
-
-        private InputAction moveAction;
-        private InputAction lookAction;
-        private InputAction shootAction;
-        private InputAction dashAction;
-        private InputAction selectWeaponAction;
-        private InputAction configureWeaponAction;
-
-        private void Start()
+        protected override void Awake()
         {
-            var actionMap = playerControls.FindActionMap(actionMapName);
-
-            moveAction = actionMap.FindAction(move);
-            lookAction = actionMap.FindAction(look);
-            shootAction = actionMap.FindAction(shoot);
-            dashAction = actionMap.FindAction(dash);
-            selectWeaponAction = actionMap.FindAction(selectWeapon);
-            configureWeaponAction = actionMap.FindAction(configureWeapon);
-
-            RegisterInputActions();
-            gameObject.SetActive(true);
+            base.Awake();
+            _controls = new PlayerControls();
+            _controls.Player.SetCallbacks(this);
         }
 
-        public void EnablePlayerActions(bool enabled) => SetActionMapEnabled(enabled);
+        private void OnEnable() => _controls.Player.Enable();
 
-        private void RegisterInputActions()
+        private void OnDisable() => _controls.Player.Disable();
+        public void Enable(bool state) => gameObject.SetActive(state);
+
+        // The generated interface forces you to implement these specific methods
+        public void OnMove(InputAction.CallbackContext context)
         {
-            moveAction.performed += ct => _channel.RaiseMove(ct.ReadValue<Vector2>());
-            moveAction.canceled += _ => _channel.RaiseMove(Vector2.zero);
-
-            lookAction.performed += ct => _channel.RaiseLook(ct.ReadValue<Vector2>());
-            lookAction.canceled += _ => _channel.RaiseLook(Vector2.zero);
-
-            shootAction.performed += ct => _channel.RaiseShoot(ct.ReadValue<float>());
-            shootAction.canceled += _ => _channel.RaiseShoot(0);
-
-            dashAction.performed += _ => _channel.RaiseAbility(true);
-            dashAction.canceled += _ => _channel.RaiseAbility(false);
-
-            selectWeaponAction.performed += ct => _channel.RaiseSelectWeapon(ct.ToNumber());
-            configureWeaponAction.performed += _ => _channel.RaiseConfigureWeapon();
-        }
-
-        private void SetActionMapEnabled(bool enabled)
-        {
-            var actions = new[]
+            if (context.performed)
             {
-                moveAction,
-                lookAction,
-                shootAction,
-                dashAction,
-                selectWeaponAction,
-            };
-
-            foreach (var action in actions)
+                _channel.RaiseMove(context.ReadValue<Vector2>());
+            }
+            else if (context.canceled)
             {
-                if (enabled)
-                {
-                    action?.Enable();
-                }
-                else
-                {
-                    action?.Disable();
-                }
+                _channel.RaiseMove(Vector2.zero);
             }
         }
 
-        private void OnEnable() => SetActionMapEnabled(true);
+        public void OnLook(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                _channel.RaiseLook(context.ReadValue<Vector2>());
+            }
+            else if (context.canceled)
+            {
+                _channel.RaiseLook(Vector2.zero);
+            }
+        }
 
-        private void OnDisable() => SetActionMapEnabled(false);
+        public void OnShoot(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                _channel.RaiseShoot(context.ReadValue<float>());
+            }
+            else if (context.canceled)
+            {
+                _channel.RaiseShoot(0);
+            }
+        }
+
+        public void OnDash(InputAction.CallbackContext context) => _channel.RaiseAbility(context.performed);
+        public void OnSelectWeapon(InputAction.CallbackContext context) => _channel.RaiseSelectWeapon(context.ToNumber());
+        public void OnConfigureWeapon(InputAction.CallbackContext context) => _channel.RaiseConfigureWeapon();
+
+        public void OnSprint(InputAction.CallbackContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnReload(InputAction.CallbackContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
     }
 
-    internal static class InputCallbacExtentions
+    internal static class InputCallbackExtensions
     {
         public static byte ToNumber(this InputAction.CallbackContext ct)
         {
-            var keyControll = ct.control as KeyControl;
-            return (byte)(keyControll.keyCode - Key.Digit1);
+            // Note: Ensure your Action is bound to keys that support this
+            var keyControl = ct.control as KeyControl;
+            return (byte)(keyControl.keyCode - Key.Digit1);
         }
     }
 }

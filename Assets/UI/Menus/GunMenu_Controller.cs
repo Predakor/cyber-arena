@@ -138,7 +138,7 @@ namespace UI.Menus
         private void ConfigureWeaponHandler(InputEvents.ConfigureWeapon e)
         {
             _menuOpen = !_menuOpen;
-            InputsHandler.Instance.EnablePlayerActions(!_menuOpen);
+            InputsHandler.Instance.Enable(!_menuOpen);
             _root.EnableInClassList("open", _menuOpen);
         }
 
