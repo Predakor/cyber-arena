@@ -39,14 +39,14 @@ namespace Systems.Guns.Projectiles.Physics.Rocket
             base.OnTriggerEnter(other);
             _trusterVfx.Stop();
             _trusterVfx.Clear();
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
             Destroy(gameObject);
         }
 
         public override void Shoot()
         {
             _trusterVfx.Play();
-            _rb.velocity = transform.forward * _speed;
+            _rb.linearVelocity = transform.forward * _speed;
         }
 
         public override void Shoot(Transform origin)

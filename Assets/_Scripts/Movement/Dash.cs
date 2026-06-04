@@ -41,7 +41,7 @@ public class Dash : MonoBehaviour {
         _lastDashTime = Time.time;
 
         Vector3 dashDirection = transform.forward;
-        rb.velocity = dashDirection * dashSpeed;
+        rb.linearVelocity = dashDirection * dashSpeed;
     }
 
     public void StartDash(Vector3 direction) {
@@ -54,13 +54,13 @@ public class Dash : MonoBehaviour {
         _lastDashTime = Time.time;
 
         direction -= transform.position;
-        rb.velocity = direction.normalized * dashSpeed;
+        rb.linearVelocity = direction.normalized * dashSpeed;
 
         onDashStart?.Invoke();
     }
 
     public void StopDash() {
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
         isDashing = false;
         onDashEnd?.Invoke();
 

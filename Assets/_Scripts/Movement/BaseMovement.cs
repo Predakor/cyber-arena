@@ -52,7 +52,7 @@ public class BaseMovement : MonoBehaviour
 
     protected virtual void HandleMovement()
     {
-        rb.velocity = walkSpeed * moveDirection;
+        rb.linearVelocity = walkSpeed * moveDirection;
         bool _moving = moveDirection != Vector3.zero;
 
         if (animator && animator.GetBool("Moving") != _moving)
