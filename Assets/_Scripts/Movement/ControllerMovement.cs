@@ -1,5 +1,4 @@
-using Systems.Channels;
-using Systems.Channels.Inputs;
+using Systems.Inputs.Channels;
 using UnityEngine;
 
 public sealed class ControllerMovement : BaseMovement

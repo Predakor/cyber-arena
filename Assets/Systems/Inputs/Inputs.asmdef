@@ -1,0 +1,17 @@
+{
+    "name": "Inputs",
+    "rootNamespace": "Systems.Inputs",
+    "references": [
+        "GUID:aaa4f48e7409f914caeb4b793c9f1c85",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

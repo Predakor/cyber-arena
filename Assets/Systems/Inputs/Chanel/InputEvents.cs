@@ -1,7 +1,7 @@
 using Systems.Shared.Channels;
 using UnityEngine;
 
-namespace Systems.Channels.Inputs
+namespace Systems.Inputs.Channels
 {
     [ChannelEvents(typeof(InputsChannel))]
     public static class InputEvents

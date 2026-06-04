@@ -16,16 +16,16 @@ MonoBehaviour:
   _rules:
   - ClassName: InputsChannel
     Enabled: 1
-    EnabledLevels: 12
-    Group: 0
+    EnabledLevels: 14
+    Group: 1
   - ClassName: WeaponChannel
     Enabled: 1
-    EnabledLevels: 12
-    Group: 0
+    EnabledLevels: 14
+    Group: 1
   - ClassName: InventoryChannel
     Enabled: 1
     EnabledLevels: 12
-    Group: 0
+    Group: 1
   - ClassName: EnemyModule
     Enabled: 1
     EnabledLevels: 12

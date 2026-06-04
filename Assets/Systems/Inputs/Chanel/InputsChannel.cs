@@ -1,8 +1,7 @@
-using Systems.Channels.Inputs;
 using Systems.Shared.Channels;
 using UnityEngine;
 
-namespace Systems.Channels
+namespace Systems.Inputs.Channels
 {
     [CreateAssetMenu(fileName = "InputEventChannel", menuName = MenuName + "InputChannel")]
     public sealed class InputsChannel : EventChannelBase<InputsChannel>
