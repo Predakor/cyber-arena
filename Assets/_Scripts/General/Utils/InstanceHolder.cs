@@ -17,7 +17,7 @@ public class InstanceHolder : Singleton<InstanceHolder> {
     public Transform MouseTracker {
         get {
             if (_mouseTracker == null) {
-                _mouseTracker = FindObjectOfType<FollowMouse>().transform;
+                _mouseTracker = FindObjectOfType<MouseProvider>().transform;
             }
             return _mouseTracker;
         }

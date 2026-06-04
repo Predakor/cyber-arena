@@ -52,14 +52,14 @@ namespace Systems.Guns.Projectiles.Physics
         public override void Shoot()
         {
             _logger.Debug($"[TrailProjectile] Shoot | damage={_damage} speed={_speed} size={_size}");
-            _rigidbody.velocity = transform.forward * _speed;
+            _rigidbody.linearVelocity = transform.forward * _speed;
         }
 
         public override void Shoot(Transform origin)
         {
             _logger.Debug($"[TrailProjectile] Shoot | damage={_damage} speed={_speed} size={_size} pos={origin.position} dir={origin.forward}");
             transform.SetPositionAndRotation(origin.position, origin.rotation);
-            _rigidbody.velocity = origin.forward * _speed;
+            _rigidbody.linearVelocity = origin.forward * _speed;
         }
     }
 }

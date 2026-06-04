@@ -2,14 +2,13 @@ using Scripts.Inventories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Systems.Channels;
-using Systems.Channels.Inputs;
 using Systems.Guns;
 using Systems.Guns.Modules.AmmoModule.Base;
 using Systems.Guns.Modules.ProjectileModule;
 using Systems.Guns.Modules.ShootModules;
 using Systems.Guns.Modules.SpreadModule;
 using Systems.Inputs;
+using Systems.Inputs.Channels;
 using Systems.Inventories;
 using Systems.Weapons.Guns.Modules;
 using UI.Components;
@@ -138,7 +137,7 @@ namespace UI.Menus
         private void ConfigureWeaponHandler(InputEvents.ConfigureWeapon e)
         {
             _menuOpen = !_menuOpen;
-            InputsHandler.Instance.EnablePlayerActions(!_menuOpen);
+            InputsManager.Instance.EnableControls(_menuOpen ? ControlType.UI : ControlType.Gameplay);
             _root.EnableInClassList("open", _menuOpen);
         }
 

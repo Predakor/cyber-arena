@@ -81,6 +81,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -123,10 +126,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5815025968066708100}
-  - component: {fileID: 2316622648797820772}
-  - component: {fileID: 5014613975478470128}
   - component: {fileID: 310375954840151667}
-  - component: {fileID: 2998932820713897028}
   m_Layer: 0
   m_Name: ChargedGun
   m_TagString: Untagged
@@ -151,37 +151,6 @@ Transform:
   - {fileID: 2942250078517277431}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2316622648797820772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6223826795150343627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b8f9dd93c773a44ea3accecfb4a4bb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _magazineSize: 60
-  _currentAmmo: 60
-  _reloadSpeed: 1
---- !u!114 &5014613975478470128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6223826795150343627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa57f2c3c5d09b243bf2cc4e7db3f759, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _poolSize: 60
-  _poolMaxSize: 120
-  _projectilePrefab: {fileID: 2344025093709548507, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
-  _speed: 70
 --- !u!114 &310375954840151667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,25 +163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e27721a61780c54db54f0ee2a3b2d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _channel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
-  _config:
-    shootModule: {fileID: 2998932820713897028}
-    ammoModule: {fileID: 2316622648797820772}
-    projectileModule: {fileID: 5014613975478470128}
---- !u!114 &2998932820713897028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6223826795150343627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 757c515c58d01bb418ca428ece563374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roundPerMinute: 12
-  _minChargeTime: 0.3
-  _maxChargeTime: 1.5
-  _projectile: {fileID: 2344025093709548507, guid: 764f3b715270a6f4b984b0f79a8ef24a, type: 3}
   _muzzle: {fileID: 2942250078517277431}
+  _config:
+    projectileModule: {fileID: 0}
+    fireRateModule: {fileID: 0}
+    ammoModule: {fileID: 0}
+    spreadModule: {fileID: 0}

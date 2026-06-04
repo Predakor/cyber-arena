@@ -33,7 +33,7 @@ public class Projectile : MonoBehaviour {
     }
 
     public void Fire() {
-        _rb.velocity = transform.forward * _speed;
+        _rb.linearVelocity = transform.forward * _speed;
         StartCoroutine(DestroyAfter(_duration));
     }
 

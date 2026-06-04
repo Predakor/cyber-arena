@@ -1,6 +1,5 @@
-using Systems.Channels;
-using Systems.Channels.Inputs;
 using Systems.Guns;
+using Systems.Inputs.Channels;
 using Systems.Shared.Loggers;
 using Systems.Weapons.Guns.Modules;
 using UnityEngine;

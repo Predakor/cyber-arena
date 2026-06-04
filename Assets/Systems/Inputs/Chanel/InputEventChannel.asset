@@ -14,14 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rules:
   - EventName: Move
-    Enabled: 1
+    Enabled: 0
   - EventName: Look
-    Enabled: 1
+    Enabled: 0
   - EventName: Shoot
-    Enabled: 1
+    Enabled: 0
   - EventName: RaiseAbility
-    Enabled: 1
+    Enabled: 0
   - EventName: SelectWeapon
-    Enabled: 1
+    Enabled: 0
   - EventName: ConfigureWeapon
+    Enabled: 0
+  - EventName: MousePosition
+    Enabled: 1
+  - EventName: MouseDelta
     Enabled: 1
