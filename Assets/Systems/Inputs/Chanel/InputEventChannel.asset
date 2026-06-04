@@ -26,6 +26,6 @@ MonoBehaviour:
   - EventName: ConfigureWeapon
     Enabled: 0
   - EventName: MousePosition
-    Enabled: 0
+    Enabled: 1
   - EventName: MouseDelta
-    Enabled: 0
+    Enabled: 1

@@ -13679,12 +13679,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a3bc3e3f106774a8c3f9c94065bb20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 999693050}
   cam: {fileID: 963194227}
   _channel: {fileID: 11400000, guid: 6846347e57306f7448ab5a13f994d7bd, type: 2}
-  treshold: 8
+  centerDeadzone: 3
+  mousePullWeight: 0.3
+  tresholdX: 10
+  tresholdY: 10
+  downwardModifier: 3
   cameraSpeed: 3
-  zoomDistance: 14
+  zoomDistance: 18
   zoomSpeed: 2.5
 --- !u!4 &380735474
 Transform:
