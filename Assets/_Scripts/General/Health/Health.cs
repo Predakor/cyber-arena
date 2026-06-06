@@ -1,120 +1,122 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
-public sealed class Health : MonoBehaviour, IDamageable, IHealthMonitor
+[Serializable]
+public sealed class DurabilityConfig
 {
-    #region Stats
-    [Header("Health stats")]
-    [SerializeField] private int currentHealth = 100;
-    [SerializeField] private int maxHealth = 100;
-    [SerializeField] private int currentShield = 0;
-    [SerializeField] private int maxShield = 0;
-    [SerializeField] private int armor = 0;
+    public int currentHealth = 100;
+    public int maxHealth = 100;
+    public int currentShield = 0;
+    public int maxShield = 0;
+    public int armor = 0;
+}
 
-    [Header("Invincibility frames")]
-    [SerializeField] private bool InvincibilityFrames = true;
-    [SerializeField] private float InvicibilityFramesCooldown = 0.5f;
-    [SerializeField] private float InvicibilityFramesDuration = 0.1f;
-    #endregion
+public sealed class Health : IDamageable, IHealthMonitor
+{
+    public int MaxHealth { get; private set; }
+    public int MaxShield { get; private set; }
+    public int Armor { get; private set; }
+    public int CurrentHealth { get; private set; }
+    public int CurrentShield { get; private set; }
+
 
     public event Action<int> OnHealthChange;
     public event Action<int> OnShieldChange;
-
     public event Action<int> OnMaxHealthChange;
     public event Action<int> OnMaxShieldChange;
+    public event Action<int> OnArmorChange;
 
-    public event Action OnIFramesStart;
-    public event Action OnIFramesEnd;
+    public event Action OnDeath;
 
-    public bool InvincibilityFramesActive { get; private set; } = false;
-    private bool _iFramesReady = true;
-    private bool _canBeDamaged = true;
-
-    public int MaxHealth { get => maxHealth; private set => maxHealth = value; }
-    public int MaxShield { get => maxShield; private set => maxShield = value; }
-    public int Armor { get => armor; private set => armor = value; }
-
-    public int CurrentHealth
+    public Health(DurabilityConfig config)
     {
-        get => currentHealth;
-        private set
-        {
-            currentHealth = Mathf.Clamp(value, 0, maxHealth);
-            OnHealthChange?.Invoke(currentHealth);
-        }
+        MaxHealth = config.maxHealth;
+        MaxShield = config.maxShield;
+        CurrentHealth = config.currentHealth;
+        CurrentShield = config.currentShield;
+        Armor = config.armor;
     }
 
-    public int CurrentShield
+    public void Damage(int damage, HitOptions options = HitOptions.None)
     {
-        get => currentShield;
-        private set
-        {
-            currentShield = Mathf.Clamp(value, 0, maxShield);
-            OnShieldChange?.Invoke(currentShield);
-        }
-    }
-
-    public void Damage(int damage, bool ignoreShields = false, bool ignoreArmor = false)
-    {
-        if (!_canBeDamaged)
+        if (CurrentHealth <= 0 || damage <= 0)
         {
             return;
         }
 
-        if (CurrentShield > 0 && !ignoreShields)
+        bool propagateOverflowDamage = !options.HasFlag(HitOptions.NoSpillover);
+
+        if (options.HasFlag(HitOptions.Shield))
         {
             int shieldDamage = Mathf.Min(damage, CurrentShield);
-            CurrentShield -= shieldDamage;
-            damage -= shieldDamage;
+            SetShield(CurrentShield - shieldDamage);
+            damage = GetRemainingDamage(damage, shieldDamage, propagateOverflowDamage);
+        }
+
+        if (options.HasFlag(HitOptions.Armor))
+        {
+            int armorDamage = Math.Min(damage, Armor);
+            SetArmor(Armor - armorDamage);
+            damage = GetRemainingDamage(damage, armorDamage, propagateOverflowDamage);
         }
 
         if (damage > 0)
         {
-            CurrentHealth -= Mathf.Max(damage - armor, 0);
+            int effectiveArmor = options.HasFlag(HitOptions.HealthOnly) ? 0 : Armor;
+            int healthDamage = Mathf.Max(damage - effectiveArmor, 0);
+            SetHealth(CurrentHealth - healthDamage);
         }
+
+    }
+
+    private void SetHealth(int value)
+    {
+        int clamped = Mathf.Clamp(value, 0, MaxHealth);
+        if (CurrentHealth == clamped)
+        {
+            return;
+        }
+
+        CurrentHealth = clamped;
+        OnHealthChange?.Invoke(CurrentHealth);
 
         if (CurrentHealth <= 0)
         {
-            Destroy(gameObject);
+            OnDeath?.Invoke();
         }
-        else if (InvincibilityFrames && _iFramesReady)
+    }
+
+    private void SetShield(int value)
+    {
+        int clamped = Mathf.Clamp(value, 0, MaxShield);
+        if (CurrentShield == clamped)
         {
-            StartCoroutine(StartInvincibilityFrames());
+            return;
         }
+
+        CurrentShield = clamped;
+        OnShieldChange?.Invoke(CurrentShield);
     }
 
-    private IEnumerator StartInvincibilityFrames()
+    private void SetArmor(int value)
     {
-        _canBeDamaged = false;
-        InvincibilityFramesActive = true;
+        int clamped = Mathf.Max(0, value);
+        if (Armor == clamped)
+        {
+            return;
+        }
 
-        OnIFramesStart?.Invoke();
+        Armor = clamped;
+        OnArmorChange?.Invoke(Armor);
 
-        yield return new WaitForSeconds(InvicibilityFramesDuration);
-
-        _canBeDamaged = true;
-        InvincibilityFramesActive = false;
-        _iFramesReady = false;
-
-        OnIFramesEnd?.Invoke();
-
-        yield return new WaitForSeconds(InvicibilityFramesCooldown);
-        _iFramesReady = true;
     }
 
-    public void DamageHealth(int damage)
+    private int GetRemainingDamage(int originalDamage, int dealtDamage, bool hasPropagateDamage)
     {
-        Damage(damage, true);
+        return hasPropagateDamage
+            ? originalDamage - dealtDamage
+            : 0;
+
     }
 
-    public void DamageShield(int damage)
-    {
-        CurrentShield -= damage;
-    }
-
-    public void DamageArmor(int damage)
-    {
-        armor = Mathf.Max(armor - damage, 0);
-    }
 }
