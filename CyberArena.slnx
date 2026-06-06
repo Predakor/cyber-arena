@@ -1,0 +1,7 @@
+﻿<Solution>
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Systems.Guns.csproj" />
+  <Project Path="Systems.Shared.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="Inputs.csproj" />
+</Solution>

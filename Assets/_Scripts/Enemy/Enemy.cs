@@ -4,7 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(GeneralHostileAi))]
 [RequireComponent(typeof(BaseMovement))]
 [RequireComponent(typeof(Health))]
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour
+{
 
     #region Dependencies
     [Header("Dependencies")]
@@ -19,22 +20,27 @@ public class Enemy : MonoBehaviour {
 
     public void Freeze() => SetEnemy(false);
     public void ActivateEnemy() => SetEnemy(true);
-    public void SetEnemy(bool active) {
+    public void SetEnemy(bool active)
+    {
         AI.enabled = active;
         Controller.enabled = active;
         Health.enabled = active;
     }
 
-    void OnEnable() {
+    private void OnEnable()
+    {
         Health.OnHealthChange += CheckIfDeath;
     }
 
-    void OnDisable() {
+    private void OnDisable()
+    {
         Health.OnHealthChange -= CheckIfDeath;
     }
 
-    void CheckIfDeath(int health) {
-        if (health < 1) {
+    private void CheckIfDeath(int health)
+    {
+        if (health < 1)
+        {
             OnDeath?.Invoke(this);
         }
     }
