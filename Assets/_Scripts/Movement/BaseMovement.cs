@@ -1,8 +1,12 @@
 using Assets.Scripts.Utils;
+using System.Linq;
 using UnityEngine;
 
 public class BaseMovement : MonoBehaviour
 {
+    private static readonly int RotatingHash = Animator.StringToHash("Rotating");
+    private static readonly int MovingHash = Animator.StringToHash("Moving");
+
     [Header("Movement")]
     [SerializeField] protected float walkSpeed = 3f;
     [SerializeField] protected float sprintSpeed = 5f;
@@ -23,6 +27,10 @@ public class BaseMovement : MonoBehaviour
     [SerializeField] private bool canMove = true;
     [SerializeField] private bool canRotate = true;
 
+
+    private bool _hasRotatingAnimation;
+    private bool _hasMovingAnimation;
+
     public bool CanMove { get => canMove; }
     public bool CanRotate { get => canRotate; }
 
@@ -35,6 +43,13 @@ public class BaseMovement : MonoBehaviour
         gameObject
             .EnsureComponent(out rb)
             .EnsureComponent(out animator);
+    }
+
+    private void Start()
+    {
+        _hasRotatingAnimation = animator && animator.parameters.Any(x => x.nameHash == RotatingHash);
+        _hasMovingAnimation = animator && animator.parameters.Any(x => x.nameHash == MovingHash);
+        Debug.Assert(_hasRotatingAnimation || _hasMovingAnimation, "Animator does not have required parameters for movement or rotation animations");
     }
 
     private void FixedUpdate()
@@ -55,9 +70,9 @@ public class BaseMovement : MonoBehaviour
         rb.linearVelocity = walkSpeed * moveDirection;
         bool _moving = moveDirection != Vector3.zero;
 
-        if (animator && animator.GetBool("Moving") != _moving)
+        if (_hasMovingAnimation && animator.GetBool(MovingHash) != _moving)
         {
-            animator.SetBool("Moving", _moving);
+            animator.SetBool(MovingHash, _moving);
         }
     }
 
@@ -92,9 +107,9 @@ public class BaseMovement : MonoBehaviour
 
         bool _rotating = rotationDirection != Vector3.zero;
 
-        if (animator && animator.GetBool("Rotating") != _rotating)
+        if (_hasRotatingAnimation && animator.GetBool(RotatingHash) != _rotating)
         {
-            animator.SetBool("Rotating", _rotating);
+            animator.SetBool(RotatingHash, _rotating);
         }
     }
 }

@@ -158,8 +158,8 @@ GameObject:
   - component: {fileID: 3478022225362997526}
   - component: {fileID: 117083318079128625}
   - component: {fileID: 117341888272909233}
-  - component: {fileID: 1723596869876557479}
   - component: {fileID: 2642850080408243401}
+  - component: {fileID: 467801068621532860}
   m_Layer: 6
   m_Name: Enemy_sphere
   m_TagString: Untagged
@@ -198,6 +198,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AI: {fileID: 3478022225362997526}
   Controller: {fileID: 117083318079128625}
+  Health:
+    <MaxHealth>k__BackingField: 0
+    <MaxShield>k__BackingField: 0
+    <Armor>k__BackingField: 0
+    <CurrentHealth>k__BackingField: 0
+    <CurrentShield>k__BackingField: 0
 --- !u!114 &3478022225362997526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,34 +282,13 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 52
   m_CollisionDetection: 0
---- !u!65 &1723596869876557479
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9081711256418742781}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &2642850080408243401
 Animator:
   serializedVersion: 7
@@ -326,6 +311,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &467801068621532860
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9081711256418742781}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &4011642146400064645
 PrefabInstance:
   m_ObjectHideFlags: 0
