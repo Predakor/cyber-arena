@@ -36830,8 +36830,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   document: {fileID: 0}
-  _healthTargetSource: {fileID: 0}
   _visibleOnStart: 0
+  _target:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!114 &928365598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38900,7 +38906,7 @@ GameObject:
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -41691,6 +41697,7 @@ GameObject:
   - component: {fileID: 1061560415}
   - component: {fileID: 1061560413}
   - component: {fileID: 1061560414}
+  - component: {fileID: 1061560416}
   m_Layer: 8
   m_Name: Room Medium 4gon
   m_TagString: Untagged
@@ -41774,6 +41781,25 @@ Transform:
   - {fileID: 956387658}
   m_Father: {fileID: 280789764}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1061560416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061560412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a3bb045e7d423a4db5fe908f4fab9f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scripts.Enemies.Spawners.EnemySpawner
+  _prefab: {fileID: 8567272601639946418, guid: 3c5ed94983b583d439ea205b6eb15cf6, type: 3}
+  _spawnPoint: {fileID: 1061560415}
+  _waveSize: 200
+  _spawnInterval: 0.2
+  _maxEnemiesPerTickSpawn: 5
+  _spawnOffset: {x: 0, y: 1, z: 0}
+  _spawnRadius: 5
 --- !u!1 &1065320388
 GameObject:
   m_ObjectHideFlags: 0
@@ -49732,6 +49758,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 514643103646258021, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
   m_PrefabInstance: {fileID: 2082780207291574141}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1316711879 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4310389673740012261, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
+  m_PrefabInstance: {fileID: 2105885862}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1316711881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316711879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84b3a5f6a15dfd94e9dadf6d7e7d63e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleProjectileWeapon
+  _muzzle: {fileID: 1330098852}
+  _damage: 10
+  _range: 20
+  _fireRate: 1
+  _projectileConfig: {fileID: 11400000, guid: a1f1a0efe270d8c4496eb41c50a84eb2, type: 2}
 --- !u!1 &1320242386
 GameObject:
   m_ObjectHideFlags: 0
@@ -50094,6 +50142,11 @@ Animator:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2393930072599491638, guid: 6dc3ac790e9cf62409c0b367bb15c026, type: 3}
   m_PrefabInstance: {fileID: 2082780207291574141}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1330098852 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1469438162094981398, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
+  m_PrefabInstance: {fileID: 2105885862}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1330119325 stripped
 Transform:
@@ -73480,8 +73533,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   document: {fileID: 0}
-  _healthTargetSource: {fileID: 0}
   _visibleOnStart: 1
+  _target:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!114 &2012212755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76759,15 +76818,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1246435435504352262, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.52
+      value: 0.51999974
       objectReference: {fileID: 0}
     - target: {fileID: 1246435435504352262, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.67
+      value: 0.16999996
       objectReference: {fileID: 0}
     - target: {fileID: 1246435435504352262, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.01
+      value: 10.01
       objectReference: {fileID: 0}
     - target: {fileID: 1246435435504352262, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
       propertyPath: m_LocalRotation.w
@@ -76813,11 +76872,30 @@ PrefabInstance:
       propertyPath: currentHealth
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 2294133734777075456, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 999693047}
+    - target: {fileID: 2294133734777075456, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
+      propertyPath: _triggered
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2294133734777075456, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
+      propertyPath: _weapons.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2294133734777075456, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
+      propertyPath: '_weapons.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1316711881}
     m_RemovedComponents:
     - {fileID: 2849759207579705551, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4310389673740012261, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1316711881}
   m_SourcePrefab: {fileID: 100100000, guid: ec679ebf3da737148bb4d5e19e9622ce, type: 3}
 --- !u!1 &2105977790
 GameObject:
