@@ -24,13 +24,10 @@ namespace _Scripts.General.Managers
         {
             if (_player == null)
             {
-                _player = FindObjectOfType<Player>();
+                _player = FindAnyObjectByType<Player>();
             }
 
-            if (_player.TryGetComponent(out Health health))
-            {
-                _vitalBars.SetHealthTarget(health);
-            }
+            _vitalBars.SetHealthTarget(_player.HealthMonitor);
         }
     }
 }

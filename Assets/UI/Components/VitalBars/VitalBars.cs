@@ -5,13 +5,12 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(UIDocument))]
 public class VitalBars : UIComponentBehaviour
 {
-    [SerializeField] private MonoBehaviour _healthTargetSource;//for inspector reference,
     [SerializeField] private bool _visibleOnStart = true;
 
     [UIElement("health-bar")] private readonly ProgressBar _healthBar;
     [UIElement("shield-bar")] private readonly ProgressBar _shieldBar;
 
-    private IHealthMonitor _target;
+    [SerializeReference] private IHealthMonitor _target;
 
     protected override void OnUIEnabled()
     {
@@ -47,7 +46,6 @@ public class VitalBars : UIComponentBehaviour
         }
 
         _target = newTarget;
-        _healthTargetSource = (MonoBehaviour)newTarget;
 
         if (_healthBar is not null)
         {

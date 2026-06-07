@@ -11,13 +11,14 @@ public sealed class DurabilityConfig
     public int armor = 0;
 }
 
+[Serializable]
 public sealed class Health : IDamageable, IHealthMonitor
 {
-    public int MaxHealth { get; private set; }
-    public int MaxShield { get; private set; }
-    public int Armor { get; private set; }
-    public int CurrentHealth { get; private set; }
-    public int CurrentShield { get; private set; }
+    [field: SerializeField] public int MaxHealth { get; private set; }
+    [field: SerializeField] public int MaxShield { get; private set; }
+    [field: SerializeField] public int Armor { get; private set; }
+    [field: SerializeField] public int CurrentHealth { get; private set; }
+    [field: SerializeField] public int CurrentShield { get; private set; }
 
 
     public event Action<int> OnHealthChange;
@@ -28,13 +29,14 @@ public sealed class Health : IDamageable, IHealthMonitor
 
     public event Action OnDeath;
 
-    public Health(DurabilityConfig config)
+    public Health Init(DurabilityConfig config)
     {
         MaxHealth = config.maxHealth;
         MaxShield = config.maxShield;
         CurrentHealth = config.currentHealth;
         CurrentShield = config.currentShield;
         Armor = config.armor;
+        return this;
     }
 
     public void Damage(int damage, HitOptions options = HitOptions.None)

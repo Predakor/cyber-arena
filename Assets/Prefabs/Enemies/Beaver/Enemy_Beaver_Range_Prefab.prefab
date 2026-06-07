@@ -854,10 +854,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1263010016473339890, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2849759207579705551}
   m_SourcePrefab: {fileID: 100100000, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
+--- !u!4 &1469438162094981398 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4481915334571154433, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
+  m_PrefabInstance: {fileID: 3050775851691826455}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3502186696407601247 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1931142947849833800, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
   m_PrefabInstance: {fileID: 3050775851691826455}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4310389673740012261 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1263010016473339890, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
+  m_PrefabInstance: {fileID: 3050775851691826455}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2849759207579705551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4310389673740012261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca7c6777c50dc4d4c90a82e6016f9a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AIWeapon
+  _muzzle: {fileID: 1469438162094981398}
+  _damage: 10
+  _range: 20
+  _fireRate: 1
