@@ -84,7 +84,7 @@ public class GeneralHostileAi : BaseAI
             return;
         }
 
-        foreach (AIWeapon weapon in _weapons)
+        foreach (var weapon in _weapons)
         {
             weapon.TryFire(target.transform);
         }

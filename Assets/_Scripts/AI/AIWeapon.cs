@@ -23,9 +23,9 @@ public sealed class AIWeapon : MonoBehaviour
 
         if (Physics.Raycast(origin, direction, out var hit, _range))
         {
-            if (hit.collider.TryGetComponent<Health>(out var health))
+            if (hit.collider.TryGetComponent<Enemy>(out var enemy))
             {
-                health.Damage(_damage);
+                enemy.Health.Damage(_damage);
             }
         }
 

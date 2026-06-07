@@ -3,8 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(GeneralHostileAi))]
 [RequireComponent(typeof(BaseMovement))]
-[RequireComponent(typeof(Health))]
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageable
 {
     //TODO move enemy creation to Factory and remove this mockup config
     // In Factory Create enemy based on EnemyConfig ScriptableObject
@@ -43,14 +42,9 @@ public class Enemy : MonoBehaviour
 
     private void DeathHandler()
     {
+        Health.OnDeath -= DeathHandler;
         OnDeath?.Invoke(this);
     }
-    private void OnEnable()
-    {
-    }
 
-    private void OnDisable()
-    {
-    }
-
+    public void Damage(int damage, HitOptions options = HitOptions.None) => Health.Damage(damage, options);
 }

@@ -16,7 +16,7 @@ MonoBehaviour:
   _rules:
   - ClassName: InputsChannel
     Enabled: 1
-    EnabledLevels: 14
+    EnabledLevels: 12
     Group: 1
   - ClassName: WeaponChannel
     Enabled: 1
