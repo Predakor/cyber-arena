@@ -564,9 +564,6 @@ PrefabInstance:
       addedObject: {fileID: 2294133734777075456}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05792c142fdadb34cb926f8cee111e2e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2195192868085993849}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05792c142fdadb34cb926f8cee111e2e, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5149250182615951515}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05792c142fdadb34cb926f8cee111e2e, type: 3}
       insertIndex: -1
@@ -602,13 +599,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 5164527853253944956}
   movement: {fileID: 8290444366321152888}
-  health: {fileID: 2195192868085993849}
   target: {fileID: 0}
-  AgroCollider: {fileID: 0}
-  triggered: 1
-  iddle: 0
-  weapons:
-  - {fileID: 4689661878136042807}
+  _agroCollider: {fileID: 0}
+  _triggered: 0
+  _weapons: []
   OnAggro:
     m_PersistentCalls:
       m_Calls: []
@@ -618,35 +612,12 @@ MonoBehaviour:
   OnTrigger:
     m_PersistentCalls:
       m_Calls: []
-  OnTriggerLost:
-    m_PersistentCalls:
-      m_Calls: []
   OnTargetAcquired:
     m_PersistentCalls:
       m_Calls: []
   OnTargetLost:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2195192868085993849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875725880748304060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0aef168a308dd374ab8c998a033b8293, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 100
-  maxHealth: 100
-  currentShield: 0
-  maxShield: 0
-  armor: 0
-  InvincibilityFrames: 1
-  InvicibilityFramesCooldown: 0.5
-  InvicibilityFramesDuration: 0.1
 --- !u!114 &5149250182615951515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -661,7 +632,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AI: {fileID: 2294133734777075456}
   Controller: {fileID: 8290444366321152888}
-  Health: {fileID: 2195192868085993849}
 --- !u!114 &8290444366321152888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -716,10 +686,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1875725880748304060}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 100
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -884,21 +854,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1263010016473339890, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2849759207579705551}
   m_SourcePrefab: {fileID: 100100000, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
+--- !u!4 &1469438162094981398 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4481915334571154433, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
+  m_PrefabInstance: {fileID: 3050775851691826455}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3502186696407601247 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1931142947849833800, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
   m_PrefabInstance: {fileID: 3050775851691826455}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4689661878136042807 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7729178446740531232, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
+--- !u!1 &4310389673740012261 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1263010016473339890, guid: 0e17af7008e80f04aa63a5c2660479e3, type: 3}
   m_PrefabInstance: {fileID: 3050775851691826455}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+--- !u!114 &2849759207579705551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4310389673740012261}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a498e14525de4004da6ecfa7aba4d52f, type: 3}
+  m_Script: {fileID: 11500000, guid: ca7c6777c50dc4d4c90a82e6016f9a42, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::AIWeapon
+  _muzzle: {fileID: 1469438162094981398}
+  _damage: 10
+  _range: 20
+  _fireRate: 1

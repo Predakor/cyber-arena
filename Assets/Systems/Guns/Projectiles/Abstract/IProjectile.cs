@@ -59,7 +59,7 @@ namespace Systems.Guns.Projectiles
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            var hitPoint = other.ClosestPoint(transform.position);
+            var hitPoint = other.bounds.ClosestPoint(transform.position);
             _onHit?.Invoke(new HitInfo
             {
                 Target = other.gameObject,

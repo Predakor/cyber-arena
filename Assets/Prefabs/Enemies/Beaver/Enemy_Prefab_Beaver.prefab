@@ -561,9 +561,6 @@ PrefabInstance:
       addedObject: {fileID: 2294133734777075456}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05792c142fdadb34cb926f8cee111e2e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2195192868085993849}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05792c142fdadb34cb926f8cee111e2e, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5149250182615951515}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05792c142fdadb34cb926f8cee111e2e, type: 3}
       insertIndex: -1
@@ -594,13 +591,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   movement: {fileID: 8290444366321152888}
-  health: {fileID: 2195192868085993849}
   target: {fileID: 0}
-  AgroCollider: {fileID: 0}
-  triggered: 1
-  iddle: 0
-  weapons:
-  - {fileID: 0}
+  _agroCollider: {fileID: 0}
+  _triggered: 0
+  _weapons: []
   OnAggro:
     m_PersistentCalls:
       m_Calls: []
@@ -610,35 +604,12 @@ MonoBehaviour:
   OnTrigger:
     m_PersistentCalls:
       m_Calls: []
-  OnTriggerLost:
-    m_PersistentCalls:
-      m_Calls: []
   OnTargetAcquired:
     m_PersistentCalls:
       m_Calls: []
   OnTargetLost:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2195192868085993849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875725880748304060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0aef168a308dd374ab8c998a033b8293, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 100
-  maxHealth: 100
-  currentShield: 0
-  maxShield: 0
-  armor: 0
-  InvincibilityFrames: 1
-  InvicibilityFramesCooldown: 0.5
-  InvicibilityFramesDuration: 0.1
 --- !u!114 &5149250182615951515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,7 +624,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AI: {fileID: 2294133734777075456}
   Controller: {fileID: 8290444366321152888}
-  Health: {fileID: 2195192868085993849}
 --- !u!114 &8290444366321152888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,10 +678,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1875725880748304060}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 10
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

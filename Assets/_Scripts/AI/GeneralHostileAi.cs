@@ -10,7 +10,7 @@ public class GeneralHostileAi : BaseAI
     [SerializeField] private bool _triggered = false;
 
     [Header("Weapons")]
-    [SerializeField] private AIWeapon[] _weapons;
+    [SerializeField] private SimpleWeapon[] _weapons;
 
     [Header("Events")]
     public UnityEvent OnAggro;
@@ -84,9 +84,10 @@ public class GeneralHostileAi : BaseAI
             return;
         }
 
-        foreach (AIWeapon weapon in _weapons)
+        //check line sight to player don't shoot otherwise
+        foreach (var weapon in _weapons)
         {
-            weapon.TryFire(target.transform);
+            weapon.TryFire();
         }
     }
 }

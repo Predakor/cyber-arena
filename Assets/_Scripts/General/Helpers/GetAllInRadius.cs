@@ -1,34 +1,45 @@
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class GetAllInRadius : MonoBehaviour {
-    [SerializeField] LayerMask _mask;
-    [SerializeField] LayerMask _enemyMask;
+public class GetAllInRadius : MonoBehaviour
+{
+    [SerializeField] private LayerMask _mask;
+    [SerializeField] private LayerMask _enemyMask;
 
-    [SerializeField] float radius = 5f;
+    [SerializeField] private float radius = 5f;
 
-    Collider[] GetAll(Vector3 point, float radius) {
-        return Physics.OverlapSphere(point, radius);
-    }
-    Collider[] GetAll(Vector3 point, float radius, LayerMask mask) {
-        return Physics.OverlapSphere(point, radius, mask);
-    }
+    private Collider[] GetAll(Vector3 point, float radius) => Physics.OverlapSphere(point, radius);
 
-    void Awake() {
+    private Collider[] GetAll(Vector3 point, float radius, LayerMask mask) => Physics.OverlapSphere(point, radius, mask);
+
+    private void Awake()
+    {
         _enemyMask = LayerMask.GetMask("Enemy");
     }
 
-    public Collider[] AllEnemies(Vector3 point, float radius, LayerMask? mask) {
+    public Collider[] AllEnemies(Vector3 point, float radius, LayerMask? mask)
+    {
         return GetAll(point, radius, mask ?? _enemyMask);
     }
-    public Collider[] AllColliders(Vector3 point, float radius) {
+    public Collider[] AllColliders(Vector3 point, float radius)
+    {
         return GetAll(point, radius);
     }
 
-    public Health[] AllDamageable(Vector3 point, float radius) {
-        return GetAll(point, radius)
-            .Where(collider => collider.gameObject.GetComponent<Health>() != null)
-            .Select(collider => collider.gameObject.GetComponent<Health>())
-            .ToArray();
+    public List<IDamageable> AllDamageable(Vector3 point, float radius)
+    {
+        Collider[] colliders = GetAll(point, radius);
+        //with correct matrix settings we should only collide with damageable things or walls
+        List<IDamageable> targets = new(colliders.Length);
+
+        foreach (var colider in colliders)
+        {
+            if (colider.TryGetComponent<IDamageable>(out var damageable))
+            {
+                targets.Add(damageable);
+            }
+        }
+
+        return targets;
     }
 }

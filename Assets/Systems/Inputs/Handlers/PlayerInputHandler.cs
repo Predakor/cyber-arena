@@ -9,7 +9,7 @@ namespace Systems.Inputs.Handlers
     internal sealed class PlayerInputHandler
         : InputHandlerBase, PlayerControls.IPlayerActions
     {
-        private const float UpdateInterval = 0.125f; // 125 ms
+        private const float UpdateInterval = 0.05f; // 50 ms
         private float _lastDeltaUpdateTime;
         private float _lastPositionUpdateTime;
 
@@ -48,10 +48,7 @@ namespace Systems.Inputs.Handlers
             {
                 Channel.RaiseMouseDelta(context.ReadValue<Vector2>());
             }
-            else if (context.canceled)
-            {
-                Channel.RaiseMouseDelta(Vector2.zero);
-            }
+
         }
 
         public void OnShoot(InputAction.CallbackContext context)
@@ -99,10 +96,6 @@ namespace Systems.Inputs.Handlers
             if (context.performed)
             {
                 Channel.RaiseMousePosition(context.ReadValue<Vector2>());
-            }
-            else if (context.canceled)
-            {
-                Channel.RaiseMousePosition(Vector2.zero);
             }
         }
     }
